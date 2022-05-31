@@ -1,5 +1,9 @@
 //THIS IS A COMMENT #2
 
+
+
+// HELLO
+
 package bark;
 
 import javafx.application.Application;
@@ -27,7 +31,7 @@ import static javafx.application.Application.launch;
 
 public class Bark extends Application {
     
-        // FX Controls
+    // FX Controls
     Label label = new Label("Hello");
     Button button1 = new Button("Button");
 
@@ -39,6 +43,7 @@ public class Bark extends Application {
     Statement commStmt;
     ResultSet dbResults;
     
+    @Override
     public void start(Stage primaryStage) {
         pane1.setAlignment(Pos.CENTER);
         pane1.add(label, 0, 0);
