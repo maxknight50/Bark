@@ -43,7 +43,7 @@ public class BarkLogin extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        paneSettings();
+        paneSettings(loginPane);
         //Adds to pane
         loginPane.add(userNameLbl, 0, 0);
         loginPane.add(userNameTxt, 0, 1);
@@ -58,17 +58,24 @@ public class BarkLogin extends Application {
         Scene primaryScene = new Scene(loginPane, 600, 450);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Log In / Sign Up");
-        primaryStage.show();       
+        primaryStage.show();
+        
+        // Begin application button
+        applicationButton.setOnAction(e -> {
+            BarkApplication app = new BarkApplication(this);
+        });
         
     }
     
-    public void paneSettings() {
+    public void paneSettings(GridPane pane) {
+        loginPane = pane;
+        
         // Add spacing
-        loginPane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
-        loginPane.setHgap(5.5);
-        loginPane.setVgap(5.5);
-        loginPane.setAlignment(Pos.CENTER);
-        //loginButton.setAlignment(Pos.CENTER_RIGHT);
+        pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
+        pane.setHgap(5.5);
+        pane.setVgap(5.5);
+        pane.setAlignment(Pos.CENTER);
+        
     }
     
     public static void main(String[] args) {
