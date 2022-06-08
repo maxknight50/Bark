@@ -18,9 +18,9 @@ import javafx.geometry.Insets;
  *
  *
  */
-public class BarkApplication extends BarkLogin {
+public class Application extends Login1 {
 
-    BarkLogin login;
+    Login1 login;
 
     // FX Controls - Labels
     //Label title = new Label("Application"); ***Find JAVAFX Node/control that isnt Label for title
@@ -46,7 +46,7 @@ public class BarkApplication extends BarkLogin {
 
     GridPane pane1 = new GridPane();
 
-    BarkApplication(BarkLogin login) {
+    Application(Login1 login) {
 
         this.login = login;
         paneSettings(pane1);

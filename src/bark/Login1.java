@@ -26,7 +26,7 @@ import javafx.stage.*;
  * 
  */
 
-public class BarkLogin extends Application {
+public class Login1 extends Application {
 
     //FX Labels
     Label userNameLbl = new Label("Username");
@@ -60,14 +60,14 @@ public class BarkLogin extends Application {
 
         // Begin application button
         applicationButton.setOnAction(e -> {
-            BarkApplication app = new BarkApplication(this);
+            Application app = new Application(this);
         });
         
         // Log in Button
         loginButton.setOnAction(e -> {
             //boolean result = loginAttempt(username);
             //if (result) 
-                BarkHome home = new BarkHome(this);
+                Home home = new Home(this);
         });
 
     }
