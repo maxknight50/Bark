@@ -51,6 +51,11 @@ public class Home extends Login1 {
         checkoutBtn.setOnAction(e -> {
             Checkout chkOut = new Checkout(this); 
         });
+        
+        // Home button
+        assignSpecialBtn.setOnAction(e -> {
+            AssignSpecialization special1 = new AssignSpecialization(this);
+        });
     }
     
 }
