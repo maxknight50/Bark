@@ -42,7 +42,9 @@ public class Login1 extends Application {
     GridPane loginPane = new GridPane();
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
+        
+        
         paneSettings(loginPane);
         //Adds to pane
         loginPane.add(userNameLbl, 0, 0);
@@ -60,7 +62,7 @@ public class Login1 extends Application {
 
         // Begin application button
         applicationButton.setOnAction(e -> {
-            Application app = new Application(this);
+            Application2 app = new Application2(this);
         });
         
         // Log in Button

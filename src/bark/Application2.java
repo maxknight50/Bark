@@ -18,7 +18,7 @@ import javafx.geometry.Insets;
  *
  *
  */
-public class Application extends Login1 {
+public class Application2 extends Login1 {
 
     Login1 login;
 
@@ -46,7 +46,7 @@ public class Application extends Login1 {
 
     GridPane pane1 = new GridPane();
 
-    Application(Login1 login) {
+    Application2(Login1 login) {
 
         this.login = login;
         paneSettings(pane1);
