@@ -46,6 +46,11 @@ public class Home extends Login1 {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Home");
         primaryStage.show();
+        
+        // Check out button
+        checkoutBtn.setOnAction(e -> {
+            Checkout chkOut = new Checkout(this); 
+        });
     }
     
 }
