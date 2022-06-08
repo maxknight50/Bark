@@ -23,24 +23,24 @@ import javafx.stage.*;
 
 /**
  *
- * @author joshravichandar
+ * 
  */
 
-
 public class BarkLogin extends Application {
+
     //FX Labels
     Label userNameLbl = new Label("Username");
     Label passwordLbl = new Label("Password");
     Button loginButton = new Button("Log In");
     Label interestLbl = new Label("Interested in joining BARK?");
     Button applicationButton = new Button("Begin Application");
-    
+
     TextField userNameTxt = new TextField();
     TextField passwordTxt = new TextField();
-    
+
     //FX GridPane
     GridPane loginPane = new GridPane();
-    
+
     @Override
     public void start(Stage primaryStage) {
         paneSettings(loginPane);
@@ -52,32 +52,41 @@ public class BarkLogin extends Application {
         loginPane.add(loginButton, 0, 4);
         loginPane.add(interestLbl, 0, 6);
         loginPane.add(applicationButton, 0, 7);
-        
-        
-        
+
         Scene primaryScene = new Scene(loginPane, 600, 450);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Log In / Sign Up");
         primaryStage.show();
-        
+
         // Begin application button
         applicationButton.setOnAction(e -> {
             BarkApplication app = new BarkApplication(this);
         });
         
+        // Log in Button
+        loginButton.setOnAction(e -> {
+            //boolean result = loginAttempt(username);
+            //if (result) 
+                BarkHome home = new BarkHome(this);
+        });
+
     }
     
+    public boolean loginAttempt(String username) {
+        return true;
+    }
+
     public void paneSettings(GridPane pane) {
         loginPane = pane;
-        
+
         // Add spacing
         pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
         pane.setHgap(5.5);
         pane.setVgap(5.5);
         pane.setAlignment(Pos.CENTER);
-        
+
     }
-    
+
     public static void main(String[] args) {
         launch(args);
     }
