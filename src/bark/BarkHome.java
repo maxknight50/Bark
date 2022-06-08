@@ -12,8 +12,8 @@ import javafx.stage.Stage;
  *
  * 
  */
-public class Home extends Login1 {
-    Login1 login;
+public class BarkHome extends BarkLogin {
+    BarkLogin login;
     Label barkTitle = new Label("BARK");
     Button eventsBtn = new Button("View Events");
     Button socialHomeScreenBtn = new Button("View Social Home Screen");
@@ -29,7 +29,7 @@ public class Home extends Login1 {
     
     
     
-    Home(Login1 login) {
+    BarkHome(BarkLogin login) {
         this.login = login;
         paneSettings(homePane);
         homePane.add(barkTitle, 0, 0);
@@ -46,11 +46,6 @@ public class Home extends Login1 {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Home");
         primaryStage.show();
-        
-        // Check out button
-        checkoutBtn.setOnAction(e -> {
-            Checkout chkOut = new Checkout(this); 
-        });
     }
     
 }
