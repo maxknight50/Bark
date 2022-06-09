@@ -39,7 +39,7 @@ public class Summary extends Login1 {
         this.home = home;
         paneSettings(summaryPane);
         
-        
+        summaryPane.add(backLbl, 0, 0); 
         summaryPane.add(firstNameLabel, 0, 1);
         summaryPane.add(firstNameField, 1, 1);
         summaryPane.add(lastNameLabel, 0, 2);
@@ -66,6 +66,10 @@ public class Summary extends Login1 {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Volunteer Status");
         primaryStage.show();
+        
+        backLbl.setOnAction(e -> {
+            primaryStage.close(); 
+        });
     }
     
     

@@ -52,6 +52,10 @@ public class Checkout extends Login1 {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Checkout");
         primaryStage.show();
+        
+        backLbl.setOnAction(e -> {
+            primaryStage.close(); 
+        });
     }
     
     
