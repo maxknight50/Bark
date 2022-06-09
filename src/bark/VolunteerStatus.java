@@ -72,6 +72,10 @@ public class VolunteerStatus extends Login1{
         primaryStage.setTitle("Volunteer Status");
         primaryStage.show();
         
+        backBtn.setOnAction(e -> {
+            primaryStage.close(); 
+        });
+        
     }
 }
     

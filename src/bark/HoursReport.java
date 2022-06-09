@@ -50,6 +50,10 @@ public class HoursReport extends Login1 {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Volunteer and Hours Report");
         primaryStage.show();
+        
+        backLbl.setOnAction(e -> {
+            primaryStage.close(); 
+        });
     }
     
     
