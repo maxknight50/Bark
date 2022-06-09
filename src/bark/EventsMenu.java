@@ -2,20 +2,33 @@
 package bark;
 
 import javafx.application.Application;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class EventsMenu extends Application {
+public class EventsMenu extends Login1 {
+    Home home;
     
-    public static void main(String[] args) {
-        launch(args);
+    // Tab 1 Controls
+    
+    // Tab 2 Controls
+    
+    // Tab 3 Controls
+    
+    
+    
+    GridPane eventsPane = new GridPane();
+    TabPane tabPane = new TabPane();
+    EventsMenu(Home home) {
+        this.home = home;
+        
+        
+        Stage primaryStage = new Stage();
+        Scene primaryScene = new Scene(eventsPane, 600, 450);
+        primaryStage.setScene(primaryScene);
+        primaryStage.setTitle("Events Menu");
+        primaryStage.show();        
     }
-    
-    public void start(Stage primaryStage) throws Exception {
 
-    }
 }
