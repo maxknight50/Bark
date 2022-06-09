@@ -57,12 +57,12 @@ public class Home extends Login1 {
             AssignSpecialization special1 = new AssignSpecialization(this);
         });
         
-        // Volunteer summary
+        // Volunteer summary button
         volunteerInfoBtn.setOnAction(e -> {
             Summary sum = new Summary(this);
         });
         
-        // Volunteer Status
+        // Volunteer Status button
         volunteerReportBtn.setOnAction(e -> {
             VolunteerStatus status = new VolunteerStatus(this);
         });
