@@ -12,8 +12,8 @@ import javafx.stage.Stage;
  *
  * 
  */
-public class BarkHome extends BarkLogin {
-    BarkLogin login;
+public class BarkHome extends Login1 {
+    Login1 login;
     Label barkTitle = new Label("BARK");
     Button eventsBtn = new Button("View Events");
     Button socialHomeScreenBtn = new Button("View Social Home Screen");
@@ -29,7 +29,7 @@ public class BarkHome extends BarkLogin {
     
     
     
-    BarkHome(BarkLogin login) {
+    BarkHome(Login1 login) {
         this.login = login;
         paneSettings(homePane);
         homePane.add(barkTitle, 0, 0);
