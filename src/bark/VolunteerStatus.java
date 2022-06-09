@@ -38,7 +38,7 @@ public class VolunteerStatus extends Login1{
     
     ComboBox<String> statusBox = new ComboBox<>();
     
-    Button backBtn = new Button();
+    Button backBtn = new Button("Back");
    
     GridPane pane = new GridPane();
     
