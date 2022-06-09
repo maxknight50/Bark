@@ -56,6 +56,11 @@ public class Home extends Login1 {
         assignSpecialBtn.setOnAction(e -> {
             AssignSpecialization special1 = new AssignSpecialization(this);
         });
+        
+        // Volunteer summary
+        volunteerInfoBtn.setOnAction(e -> {
+            Summary sum = new Summary(this);
+        });
     }
     
 }
