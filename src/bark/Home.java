@@ -61,6 +61,11 @@ public class Home extends Login1 {
         volunteerInfoBtn.setOnAction(e -> {
             Summary sum = new Summary(this);
         });
+        
+        // Volunteer Status
+        volunteerReportBtn.setOnAction(e -> {
+            VolunteerStatus status = new VolunteerStatus(this);
+        });
     }
     
 }
