@@ -38,6 +38,10 @@ public class EventsMenu extends Login1 {
         tab2.setContent(tPane2);
         tab3.setContent(tPane3);
         tabPane.getTabs().addAll(tab1, tab2, tab3);
+        //TabPane tabClosingPolicy="UNAVAILABLE";
+        tab1.setClosable(false);
+        tab2.setClosable(false);
+        tab3.setClosable(false);
         
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(eventsPane, 600, 450);
