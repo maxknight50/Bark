@@ -16,19 +16,36 @@ public class EventsMenu extends Login1 {
     
     // Tab 3 Controls
     
+    // GridPane associated for each tab
+    GridPane tPane1 = new GridPane();
+    GridPane tPane2 = new GridPane();
+    GridPane tPane3 = new GridPane();
     
+    // Tab creation
+    Tab tab1 = new Tab("Daily Events");
+    Tab tab2 = new Tab("Past Events");
+    Tab tab3 = new Tab("Your Events");
     
     GridPane eventsPane = new GridPane();
     TabPane tabPane = new TabPane();
     EventsMenu(Home home) {
         this.home = home;
         
+        eventsPane.add(tabPane, 0, 1);
+        
+        
+        tab1.setContent(tPane1);
+        tab2.setContent(tPane2);
+        tab3.setContent(tPane3);
+        tabPane.getTabs().addAll(tab1, tab2, tab3);
         
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(eventsPane, 600, 450);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Events Menu");
-        primaryStage.show();        
+        primaryStage.show();  
+        tabPane.setMinHeight(primaryScene.getHeight());
+        tabPane.setMinWidth(primaryScene.getWidth());
     }
 
 }
