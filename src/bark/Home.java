@@ -66,6 +66,11 @@ public class Home extends Login1 {
         volunteerReportBtn.setOnAction(e -> {
             VolunteerStatus status = new VolunteerStatus(this);
         });
+        
+        // Events Menu button
+        eventsBtn.setOnAction(e -> {
+            EventsMenu em = new EventsMenu(this);
+        });
     }
     
 }
