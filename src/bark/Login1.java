@@ -91,6 +91,8 @@ public class Login1 extends Application {
                 // Read in first values
                 while (rs.next()) {
                     System.out.println(rs.getString("username"));
+                    System.out.println(rs.getString("vol_Name"));
+
                 }
 
             } catch (Exception ex) {
