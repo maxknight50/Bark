@@ -51,5 +51,9 @@ public class Donation extends Login1 {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Donations");
         primaryStage.show();
+        
+        backBtn.setOnAction(e -> {
+            primaryStage.close();
+        });
     }
 }
