@@ -22,7 +22,7 @@ import oracle.jdbc.pool.OracleDataSource;
  */
 public class DatabaseTest extends Application {
 
-    //ArrayList<Sprocket> sprocketInventory = new ArrayList<>();
+    //ArrayList< > x = new ArrayList<>();
     
     Label lblDesc = new Label("Label:");
     TextField txtDesc = new TextField();
@@ -51,9 +51,8 @@ public class DatabaseTest extends Application {
         try {
             // Read in first values
             while (rs.next()) {
-                System.out.println(rs.getInt("employeeID"));
-                System.out.println(rs.getString("empName"));
-                System.out.println(rs.getInt("salary"));
+                System.out.println(rs.getInt("volID"));
+                System.out.println(rs.getString("vol_Name"));
             }
 
         } catch (Exception e) {
