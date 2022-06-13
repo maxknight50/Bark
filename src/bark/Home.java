@@ -8,10 +8,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 
-/**
- *
- * 
- */
+
 public class Home extends Login1 {
     Login1 login;
     Label barkTitle = new Label("BARK");
