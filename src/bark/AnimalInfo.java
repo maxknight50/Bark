@@ -48,6 +48,7 @@ public class AnimalInfo extends Login1{
     
     AnimalInfo(Home home) {
         this.home = home;
+        paneSettings(pane);
         
         pane.add(backBtn, 0, 0);
         pane.add(topLbl, 1, 1);
@@ -72,6 +73,7 @@ public class AnimalInfo extends Login1{
         Scene primaryScene = new Scene(pane, 600, 450);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Animal Information");
+        primaryStage.show();
         
         backBtn.setOnAction(e -> {
             primaryStage.close();
