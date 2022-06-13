@@ -96,7 +96,13 @@ public class VolunteerStatus extends Login1 {
             if (rs.next()) {
                 System.out.println(rs.getInt("volID"));
                 System.out.println(rs.getString("vol_Name"));
-                fNameTxt.setText(rs.getString("vol_Name"));      
+                fNameTxt.setText(rs.getString("vol_Name"));  
+                addressTxt.setText(rs.getString("vol_Address"));  
+                emailTxt.setText(rs.getString("vol_Email"));  
+                phoneTxt.setText(rs.getString("vol_Phone"));
+                cumHrsTxt.setText(rs.getString("cumulativeHours"));
+                //statusBox.set
+                 
                 
             }
 
