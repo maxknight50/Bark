@@ -24,12 +24,7 @@ public class Home extends Login1 {
     Button donationBtn = new Button("Donations");
     Button animalInfoBtn = new Button("Animal Information");
     
-    
-    
-    
     GridPane homePane = new GridPane();
-    
-    
     
     Home(Login1 login) {
         this.login = login;
@@ -80,6 +75,12 @@ public class Home extends Login1 {
         donationBtn.setOnAction(e -> {
             Donation don = new Donation(this);
         });
+        
+        // Animal Info Button
+        animalInfoBtn.setOnAction(e -> {
+            AnimalInfo anim = new AnimalInfo(this);
+        });
+        
         
     }
     
