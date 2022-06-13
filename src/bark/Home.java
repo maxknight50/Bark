@@ -21,13 +21,10 @@ public class Home extends Login1 {
     Button assignSpecialBtn = new Button("Assign Specialization");
     Button volunteerReportBtn = new Button("View Volunteer Report");
     Button checkoutBtn = new Button("Check Out");
-    
-    
-    
+    Button donationBtn = new Button("Donations");
+    Button animalInfoBtn = new Button("Animal Information");
     
     GridPane homePane = new GridPane();
-    
-    
     
     Home(Login1 login) {
         this.login = login;
@@ -39,6 +36,8 @@ public class Home extends Login1 {
         homePane.add(assignSpecialBtn, 0, 4);
         homePane.add(volunteerReportBtn, 0, 5);
         homePane.add(checkoutBtn, 0, 6);
+        homePane.add(donationBtn, 0,7);
+        homePane.add(animalInfoBtn, 0,8);
 
         
         Stage primaryStage = new Stage();
@@ -71,6 +70,18 @@ public class Home extends Login1 {
         eventsBtn.setOnAction(e -> {
             EventsMenu em = new EventsMenu(this);
         });
+        
+        // Donations Button
+        donationBtn.setOnAction(e -> {
+            Donation don = new Donation(this);
+        });
+        
+        // Animal Info Button
+        animalInfoBtn.setOnAction(e -> {
+            AnimalInfo anim = new AnimalInfo(this);
+        });
+        
+        
     }
     
 }
