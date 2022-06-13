@@ -96,7 +96,7 @@ public class VolunteerStatus extends Login1 {
             if (rs.next()) {
                 System.out.println(rs.getInt("volID"));
                 System.out.println(rs.getString("vol_Name"));
-                fNameTxt.setText(rs.getString("vol_Name"));
+                fNameTxt.setText(rs.getString("vol_Name"));      
                 
             }
 
