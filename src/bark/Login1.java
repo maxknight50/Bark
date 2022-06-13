@@ -69,9 +69,16 @@ public class Login1 extends Application {
         loginButton.setOnAction(e -> {
             //boolean result = loginAttempt(username);
             //if (result) 
-                Home home = new Home(this);
+            String userName = userNameTxt.getText();
+            String password = passwordTxt.getText();
+            System.out.println(userName + " " + password);
+            
+            Home home = new Home(this);
+            
+            //arrayListName.add(
+            //userNameTxt.setText("");
+            //passwordTxt.clear();
         });
-
     }
     
     public boolean loginAttempt(String username) {

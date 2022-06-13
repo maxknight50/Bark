@@ -2,13 +2,21 @@
 package bark;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import tables.Event;
 
 public class EventsMenu extends Login1 {
     Home home;
+    
+    TableView<Event> eventTable = new TableView<>();
+    TableView<Event> eventTable2 = new TableView<>();
+    TableView<Event> eventTable3 = new TableView<>();
+    ObservableList<Event> tableData = FXCollections.observableArrayList();
     
     // Tab 1 Controls
     
@@ -42,6 +50,11 @@ public class EventsMenu extends Login1 {
         tab1.setClosable(false);
         tab2.setClosable(false);
         tab3.setClosable(false);
+        
+        // Add the tables to the tabs
+        tPane1.add(eventTable, 0, 0);
+        tPane2.add(eventTable2, 0, 0);
+        tPane3.add(eventTable3, 0, 0);
         
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(eventsPane, 600, 450);

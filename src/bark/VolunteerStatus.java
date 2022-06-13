@@ -5,7 +5,12 @@
  */
 package bark;
 
+import static bark.DatabaseTest.conn;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.event.*;
 import javafx.geometry.Pos;
@@ -13,8 +18,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import oracle.jdbc.pool.OracleDataSource;
+import tables.Volunteer;
 
 public class VolunteerStatus extends Login1{
+    
+    ArrayList<Volunteer> sprocketInventory = new ArrayList<>();
     
     Home home;
     
@@ -42,6 +51,10 @@ public class VolunteerStatus extends Login1{
    
     GridPane pane = new GridPane();
     
+    Statement stmt;
+    static Connection conn;
+    ResultSet rs;
+
     VolunteerStatus(Home home) {
         
         this.home = home;
@@ -76,6 +89,41 @@ public class VolunteerStatus extends Login1{
             primaryStage.close(); 
         });
         
+        sendDBCommand("select * from Volunteer");
+
+        try {
+            // Read in first values
+            while (rs.next()) {
+                System.out.println(rs.getInt("employeeID"));
+                System.out.println(rs.getString("empName"));
+                System.out.println(rs.getInt("salary"));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.toString());
+        }
+        
+    }
+    
+    public void sendDBCommand(String sqlQuery) {
+        String URL = "jdbc:oracle:thin:@localhost:1521:XE";
+        String userID = "javauser";
+        String userPASS = "javapass";
+        OracleDataSource ds;
+
+        // You can comment this line out when your program is finished
+        System.out.println(sqlQuery);
+
+        try {
+            ds = new OracleDataSource();
+            ds.setURL(URL);
+            conn = ds.getConnection(userID, userPASS);
+            stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            rs = stmt.executeQuery(sqlQuery); // Sends the Query to the DB
+
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
     }
 }
     
