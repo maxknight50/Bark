@@ -20,7 +20,7 @@ public class EventsMenu extends Login1 {
     TableView<Event> eventTable2 = new TableView<>();
     TableView<Event> eventTable3 = new TableView<>();
     ObservableList<Event> tableData = FXCollections.observableArrayList();
-    
+        
     //Create the columsn for each table
     TableColumn dailyEvent = new TableColumn("Event");
     TableColumn dailyDate = new TableColumn("Event Date");
@@ -101,6 +101,12 @@ public class EventsMenu extends Login1 {
         
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(eventsPane, 600, 450);
+        
+        eventTable.setMinWidth(primaryScene.getWidth()); 
+        eventTable2.setMinWidth(primaryScene.getWidth()); 
+        eventTable3.setMinWidth(primaryScene.getWidth()); 
+
+        
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Events Menu");
         primaryStage.show();  
