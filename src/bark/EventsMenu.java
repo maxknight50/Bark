@@ -87,7 +87,6 @@ public class EventsMenu extends Login1 {
         //pastAssigned.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
         pastDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
         
-        
         yourName.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
         yourDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
         yourDuration.setCellValueFactory(new PropertyValueFactory<Event, String>("eventTime"));
@@ -98,14 +97,12 @@ public class EventsMenu extends Login1 {
         eventTable2.getColumns().addAll(pastEvent, pastMax, pastDate); 
         eventTable3.getColumns().addAll(yourName, yourDate, yourDuration, yourDistance, yourCategory); 
         
-        
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(eventsPane, 600, 450);
         
         eventTable.setMinWidth(primaryScene.getWidth()); 
         eventTable2.setMinWidth(primaryScene.getWidth()); 
         eventTable3.setMinWidth(primaryScene.getWidth()); 
-
         
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Events Menu");
