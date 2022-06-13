@@ -21,12 +21,12 @@ import javafx.stage.Stage;
 import oracle.jdbc.pool.OracleDataSource;
 import tables.Volunteer;
 
-public class VolunteerStatus extends Login1{
-    
+public class VolunteerStatus extends Login1 {
+
     ArrayList<Volunteer> sprocketInventory = new ArrayList<>();
-    
+
     Home home;
-    
+
     Label topLbl = new Label("Volunteer Status");
     Label fNameLbl = new Label("First Name");
     Label lNameLbl = new Label("Last Name");
@@ -36,7 +36,7 @@ public class VolunteerStatus extends Login1{
     Label cumHrsLbl = new Label("Cumulative Hours");
     Label statusLbl = new Label("Status");
     Label availLbl = new Label("Availability");
-    
+
     TextField fNameTxt = new TextField();
     TextField lNameTxt = new TextField();
     TextField addressTxt = new TextField();
@@ -44,22 +44,22 @@ public class VolunteerStatus extends Login1{
     TextField phoneTxt = new TextField();
     TextField cumHrsTxt = new TextField();
     TextField availTxt = new TextField();
-    
+
     ComboBox<String> statusBox = new ComboBox<>();
-    
+
     Button backBtn = new Button("Back");
-   
+
     GridPane pane = new GridPane();
-    
+
     Statement stmt;
     static Connection conn;
     ResultSet rs;
 
     VolunteerStatus(Home home) {
-        
+
         this.home = home;
         paneSettings(pane);
-        
+
         pane.add(backBtn, 0, 0);
         pane.add(topLbl, 1, 1);
         pane.add(fNameLbl, 0, 2);
@@ -78,33 +78,35 @@ public class VolunteerStatus extends Login1{
         pane.add(statusBox, 1, 8);
         pane.add(availLbl, 0, 9);
         pane.add(availTxt, 1, 9);
-        
+
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(pane, 600, 450);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Volunteer Status");
         primaryStage.show();
-        
+
         backBtn.setOnAction(e -> {
-            primaryStage.close(); 
+            primaryStage.close();
         });
-        
+
         sendDBCommand("select * from Volunteer");
 
         try {
             // Read in first values
-            while (rs.next()) {
-                System.out.println(rs.getInt("employeeID"));
-                System.out.println(rs.getString("empName"));
-                System.out.println(rs.getInt("salary"));
+            if (rs.next()) {
+                System.out.println(rs.getInt("volID"));
+                System.out.println(rs.getString("vol_Name"));
+                fNameTxt.setText(rs.getString("vol_Name"));
+                
             }
 
         } catch (Exception e) {
             System.out.println("Error: " + e.toString());
         }
+
         
     }
-    
+
     public void sendDBCommand(String sqlQuery) {
         String URL = "jdbc:oracle:thin:@localhost:1521:XE";
         String userID = "javauser";
@@ -126,5 +128,3 @@ public class VolunteerStatus extends Login1{
         }
     }
 }
-    
-
