@@ -1,4 +1,3 @@
-
 package tables;
 
 import java.util.Date;
@@ -8,19 +7,21 @@ import java.util.Date;
  * @author coolm
  */
 public class Volunteer {
-    
-    int employeeID;
-    String empName;
-    String empAddress;
+
+    int volunteerID;
+    String volFirst;
+    String volLast;
+    String volAddress;
     Date dateofHire;
     String empPhone;
     int salary;
     int loginID;
-    
-    public Volunteer(int id, String name, String address, Date hire, String phone, int salary, int loginID) {
-        this.employeeID = id;
-        this.empName = name;
-        this.empAddress = address;
+
+    public Volunteer(int id, String first, String last, String address, Date hire, String phone, int salary, int loginID) {
+        this.volunteerID = id;
+        this.volFirst = first;
+        this.volLast = last;
+        this.volAddress = address;
         this.dateofHire = hire;
         this.empPhone = phone;
         this.salary = salary;
@@ -28,27 +29,35 @@ public class Volunteer {
     }
 
     public int getEmployeeID() {
-        return employeeID;
+        return volunteerID;
     }
 
     public void setEmployeeID(int employeeID) {
-        this.employeeID = employeeID;
+        this.volunteerID = employeeID;
     }
 
-    public String getEmpName() {
-        return empName;
+    public String getFirst() {
+        return volFirst;
     }
 
-    public void setEmpName(String empName) {
-        this.empName = empName;
+    public void setEmFirst(String first) {
+        this.volFirst = first;
+    }
+
+    public String getLast() {
+        return volFirst;
+    }
+
+    public void setLast(String first) {
+        this.volFirst = first;
     }
 
     public String getEmpAddress() {
-        return empAddress;
+        return volAddress;
     }
 
     public void setEmpAddress(String empAddress) {
-        this.empAddress = empAddress;
+        this.volAddress = empAddress;
     }
 
     public Date getDateofHire() {
@@ -82,5 +91,5 @@ public class Volunteer {
     public void setLoginID(int loginID) {
         this.loginID = loginID;
     }
-    
+
 }

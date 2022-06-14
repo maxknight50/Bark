@@ -38,6 +38,7 @@ public class Login1 extends Application {
     Button loginButton = new Button("Log In");
     Label interestLbl = new Label("Interested in joining BARK?");
     Button applicationButton = new Button("Begin Application");
+    Label login;
 
     TextField userNameTxt = new TextField();
     TextField passwordTxt = new TextField();
@@ -50,11 +51,11 @@ public class Login1 extends Application {
 
         paneSettings(loginPane);
         //Adds to pane
-        loginPane.add(userNameLbl, 0, 0);
-        loginPane.add(userNameTxt, 0, 1);
-        loginPane.add(passwordLbl, 0, 2);
-        loginPane.add(passwordTxt, 0, 3);
-        loginPane.add(loginButton, 0, 4);
+        loginPane.add(userNameLbl, 0, 1);
+        loginPane.add(userNameTxt, 0, 2);
+        loginPane.add(passwordLbl, 0, 3);
+        loginPane.add(passwordTxt, 0, 4);
+        loginPane.add(loginButton, 0, 5);
         loginPane.add(interestLbl, 0, 6);
         loginPane.add(applicationButton, 0, 7);
 
@@ -69,6 +70,10 @@ public class Login1 extends Application {
         });
 
         sendDBCommand("select * from Volunteer");
+//        sendDBCommand("select * from Volunteer where username = 'JMarkinson'");
+//        if (rs.next()) {
+//            System.out.println(rs.getString("password"));
+//        }
 
 //        try {
 //            // Read in first values
@@ -81,17 +86,52 @@ public class Login1 extends Application {
 //            System.out.println("Error: " + e.toString());
 //        }
         // Log in Button
+        boolean correct = false;
+
         loginButton.setOnAction(e -> {
             //boolean result = loginAttempt(username);
             //if (result) 
 
             // 1. Username must match username within database, search through and locate
             String userName = userNameTxt.getText();
+            String password = passwordTxt.getText();
+            sendDBCommand("select * from Volunteer");
+
             try {
                 // Read in first values
-                while (rs.next()) {
-                    System.out.println(rs.getString("username"));
-                    System.out.println(rs.getString("vol_Name"));
+                int test = 1;
+                while (rs.next() && test == 1) {
+                    if (userName.equals(rs.getString("username"))) {
+                        System.out.println("Success! " + userName + " = " + rs.getString("username"));
+
+                        sendDBCommand("select * from Volunteer where username = '" + userName + "'");
+
+                        System.out.println(password);
+                        if (rs.next()) {
+                            if (password.equals(rs.getString("password"))) {
+                                System.out.println("Success! " + password + " = " + rs.getString("password"));
+                                Home home = new Home(this);
+                                test = 0;
+                            } else {
+                                login = new Label("Incorrect login. Please try again.");
+                                loginPane.add(login, 0, 0);
+                                primaryStage.show();
+                            }
+                        } else {
+                            System.out.println("Not correct password");
+                            login = new Label("Incorrect login. Please try again.");
+                            loginPane.add(login, 0, 0);
+                            primaryStage.show();
+                        }
+                    } else if (rs.isAfterLast()) {
+                        System.out.println("No matching username found");
+//                        test = 0;
+//                        login = new Label("Incorrect login. Please try again.");
+//                        loginPane.add(login, 0, 0);
+//                        primaryStage.show();
+                    }
+//                    System.out.println(rs.getString("username"));
+//                    System.out.println(rs.getString("vol_Name"));
 
                 }
 
@@ -99,16 +139,12 @@ public class Login1 extends Application {
                 System.out.println("Error: " + e.toString());
             }
 
-            String password = passwordTxt.getText();
-
             // 2. Password must match password associated with username
             // Display error message if failed login
             System.out.println(userName + " " + password);
 
             // 3. Display correct home page for admin vs. volunteer
             // if Volunteer.status = 'Administrator' where Volunteer.username
-            Home home = new Home(this);
-
             //arrayListName.add(
             //userNameTxt.setText("");
             //passwordTxt.clear();
