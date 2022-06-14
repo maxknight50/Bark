@@ -16,7 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import oracle.jdbc.pool.OracleDataSource;
-import tables.Volunteer;
+import tables.*;
 
 /**
  *
@@ -29,8 +29,8 @@ public class VolunteerList extends Application {
     static Connection conn;
     ResultSet rs;
 
-    TableView<Volunteer> volTable = new TableView<>();
-    ObservableList<Volunteer> tableData = FXCollections.observableArrayList();
+    TableView<ListVolunteers> volTable = new TableView<>();
+    ObservableList<ListVolunteers> tableData = FXCollections.observableArrayList();
 
     TableColumn id_col = new TableColumn("ID");
     TableColumn fname_col = new TableColumn("First");
@@ -61,7 +61,25 @@ public class VolunteerList extends Application {
         
         volTable.getColumns().addAll(id_col, fname_col, lname_col, add_col, dob_col, email_col, phone_col, hours_col, status_col);
         
-        
+        sendDBCommand("SELECT volID, vol_FirstName, vol_LastName, vol_Address, vol_DateOfBirth, vol_Email, vol_Phone, cumulativeHours, status FROM Volunteer");
+        System.out.println("RESULTSET: " + rs);
+        try {
+            ListVolunteers[] volunteerList = new ListVolunteers[25];
+            for(int i = 0; i < 100; i++){
+                while(rs.next()){
+                    if (rs != null){
+                        volunteerList[i] = new ListVolunteers(rs.getInt("volID"), rs.getString("vol_FirstName"), rs.getString("vol_LastName"), rs.getString("vol_Address"),rs.getDate("vol_DateOfBirth"), rs.getString("vol_Email"), rs.getString("vol_Phone"), rs.getDouble("cumulativeHours"), rs.getString("status"));
+                        break;
+                    }
+                }
+            }
+            for(ListVolunteers x : volunteerList){
+                tableData.add(x); 
+            }
+            
+        } catch (SQLException e){
+            System.out.println("SQL Exception! " + e);
+        }
 
         Scene primaryScene = new Scene(tPane1, 600, 450);
         primaryStage.setScene(primaryScene);
