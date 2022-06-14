@@ -23,12 +23,12 @@ public class EventsMenu extends Login1 {
     Home home;
 
     TableView<DailyEvent> eventTable = new TableView<>();
-    TableView<Event> eventTable2 = new TableView<>();
-    TableView<Event> eventTable3 = new TableView<>();
+    TableView<PastEvent> eventTable2 = new TableView<>();
+    TableView<YourEvent> eventTable3 = new TableView<>();
 
     ObservableList<DailyEvent> table1Data = FXCollections.observableArrayList();
-    ObservableList<String> table2Data = FXCollections.observableArrayList();
-    ObservableList<String> table3Data = FXCollections.observableArrayList();
+    ObservableList<PastEvent> table2Data = FXCollections.observableArrayList();
+    ObservableList<YourEvent> table3Data = FXCollections.observableArrayList();
 
     //Create the columsn for each table
     TableColumn dailyEvent = new TableColumn("Event");
@@ -95,6 +95,8 @@ public class EventsMenu extends Login1 {
 
         eventTable.getColumns().addAll(dailyEvent, dailyDate, dailyDuration);
         eventTable.setItems(table1Data);
+        eventTable2.setItems(table2Data); 
+        eventTable3.setItems(table3Data); 
 
         eventTable2.getColumns().addAll(pastEvent, pastMax, pastDate);
         eventTable3.getColumns().addAll(yourName, yourDate, yourDuration, yourDistance, yourCategory);
@@ -104,15 +106,18 @@ public class EventsMenu extends Login1 {
                 + "FROM Event E INNER JOIN EventHistory EH ON EH.EventID = E.EventID");
         try {
             DailyEvent[] dailyEvents = new DailyEvent[20];
+            PastEvent[] pastEvents = new PastEvent[20];
+            YourEvent[] yourEvents = new YourEvent[20];
              for(int i = 0; i < 100; i++){
                 while (rs.next()) {
                     if (rs != null) {
                         System.out.println("FOR TABLE 1: " + rs.getString("eventName") + " " + rs.getString("eventDate") + " " + rs.getString("eventTime"));
                         dailyEvents[i] = new DailyEvent(rs.getString("eventName"), rs.getDate("eventDate"), rs.getString("eventTime"));
-//                        System.out.println("FOR TABLE 2: " + rs.getString("eventName") + " " + rs.getInt("maxVolunteers") + " " + rs.getString("eventDate"));
-//                        System.out.println("FOR TABLE 3: " + rs.getString("eventName") + " " + rs.getString("eventDate") + " " + rs.getString("eventTime")
-//                                + rs.getInt("miles_Driven") + " " + rs.getString("eventType"));
-                        System.out.println(dailyEvents[i].toString()); 
+                        pastEvents[i] = new PastEvent(rs.getString("eventName"), rs.getInt("maxVolunteers"), rs.getDate("eventDate"));
+                        yourEvents[i] = new YourEvent(rs.getString("eventName"), rs.getInt("maxVolunteers"), rs.getDate("eventDate"), rs.getString("eventTime"), rs.getInt("miles_Driven"), rs.getString("eventType"));                   
+                        System.out.println(dailyEvents[i].toString());
+                        System.out.println(pastEvents[i].toString());
+                        System.out.println(yourEvents[i].toString()); 
                         break;
                     }
                 }
@@ -120,6 +125,13 @@ public class EventsMenu extends Login1 {
              for (DailyEvent x : dailyEvents){
                  table1Data.add(x); 
              }
+             for(PastEvent x: pastEvents){
+                 table2Data.add(x); 
+             }
+             for(YourEvent x : yourEvents){
+                 table3Data.add(x); 
+             }
+             
         } catch (SQLException e) {
             System.out.println("SQL Exception! " + e);
         }
