@@ -15,6 +15,8 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
@@ -36,6 +38,8 @@ public class Login1 extends Application {
     Button loginButton = new Button("Log In");
     Label interestLbl = new Label("Interested in joining BARK?");
     Button applicationButton = new Button("Begin Application");
+    Image paw = new Image("file:paw.jpg");
+    ImageView viewPaw = new ImageView(paw);
     Label login;
 
     TextField userNameTxt = new TextField();
@@ -57,6 +61,11 @@ public class Login1 extends Application {
         loginPane.add(loginButton, 0, 5);
         loginPane.add(interestLbl, 0, 6);
         loginPane.add(applicationButton, 0, 7);
+        viewPaw.setFitHeight(50);
+        viewPaw.setFitWidth(50);
+        viewPaw.setX(100);
+        viewPaw.setY(150);
+        loginPane.getChildren().add(viewPaw);
 
         Scene primaryScene = new Scene(loginPane, 600, 450);
         primaryStage.setScene(primaryScene);
