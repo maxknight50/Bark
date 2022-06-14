@@ -108,6 +108,7 @@ public class AnimalList extends Application {
 
         } catch (SQLException e) {
             System.out.println(e.toString());
+            //Let me commit!
         }
     }
 }
