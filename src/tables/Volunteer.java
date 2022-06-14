@@ -12,84 +12,134 @@ public class Volunteer {
     String volFirst;
     String volLast;
     String volAddress;
-    Date dateofHire;
-    String empPhone;
-    int salary;
-    int loginID;
+    Date dateOfBirth;
+    String volInfo;
+    String volEmail;
+    String volPhone;
+    Double totalHours;
+    String status;
+    String username;
+    String password;
+    int schedID;
 
-    public Volunteer(int id, String first, String last, String address, Date hire, String phone, int salary, int loginID) {
-        this.volunteerID = id;
-        this.volFirst = first;
-        this.volLast = last;
-        this.volAddress = address;
-        this.dateofHire = hire;
-        this.empPhone = phone;
-        this.salary = salary;
-        this.loginID = loginID;
+    public Volunteer(int volunteerID, String volFirst, String volLast, String volAddress, Date dateOfBirth, String volInfo, String volEmail, String volPhone, Double totalHours, String status, String username, String password, int schedID) {
+        this.volunteerID = volunteerID;
+        this.volFirst = volFirst;
+        this.volLast = volLast;
+        this.volAddress = volAddress;
+        this.dateOfBirth = dateOfBirth;
+        this.volInfo = volInfo;
+        this.volEmail = volEmail;
+        this.volPhone = volPhone;
+        this.totalHours = totalHours;
+        this.status = status;
+        this.username = username;
+        this.password = password;
+        this.schedID = schedID;
     }
 
-    public int getEmployeeID() {
+    public int getVolunteerID() {
         return volunteerID;
     }
 
-    public void setEmployeeID(int employeeID) {
-        this.volunteerID = employeeID;
+    public void setVolunteerID(int volunteerID) {
+        this.volunteerID = volunteerID;
     }
 
-    public String getFirst() {
+    public String getVolFirst() {
         return volFirst;
     }
 
-    public void setEmFirst(String first) {
-        this.volFirst = first;
+    public void setVolFirst(String volFirst) {
+        this.volFirst = volFirst;
     }
 
-    public String getLast() {
-        return volFirst;
+    public String getVolLast() {
+        return volLast;
     }
 
-    public void setLast(String first) {
-        this.volFirst = first;
+    public void setVolLast(String volLast) {
+        this.volLast = volLast;
     }
 
-    public String getEmpAddress() {
+    public String getVolAddress() {
         return volAddress;
     }
 
-    public void setEmpAddress(String empAddress) {
-        this.volAddress = empAddress;
+    public void setVolAddress(String volAddress) {
+        this.volAddress = volAddress;
     }
 
-    public Date getDateofHire() {
-        return dateofHire;
+    public Date getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setDateofHire(Date dateofHire) {
-        this.dateofHire = dateofHire;
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
-    public String getEmpPhone() {
-        return empPhone;
+    public String getVolInfo() {
+        return volInfo;
     }
 
-    public void setEmpPhone(String empPhone) {
-        this.empPhone = empPhone;
+    public void setVolInfo(String volInfo) {
+        this.volInfo = volInfo;
     }
 
-    public int getSalary() {
-        return salary;
+    public String getVolEmail() {
+        return volEmail;
     }
 
-    public void setSalary(int salary) {
-        this.salary = salary;
+    public void setVolEmail(String volEmail) {
+        this.volEmail = volEmail;
     }
 
-    public int getLoginID() {
-        return loginID;
+    public String getVolPhone() {
+        return volPhone;
     }
 
-    public void setLoginID(int loginID) {
-        this.loginID = loginID;
+    public void setVolPhone(String volPhone) {
+        this.volPhone = volPhone;
+    }
+
+    public Double getTotalHours() {
+        return totalHours;
+    }
+
+    public void setTotalHours(Double totalHours) {
+        this.totalHours = totalHours;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getSchedID() {
+        return schedID;
+    }
+
+    public void setSchedID(int schedID) {
+        this.schedID = schedID;
     }
 
 }

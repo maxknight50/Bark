@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,10 +45,19 @@ public class VolunteerList extends Application {
     GridPane tPane1 = new GridPane();
 
     public void start(Stage primaryStage) {
+        volTable.setItems(tableData);
         tPane1.add(volTable, 0, 0);
         
-        //id_col.setCellValueFactory(new PropertyValueVactory<Volunteer, int>("volunteerID"));
+        id_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Integer>("volunteerID"));
         fname_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("volFirst"));
+        lname_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("volLast"));
+        add_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("volAddress"));
+        dob_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Date>("dateOfBirth"));
+        email_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("volEmail"));
+        phone_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("volPhone"));
+        hours_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("totalHours"));
+        status_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("status"));
+
         
         volTable.getColumns().addAll(id_col, fname_col, lname_col, add_col, dob_col, email_col, phone_col, hours_col, status_col);
         
