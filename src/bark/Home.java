@@ -78,6 +78,11 @@ public class Home extends Login1 {
             AnimalInfo anim = new AnimalInfo(this);
         });
         
+        // Animal Info Button
+        socialHomeScreenBtn.setOnAction(e -> {
+            SocialHomeScreen soc = new SocialHomeScreen(this);
+        });
+        
         
     }
     
