@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package bark;
 
 import static bark.VolunteerStatus.conn;
@@ -11,7 +7,7 @@ import javafx.collections.*; // ObservableArrayLists
 import javafx.geometry.Pos;
 import javafx.scene.chart.*; // Charts and Tables
 import javafx.scene.control.cell.*; // Tableview
-
+import javafx.scene.control.PasswordField; 
 import java.sql.*;
 import oracle.jdbc.pool.*;
 import java.util.*;
@@ -41,8 +37,7 @@ public class Login1 extends Application {
     Label login;
 
     TextField userNameTxt = new TextField();
-    TextField passwordTxt = new TextField();
-
+    PasswordField passwordTxt = new PasswordField();
     //FX GridPane
     GridPane loginPane = new GridPane();
 
