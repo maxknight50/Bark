@@ -61,13 +61,13 @@ public class AnimalList extends Application {
         
         volTable.getColumns().addAll(id_col, name_col, species_col, age_col, history_col, feeding_col, vethist_col, event_col, volID_col);
         
-        sendDBCommand("SELECT animal_ID, name, species, age, medicalHistory, feedingNeeds, vetHistory, event_ID, volID FROM Animal");
+        sendDBCommand("SELECT animal_ID, name, species, age, medicalHistory, feedingNeeds, vetHistory, eventID, volID FROM Animal");
         try {
             Animal[] animalList = new Animal[25];
             for(int i = 0; i < 100; i++){
                 while(rs.next()){
                     if (rs != null){
-                        animalList[i] = new Animal(rs.getInt("animal_ID"), rs.getString("name"), rs.getString("species"), rs.getInt("age"), rs.getString("medicalHistory"), rs.getString("feedingNeeds"), rs.getString("vetHistory"), rs.getInt("event_ID"), rs.getInt("volID"));
+                        animalList[i] = new Animal(rs.getInt("animal_ID"), rs.getString("name"), rs.getString("species"), rs.getInt("age"), rs.getString("medicalHistory"), rs.getString("feedingNeeds"), rs.getString("vetHistory"), rs.getInt("eventID"), rs.getInt("volID"));
                         break;
                     }
                 }
