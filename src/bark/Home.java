@@ -59,9 +59,9 @@ public class Home extends Login1 {
             Summary sum = new Summary(this);
         });
         
-        // Volunteer Status button
+        // Volunteer List button
         volunteerReportBtn.setOnAction(e -> {
-            VolunteerStatus status = new VolunteerStatus(this);
+            VolunteerList vList = new VolunteerList(this);
         });
         
         // Events Menu button
