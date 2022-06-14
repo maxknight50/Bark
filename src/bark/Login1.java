@@ -96,17 +96,23 @@ public class Login1 extends Application {
                 // Read in first values
                 int test = 1;
                 while (rs.next() && test == 1) {
-                    if (userName.equals(rs.getString("username"))) {
+                    if (userName.equals(rs.getString("username"))) { // If the username entered matches an entry in the database
                         System.out.println("Success! " + userName + " = " + rs.getString("username"));
-
-                        sendDBCommand("select * from Volunteer where username = '" + userName + "'");
-
+                        sendDBCommand("select * from Volunteer where username = '" + userName + "'"); // Update query to specify found username
                         System.out.println(password);
+                        
                         if (rs.next()) {
-                            if (password.equals(rs.getString("password"))) {
+                            if (password.equals(rs.getString("password"))) { // If the password matches the found username, it is successful
                                 System.out.println("Success! " + password + " = " + rs.getString("password"));
-                                Home home = new Home(this);
-                                test = 0;
+                                
+                                ////////////////////////////////////////////////////////////////////
+                                if (rs.getString("status").equalsIgnoreCase("admin")) {
+                                    Home home = new Home(this); // Display the admin home screen
+                                } else {
+                                    Home home = new Home(this); // Display the regular volunteer home screen
+                                }
+                                test = 0; // Both username and password were correct, so stop while loop 
+                                
                             } else {
                                 login = new Label("Incorrect login. Please try again.");
                                 loginPane.add(login, 0, 0);
@@ -118,25 +124,17 @@ public class Login1 extends Application {
                             loginPane.add(login, 0, 0);
                             primaryStage.show();
                         }
-                    } else if (rs.isAfterLast()) {
+                    } else if (rs.isLast()) { // If the whole database is searched and no matching usernames are found
                         System.out.println("No matching username found");
-//                        test = 0;
-//                        login = new Label("Incorrect login. Please try again.");
-//                        loginPane.add(login, 0, 0);
-//                        primaryStage.show();
+                        login = new Label("Incorrect login. Please try again.");
+                        loginPane.add(login, 0, 0);
+                        primaryStage.show();
                     }
-//                    System.out.println(rs.getString("username"));
-//                    System.out.println(rs.getString("vol_Name"));
-
                 }
 
             } catch (Exception ex) {
                 System.out.println("Error: " + e.toString());
             }
-
-            // 2. Password must match password associated with username
-            // Display error message if failed login
-            System.out.println(userName + " " + password);
 
             // 3. Display correct home page for admin vs. volunteer
             // if Volunteer.status = 'Administrator' where Volunteer.username
