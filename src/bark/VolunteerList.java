@@ -21,7 +21,7 @@ import tables.*;
 /**
  *
  */
-public class VolunteerList extends Application {
+public class VolunteerList extends Login1 {
 
     Home home;
 
@@ -44,7 +44,7 @@ public class VolunteerList extends Application {
 
     GridPane tPane1 = new GridPane();
 
-    public void start(Stage primaryStage) {
+    public VolunteerList(Home home) {
         volTable.setItems(tableData);
         tPane1.add(volTable, 0, 0);
         
@@ -85,10 +85,6 @@ public class VolunteerList extends Application {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("List");
         primaryStage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
     public void sendDBCommand(String sqlQuery) {
