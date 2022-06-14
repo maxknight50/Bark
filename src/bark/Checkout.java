@@ -51,7 +51,8 @@ public class Checkout extends Login1 {
         primaryStage.show();
         
         backBtn.setOnAction(e -> {
-            primaryStage.close(); 
+            Home backHome = new Home(home);
+            primaryStage.close();
         });
     }
     
