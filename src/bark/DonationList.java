@@ -30,43 +30,42 @@ public class DonationList extends Application {
     static Connection conn;
     ResultSet rs;
 
-    TableView<ListVolunteers> donationTable = new TableView<>();
-    ObservableList<ListVolunteers> tableData = FXCollections.observableArrayList();
+    TableView<Donation> volTable = new TableView<>();
+    ObservableList<Donation> tableData = FXCollections.observableArrayList();
 
-    TableColumn id_col = new TableColumn("ID");
-    TableColumn amount_col = new TableColumn("Amount");
-    TableColumn name_col = new TableColumn("Donator");
-    TableColumn date_col = new TableColumn("Date");
-    TableColumn volID_col = new TableColumn("VolID");
-
+    TableColumn id_col = new TableColumn("Donation ID");
+    TableColumn amountColumn = new TableColumn("Amount");
+    TableColumn nameColumn = new TableColumn("Donor Name");
+    TableColumn dateColumn = new TableColumn("Date");
+    TableColumn volIdColumn = new TableColumn("VolunteerID");
 
     GridPane tPane1 = new GridPane();
 
     public void start(Stage primaryStage) {
-        donationTable.setItems(tableData);
-        tPane1.add(donationTable, 0, 0);
+        volTable.setItems(tableData);
+        tPane1.add(volTable, 0, 0);
         
-        id_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Integer>("donationID"));
-        amount_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Double>("donationAmt"));
-        name_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("donationName"));
-        date_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Date>("donationDate"));
-        volID_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Date>("dateOfBirth"));
+        id_col.setCellValueFactory(new PropertyValueFactory<Donation, Integer>("donation_ID"));
+        amountColumn.setCellValueFactory(new PropertyValueFactory<Donation, String>("donationAmt"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<Donation, String>("donationName"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<Donation, Date>("donationDate"));
+        volIdColumn.setCellValueFactory(new PropertyValueFactory<Donation, Integer>("volID"));
 
-        donationTable.getColumns().addAll(id_col, amount_col, name_col, date_col, volID_col);
+        volTable.getColumns().addAll(id_col, amountColumn, nameColumn, dateColumn, volIdColumn); 
         
-        sendDBCommand("SELECT donation_ID, donationAmt, donationName, donationDate, volID FROM Donation");
+        sendDBCommand("SELECT donation_ID, donationAmt, donationName, donationDate, volID FROM Donation"); 
         System.out.println("RESULTSET: " + rs);
         try {
-            ListVolunteers[] volunteerList = new ListVolunteers[25];
+            Donation[] donationList = new Donation[25];
             for(int i = 0; i < 100; i++){
                 while(rs.next()){
                     if (rs != null){
-                        volunteerList[i] = new ListVolunteers(rs.getInt("volID"), rs.getString("vol_FirstName"), rs.getString("vol_LastName"), rs.getString("vol_Address"),rs.getDate("vol_DateOfBirth"), rs.getString("vol_Email"), rs.getString("vol_Phone"), rs.getDouble("cumulativeHours"), rs.getString("status"));
+                        donationList[i] = new Donation(rs.getInt("donation_ID"), rs.getString("donationAmt"), rs.getString("donationName"), rs.getDate("donationDate"), rs.getInt("volID"));
                         break;
                     }
                 }
             }
-            for(ListVolunteers x : volunteerList){
+            for(Donation x : donationList){
                 tableData.add(x); 
             }
             
