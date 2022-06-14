@@ -8,12 +8,14 @@ public class Donation {
     private double donationAmt;
     private String donationName;
     private String donationDate;
+    int volunteerID;
 
-    public Donation(int donationID, double donationAmt, String donoName, String donoDate) {
+    public Donation(int donationID, double donationAmt, String donoName, String donoDate, int volID) {
         this.donationID = donationID;
         this.donationAmt = donationAmt;
         this.donationName = donationName;
         this.donationDate = donationDate;
+        this.volunteerID = volID;
     }
 
     public int getDonationID() {
@@ -46,5 +48,13 @@ public class Donation {
 
     public void setDonationDate(String donationDate) {
         this.donationDate = donationDate;
+    }
+
+    public int getVolID() {
+        return volunteerID;
+    }
+
+    public void setVolID(int volID) {
+        this.volunteerID = volID;
     }
 }
