@@ -42,6 +42,8 @@ public class Login1 extends Application {
     PasswordField passwordTxt = new PasswordField();
     //FX GridPane
     GridPane loginPane = new GridPane();
+    
+    Stage primaryStage = new Stage();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -60,7 +62,8 @@ public class Login1 extends Application {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Log In / Sign Up");
         primaryStage.show();
-
+        
+        
         // Begin application button
         applicationButton.setOnAction(e -> {
             Application2 app = new Application2(this);
@@ -110,8 +113,10 @@ public class Login1 extends Application {
                                 ////////////////////////////////////////////////////////////////////
                                 if (rs.getString("status").equalsIgnoreCase("admin")) {
                                     Home home = new Home(this); // Display the admin home screen
+                                    primaryStage.close();
                                 } else {
                                     Home home = new Home(this); // Display the regular volunteer home screen
+                                    primaryStage.close();
                                 }
                                 test = 0; // Both username and password were correct, so stop while loop 
                                 
@@ -159,6 +164,10 @@ public class Login1 extends Application {
         pane.setVgap(5.5);
         pane.setAlignment(Pos.CENTER);
 
+    }
+    
+    public void getPrimaryStage(Stage loginStage) {
+        loginStage = primaryStage;
     }
 
     public static void main(String[] args) {
