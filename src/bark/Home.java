@@ -20,6 +20,7 @@ public class Home extends Login1 {
     Button checkoutBtn = new Button("Check Out");
     Button donationBtn = new Button("Donations");
     Button animalInfoBtn = new Button("Animal Information");
+    Button scheduleBtn = new Button("Schedule Availability");
     
     GridPane homePane = new GridPane();
     
@@ -35,6 +36,7 @@ public class Home extends Login1 {
         homePane.add(checkoutBtn, 0, 6);
         homePane.add(donationBtn, 0,7);
         homePane.add(animalInfoBtn, 0,8);
+        homePane.add(scheduleBtn,0,9);
 
         
         Stage primaryStage1 = login.primaryStage;
@@ -83,7 +85,10 @@ public class Home extends Login1 {
         socialHomeScreenBtn.setOnAction(e -> {
             SocialHomeScreen soc = new SocialHomeScreen(this);
         });
-        
+        //Schedule Button
+        scheduleBtn.setOnAction(e -> {
+            ScheduleAvailability sa = new ScheduleAvailability(this);
+        });
         
     }
     
