@@ -27,6 +27,8 @@ public class Login1 extends Application {
     Statement stmt;
     static Connection conn;
     ResultSet rs;
+    
+    String name; // Stores the identified user name for use in other classes
 
     //FX Labels
     Label userNameLbl = new Label("Username");
