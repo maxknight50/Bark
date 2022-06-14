@@ -22,7 +22,6 @@ public class Home extends Login1 {
     Button animalInfoBtn = new Button("Animal Information");
     
     GridPane homePane = new GridPane();
-    Stage primaryStage = new Stage();
     
     Home(Login1 login) {
         this.login = login;
@@ -38,7 +37,7 @@ public class Home extends Login1 {
         homePane.add(animalInfoBtn, 0,8);
 
         
-        
+        Stage primaryStage1 = login.primaryStage;
         Scene primaryScene = new Scene(homePane, 600, 450);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Home");
@@ -88,8 +87,6 @@ public class Home extends Login1 {
         
     }
     
-    public void getPrimaryStage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-    }
+    
     
 }
