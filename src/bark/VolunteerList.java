@@ -83,7 +83,7 @@ public class VolunteerList extends Login1 {
 
         Scene primaryScene = new Scene(tPane1, 600, 450);
         primaryStage.setScene(primaryScene);
-        primaryStage.setTitle("List");
+        primaryStage.setTitle("Listed Volunteers");
         primaryStage.show();
     }
 
