@@ -20,9 +20,16 @@ public class SocialHomeScreen extends Login1 {
     Home home;
     
     Button backBtn = new Button("Back");
-    Label scrnTitleLbl = new Label("Social Home Screen");
+    Label scrnTitleLbl = new Label("Social Home");
     Label dateLbl = new Label("Date");
+    
+    Label takeOut = new Label("06/01/22");
+    Label takeOut3 = new Label("05/28/22");
+    
     Label descLbl = new Label("Description");
+    
+    Label takeOut2 = new Label("John Smith completed 20 hours of training. Congratulations!");
+    Label takeOut4 = new Label("Elizabeth Ley joined BARK!");
     
     GridPane socialPane = new GridPane();
     
@@ -31,9 +38,13 @@ public class SocialHomeScreen extends Login1 {
         paneSettings(socialPane);
         
         socialPane.add(backBtn, 0, 0);
-        socialPane.add(scrnTitleLbl, 1, 0);
-        socialPane.add(dateLbl, 0, 1);
-        socialPane.add(descLbl, 2, 1);
+        socialPane.add(scrnTitleLbl, 0, 1);
+        socialPane.add(dateLbl, 0, 2);
+        socialPane.add(takeOut, 0, 3);
+        socialPane.add(descLbl, 2, 2);
+        socialPane.add(takeOut2, 2, 3);
+        socialPane.add(takeOut3, 0, 4);
+        socialPane.add(takeOut4, 2, 4);
         
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(socialPane, 600, 450);
