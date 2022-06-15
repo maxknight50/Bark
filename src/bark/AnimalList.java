@@ -21,7 +21,7 @@ import tables.*;
 /**
  *
  */
-public class AnimalList extends Application {
+public class AnimalList extends Login1 {
 
     Home home;
 
@@ -44,7 +44,7 @@ public class AnimalList extends Application {
 
     GridPane tPane1 = new GridPane();
 
-    public void start(Stage primaryStage) {
+    public AnimalList(Home home) {
         volTable.setItems(tableData);
         tPane1.add(volTable, 0, 0);
         

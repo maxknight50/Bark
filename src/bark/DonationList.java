@@ -22,7 +22,7 @@ import tables.*;
 /**
  *
  */
-public class DonationList extends Application {
+public class DonationList extends Login1 {
 
     Home home;
 
@@ -30,7 +30,7 @@ public class DonationList extends Application {
     static Connection conn;
     ResultSet rs;
 
-    TableView<Donation> volTable = new TableView<>();
+    TableView<Donation> donTable = new TableView<>();
     ObservableList<Donation> tableData = FXCollections.observableArrayList();
 
     TableColumn id_col = new TableColumn("Donation ID");
@@ -41,31 +41,30 @@ public class DonationList extends Application {
 
     GridPane tPane1 = new GridPane();
 
-    public void start(Stage primaryStage) {
-        volTable.setItems(tableData);
-        tPane1.add(volTable, 0, 0);
+    DonationList(Home home) {
+        donTable.setItems(tableData);
+        tPane1.add(donTable, 0, 0);
         
         id_col.setCellValueFactory(new PropertyValueFactory<Donation, Integer>("donation_ID"));
-        amountColumn.setCellValueFactory(new PropertyValueFactory<Donation, String>("donationAmt"));
+        amountColumn.setCellValueFactory(new PropertyValueFactory<Donation, Double>("donationAmt"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Donation, String>("donationName"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<Donation, Date>("donationDate"));
         volIdColumn.setCellValueFactory(new PropertyValueFactory<Donation, Integer>("volID"));
 
-        volTable.getColumns().addAll(id_col, amountColumn, nameColumn, dateColumn, volIdColumn); 
+        donTable.getColumns().addAll(id_col, amountColumn, nameColumn, dateColumn, volIdColumn); 
         
-        sendDBCommand("SELECT donation_ID, donationAmt, donationName, donationDate, volID FROM Donation"); 
-        System.out.println("RESULTSET: " + rs);
+        sendDBCommand("SELECT donation_ID, donationAmt, donationName, donationDate, volID FROM Donation");
         try {
-            Donation[] donationList = new Donation[25];
+            Donation[] dList = new Donation[25];
             for(int i = 0; i < 100; i++){
                 while(rs.next()){
                     if (rs != null){
-                        donationList[i] = new Donation(rs.getInt("donation_ID"), rs.getString("donationAmt"), rs.getString("donationName"), rs.getDate("donationDate"), rs.getInt("volID"));
+                        dList[i] = new Donation(rs.getInt("donation_ID"), rs.getDouble("donationAmt"), rs.getString("donationName"), rs.getDate("donationDate"), rs.getInt("volID"));
                         break;
                     }
                 }
             }
-            for(Donation x : donationList){
+            for(Donation x : dList){
                 tableData.add(x); 
             }
             

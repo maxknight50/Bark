@@ -11,7 +11,7 @@ import javafx.stage.Stage;
  *
  * 
  */
-public class Donation extends Login1 {
+public class DonationStatus extends Login1 {
     Home home;
     
     Button backBtn = new Button("Back");
@@ -28,7 +28,7 @@ public class Donation extends Login1 {
     
     GridPane donationPane = new GridPane();
     
-    public Donation(Home home) {
+    public DonationStatus(Home home) {
         this.home = home;
         paneSettings(donationPane);
         

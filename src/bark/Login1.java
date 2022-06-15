@@ -30,8 +30,9 @@ public class Login1 extends Application {
     static Connection conn;
     ResultSet rs;
     
-    String name; // Stores the identified user name for use in other classes
-
+    public String name; // Stores the identified user name for use in other classes
+    public int id;
+    
     //FX Labels
     Label userNameLbl = new Label("Username");
     Label passwordLbl = new Label("Password");
@@ -118,6 +119,10 @@ public class Login1 extends Application {
                         if (rs.next()) {
                             if (password.equals(rs.getString("password"))) { // If the password matches the found username, it is successful
                                 System.out.println("Success! " + password + " = " + rs.getString("password"));
+                                
+                                name = rs.getString("vol_firstname") + " " + rs.getString("vol_lastname");
+                                id = rs.getInt("volID");
+                                System.out.println(id);
                                 
                                 ////////////////////////////////////////////////////////////////////
                                 if (rs.getString("status").equalsIgnoreCase("admin")) {

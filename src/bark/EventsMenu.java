@@ -33,14 +33,14 @@ public class EventsMenu extends Login1 {
     //Create the columsn for each table
     TableColumn dailyEvent = new TableColumn("Event");
     TableColumn dailyDate = new TableColumn("Event Date");
-    TableColumn dailyDuration = new TableColumn("Event Duration");
+    TableColumn dailyDuration = new TableColumn("Event Time");
     TableColumn pastEvent = new TableColumn("Event");
     TableColumn pastMax = new TableColumn("Max Volunteers");
     TableColumn pastAssigned = new TableColumn("Assigned Volunteers");
     TableColumn pastDate = new TableColumn("Event Date");
     TableColumn yourName = new TableColumn("Event Name");
     TableColumn yourDate = new TableColumn("Event Date");
-    TableColumn yourDuration = new TableColumn("Duration");
+    TableColumn yourDuration = new TableColumn("Time");
     TableColumn yourDistance = new TableColumn("Distance");
     TableColumn yourCategory = new TableColumn("Category");
 

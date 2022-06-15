@@ -21,8 +21,8 @@ public class Checkout extends Login1 {
     TextField usernameTxt = new TextField();
     Label passwordLbl = new Label("Password");
     TextField passwordTxt = new TextField();
-    Label volIdLbl = new Label("Volunteer ID");
-    TextField volIdTxt = new TextField();
+//    Label volIdLbl = new Label("Volunteer ID");
+//    TextField volIdTxt = new TextField();
     Button checkoutBtn = new Button("CHECK OUT");
     
     GridPane checkoutPane = new GridPane();
@@ -40,8 +40,8 @@ public class Checkout extends Login1 {
         checkoutPane.add(usernameTxt, 1, 3);
         checkoutPane.add(passwordLbl, 1, 4);
         checkoutPane.add(passwordTxt, 1, 5);
-        checkoutPane.add(volIdLbl, 1, 6);
-        checkoutPane.add(volIdTxt, 1, 7);
+//        checkoutPane.add(volIdLbl, 1, 6);
+//        checkoutPane.add(volIdTxt, 1, 7);
         checkoutPane.add(checkoutBtn, 2, 8);
         
         Stage primaryStage = home.primaryStage;
