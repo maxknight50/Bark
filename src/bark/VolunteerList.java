@@ -45,7 +45,6 @@ public class VolunteerList extends Login1 {
     TableColumn hours_col = new TableColumn("Hours");
     TableColumn status_col = new TableColumn("Status");
 
-    
     Label topLbl = new Label("Volunteer Status");
     Label fNameLbl = new Label("First Name");
     Label lNameLbl = new Label("Last Name");
@@ -69,11 +68,11 @@ public class VolunteerList extends Login1 {
     Button backBtn = new Button("Back");
 
     GridPane overall = new GridPane();
-    GridPane modVolunteer = new GridPane(); 
+    GridPane modVolunteer = new GridPane();
     GridPane volunteerTable = new GridPane();
 
     public VolunteerList(Home home) {
-                paneSettings(modVolunteer);
+        paneSettings(modVolunteer);
         modVolunteer.add(backBtn, 0, 0);
         modVolunteer.add(topLbl, 1, 1);
         modVolunteer.add(fNameLbl, 0, 2);
@@ -92,10 +91,10 @@ public class VolunteerList extends Login1 {
         modVolunteer.add(statusBox, 1, 8);
         modVolunteer.add(availLbl, 0, 9);
         modVolunteer.add(availTxt, 1, 9);
-        
+
         volTable.setItems(tableData);
         volunteerTable.add(volTable, 0, 0);
-        
+
         id_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Integer>("volunteerID"));
         fname_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("volFirst"));
         lname_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("volLast"));
@@ -106,29 +105,28 @@ public class VolunteerList extends Login1 {
         hours_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("totalHours"));
         status_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("status"));
 
-        
         volTable.getColumns().addAll(id_col, fname_col, lname_col, add_col, dob_col, email_col, phone_col, hours_col, status_col);
-        
+
         sendDBCommand("SELECT volID, vol_FirstName, vol_LastName, vol_Address, vol_DateOfBirth, vol_Email, vol_Phone, cumulativeHours, status FROM Volunteer");
         System.out.println("RESULTSET: " + rs);
         try {
             ListVolunteers[] volunteerList = new ListVolunteers[25];
-            for(int i = 0; i < 100; i++){
-                while(rs.next()){
-                    if (rs != null){
-                        volunteerList[i] = new ListVolunteers(rs.getInt("volID"), rs.getString("vol_FirstName"), rs.getString("vol_LastName"), rs.getString("vol_Address"),rs.getDate("vol_DateOfBirth"), rs.getString("vol_Email"), rs.getString("vol_Phone"), rs.getDouble("cumulativeHours"), rs.getString("status"));
+            for (int i = 0; i < 100; i++) {
+                while (rs.next()) {
+                    if (rs != null) {
+                        volunteerList[i] = new ListVolunteers(rs.getInt("volID"), rs.getString("vol_FirstName"), rs.getString("vol_LastName"), rs.getString("vol_Address"), rs.getDate("vol_DateOfBirth"), rs.getString("vol_Email"), rs.getString("vol_Phone"), rs.getDouble("cumulativeHours"), rs.getString("status"));
                         break;
                     }
                 }
             }
-            for(ListVolunteers x : volunteerList){
-                tableData.add(x); 
+            for (ListVolunteers x : volunteerList) {
+                tableData.add(x);
             }
-            
-        } catch (SQLException e){
+
+        } catch (SQLException e) {
             System.out.println("SQL Exception! " + e);
         }
-        
+
         overall.add(modVolunteer, 0, 0);
         overall.add(volunteerTable, 1, 0);
         Scene primaryScene = new Scene(overall, 1000, 450);
