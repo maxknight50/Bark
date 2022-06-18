@@ -35,6 +35,7 @@ public class VolunteerList extends Login1 {
     TableView<ListVolunteers> volTable = new TableView<>();
     ObservableList<ListVolunteers> tableData = FXCollections.observableArrayList();
 
+    // Table column titles
     TableColumn id_col = new TableColumn("ID");
     TableColumn fname_col = new TableColumn("First");
     TableColumn lname_col = new TableColumn("Last");
@@ -45,6 +46,7 @@ public class VolunteerList extends Login1 {
     TableColumn hours_col = new TableColumn("Hours");
     TableColumn status_col = new TableColumn("Status");
 
+    // Left side
     Label topLbl = new Label("Volunteer Status");
     Label fNameLbl = new Label("First Name");
     Label lNameLbl = new Label("Last Name");
@@ -66,6 +68,9 @@ public class VolunteerList extends Login1 {
     TextField statusBox = new TextField();
 
     Button backBtn = new Button("Back");
+    Button add = new Button("Add");
+    Button delete = new Button("Delete");
+    Button modify = new Button("Modify");
 
     GridPane overall = new GridPane();
     GridPane modVolunteer = new GridPane();
@@ -91,6 +96,10 @@ public class VolunteerList extends Login1 {
         modVolunteer.add(statusBox, 1, 8);
         modVolunteer.add(availLbl, 0, 9);
         modVolunteer.add(availTxt, 1, 9);
+        
+        modVolunteer.add(add, 0, 10);
+        modVolunteer.add(modify, 1, 10);
+        modVolunteer.add(delete, 0, 11);
 
         volTable.setItems(tableData);
         volunteerTable.add(volTable, 0, 0);
@@ -129,7 +138,7 @@ public class VolunteerList extends Login1 {
 
         overall.add(modVolunteer, 0, 0);
         overall.add(volunteerTable, 1, 0);
-        Scene primaryScene = new Scene(overall, 1000, 450);
+        Scene primaryScene = new Scene(overall, 1000, 550);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Listed Volunteers");
         primaryStage.show();
