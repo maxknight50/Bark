@@ -15,8 +15,8 @@ public class AssignSpecialization extends Login1 {
     Home home;
 
     // add title and back button
-    Label volIdLbl = new Label("Volunteer ID");
-    ComboBox<String> volIdCb = new ComboBox();
+    Label volNameLbl = new Label("Volunteer Name");
+    TextField volNameTxt = new TextField();
     Label specialMenuLbl = new Label("Specialization Menu");
     ComboBox<String> specialMenuCb;
     Label currentSpecialLbl = new Label("Current Specializations: ");
@@ -34,8 +34,8 @@ public class AssignSpecialization extends Login1 {
         specialMenuCb = new ComboBox(FXCollections.observableArrayList(specialization));
 
         // add nodes to pane
-        specialPane.add(volIdLbl, 0, 0);
-        specialPane.add(volIdCb, 0, 1);
+        specialPane.add(volNameLbl, 0, 0);
+        specialPane.add(volNameTxt, 0, 1);
         specialPane.add(specialMenuLbl, 0, 2);
         specialPane.add(specialMenuCb, 0, 3);
         specialPane.add(currentSpecialLbl, 0, 4);
