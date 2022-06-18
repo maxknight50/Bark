@@ -10,8 +10,11 @@ import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -42,12 +45,55 @@ public class AnimalList extends Login1 {
     TableColumn event_col = new TableColumn("eventID");
     TableColumn volID_col = new TableColumn("volID");
 
-    GridPane tPane1 = new GridPane();
+    Label topLbl = new Label("Animal Information");
+    Label idLbl = new Label("Animal ID");
+    Label nameLbl = new Label("Name");
+    Label speciesLbl = new Label("Species");
+    Label ageLbl = new Label("Age");
+    Label medicalLbl = new Label("Medical History");
+    Label feedingLbl = new Label("Feeding Needs");
+    Label eventIdLbl = new Label("Event ID");
+    Label volIdLbl = new Label("Volunteer ID");
+
+    TextField idTxt = new TextField();
+    TextField nameTxt = new TextField();
+    TextField speciesTxt = new TextField();
+    TextField ageTxt = new TextField();
+    TextField medicalTxt = new TextField();
+    TextField feedingTxt = new TextField();
+    TextField eventIdTxt = new TextField();
+    TextField volIdTxt = new TextField();
+
+    Button backBtn = new Button("Back");
+
+    GridPane overall = new GridPane();
+    GridPane animalAdd = new GridPane();
+    GridPane animalTable = new GridPane();
 
     public AnimalList(Home home) {
+        paneSettings(animalAdd);
+        animalAdd.add(backBtn, 0, 0);
+        animalAdd.add(topLbl, 1, 1);
+        animalAdd.add(idLbl, 0, 2);
+        animalAdd.add(idTxt, 1, 2);
+        animalAdd.add(nameLbl, 0, 3);
+        animalAdd.add(nameTxt, 1, 3);
+        animalAdd.add(speciesLbl, 0, 4);
+        animalAdd.add(speciesTxt, 1, 4);
+        animalAdd.add(ageLbl, 0, 5);
+        animalAdd.add(ageTxt, 1, 5);
+        animalAdd.add(medicalLbl, 0, 6);
+        animalAdd.add(medicalTxt, 1, 6);
+        animalAdd.add(feedingLbl, 0, 7);
+        animalAdd.add(feedingTxt, 1, 7);
+        animalAdd.add(eventIdLbl, 0, 8);
+        animalAdd.add(eventIdTxt, 1, 8);
+        animalAdd.add(volIdLbl, 0, 9);
+        animalAdd.add(volIdTxt, 1, 9);
+
         volTable.setItems(tableData);
-        tPane1.add(volTable, 0, 0);
-        
+        animalTable.add(volTable, 0, 0);
+
         id_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Integer>("animalID"));
         name_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("name"));
         species_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("species"));
@@ -58,36 +104,33 @@ public class AnimalList extends Login1 {
         event_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("eventID"));
         volID_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("volID"));
 
-        
         volTable.getColumns().addAll(id_col, name_col, species_col, age_col, history_col, feeding_col, vethist_col, event_col, volID_col);
-        
+
         sendDBCommand("SELECT animal_ID, name, species, age, medicalHistory, feedingNeeds, vetHistory, eventID, volID FROM Animal");
         try {
             Animal[] animalList = new Animal[25];
-            for(int i = 0; i < 100; i++){
-                while(rs.next()){
-                    if (rs != null){
+            for (int i = 0; i < 100; i++) {
+                while (rs.next()) {
+                    if (rs != null) {
                         animalList[i] = new Animal(rs.getInt("animal_ID"), rs.getString("name"), rs.getString("species"), rs.getInt("age"), rs.getString("medicalHistory"), rs.getString("feedingNeeds"), rs.getString("vetHistory"), rs.getInt("eventID"), rs.getInt("volID"));
                         break;
                     }
                 }
             }
-            for(Animal x : animalList){
-                tableData.add(x); 
+            for (Animal x : animalList) {
+                tableData.add(x);
             }
-            
-        } catch (SQLException e){
+
+        } catch (SQLException e) {
             System.out.println("SQL Exception! " + e);
         }
 
-        Scene primaryScene = new Scene(tPane1, 600, 450);
+        overall.add(animalAdd, 0, 0);
+        overall.add(animalTable, 1, 0);
+        Scene primaryScene = new Scene(overall, 1000, 450);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("List");
         primaryStage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
     public void sendDBCommand(String sqlQuery) {
