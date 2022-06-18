@@ -65,31 +65,37 @@ public class AnimalList extends Login1 {
     TextField volIdTxt = new TextField();
 
     Button backBtn = new Button("Back");
+    Button add = new Button("Add");
+    Button delete = new Button("Delete");
+    Button modify = new Button("Modify");
 
     GridPane overall = new GridPane();
-    GridPane animalAdd = new GridPane();
+    GridPane modAnimal = new GridPane();
     GridPane animalTable = new GridPane();
 
     public AnimalList(Home home) {
-        paneSettings(animalAdd);
-        animalAdd.add(backBtn, 0, 0);
-        animalAdd.add(topLbl, 1, 1);
-        animalAdd.add(idLbl, 0, 2);
-        animalAdd.add(idTxt, 1, 2);
-        animalAdd.add(nameLbl, 0, 3);
-        animalAdd.add(nameTxt, 1, 3);
-        animalAdd.add(speciesLbl, 0, 4);
-        animalAdd.add(speciesTxt, 1, 4);
-        animalAdd.add(ageLbl, 0, 5);
-        animalAdd.add(ageTxt, 1, 5);
-        animalAdd.add(medicalLbl, 0, 6);
-        animalAdd.add(medicalTxt, 1, 6);
-        animalAdd.add(feedingLbl, 0, 7);
-        animalAdd.add(feedingTxt, 1, 7);
-        animalAdd.add(eventIdLbl, 0, 8);
-        animalAdd.add(eventIdTxt, 1, 8);
-        animalAdd.add(volIdLbl, 0, 9);
-        animalAdd.add(volIdTxt, 1, 9);
+        paneSettings(modAnimal);
+        modAnimal.add(backBtn, 0, 0);
+        modAnimal.add(topLbl, 1, 1);
+        modAnimal.add(idLbl, 0, 2);
+        modAnimal.add(idTxt, 1, 2);
+        modAnimal.add(nameLbl, 0, 3);
+        modAnimal.add(nameTxt, 1, 3);
+        modAnimal.add(speciesLbl, 0, 4);
+        modAnimal.add(speciesTxt, 1, 4);
+        modAnimal.add(ageLbl, 0, 5);
+        modAnimal.add(ageTxt, 1, 5);
+        modAnimal.add(medicalLbl, 0, 6);
+        modAnimal.add(medicalTxt, 1, 6);
+        modAnimal.add(feedingLbl, 0, 7);
+        modAnimal.add(feedingTxt, 1, 7);
+        modAnimal.add(eventIdLbl, 0, 8);
+        modAnimal.add(eventIdTxt, 1, 8);
+        modAnimal.add(volIdLbl, 0, 9);
+        modAnimal.add(volIdTxt, 1, 9);
+        modAnimal.add(add, 0, 10);
+        modAnimal.add(modify, 1, 10);
+        modAnimal.add(delete, 0, 11);
 
         volTable.setItems(tableData);
         animalTable.add(volTable, 0, 0);
@@ -125,9 +131,9 @@ public class AnimalList extends Login1 {
             System.out.println("SQL Exception! " + e);
         }
 
-        overall.add(animalAdd, 0, 0);
+        overall.add(modAnimal, 0, 0);
         overall.add(animalTable, 1, 0);
-        Scene primaryScene = new Scene(overall, 1000, 450);
+        Scene primaryScene = new Scene(overall, 1000, 550);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("List");
         primaryStage.show();
