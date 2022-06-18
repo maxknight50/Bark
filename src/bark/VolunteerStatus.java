@@ -87,9 +87,9 @@ public class VolunteerStatus extends Login1 {
         primaryStage.setTitle("Volunteer Status");
         primaryStage.show();
 
-//        backBtn.setOnAction(e -> {
-//            primaryStage.close();
-//        });
+        backBtn.setOnAction(e -> {
+            primaryStage.close();
+        });
         System.out.println("ID:" + login.name);
         sendDBCommand("select * from Volunteer");
 
