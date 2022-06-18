@@ -1,5 +1,6 @@
 package bark;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -18,15 +19,29 @@ public class Home extends Login1 {
     Button donationBtn = new Button("Donations");
     Button animalInfoBtn = new Button("Animal Information");
     Button scheduleBtn = new Button("Schedule Availability");
+    
+    Label scrnTitleLbl = new Label("Social Home");
+    Label dateLbl = new Label("Date");
+    
+    Label takeOut = new Label("06/01/22");
+    Label takeOut3 = new Label("05/28/22");
+
+    Label descLbl = new Label("Description");
+
+    Label takeOut2 = new Label("John Smith completed 20 hours of training. Congratulations!");
+    Label takeOut4 = new Label("Elizabeth Ley joined BARK!");
 
     GridPane homePane = new GridPane();
+    GridPane socialPane = new GridPane();
+    GridPane mainPane = new GridPane();
 
     Home(Login1 login) {
-        
+
         System.out.println(login.name);
         barkTitle = new Label("Welcome to BARK, " + login.name + "!"); // Get name identified in login
         this.login = login;
         paneSettings(homePane);
+
         homePane.add(barkTitle, 0, 0);
         homePane.add(eventsBtn, 0, 1);
         homePane.add(socialHomeScreenBtn, 0, 2);
@@ -38,8 +53,20 @@ public class Home extends Login1 {
         homePane.add(scheduleBtn, 0, 8);
         homePane.add(checkoutBtn, 0, 9);
 
+        paneSettings(socialPane);
+        socialPane.add(scrnTitleLbl, 0, 0);
+        socialPane.add(dateLbl, 0, 1);
+        socialPane.add(takeOut, 0, 3);
+        socialPane.add(descLbl, 2, 1);
+        socialPane.add(takeOut2, 2, 3);
+        socialPane.add(takeOut3, 0, 5);
+        socialPane.add(takeOut4, 2, 5);
+
+        mainPane.add(homePane, 0, 0);
+        socialPane.setAlignment(Pos.TOP_CENTER);
+        mainPane.add(socialPane, 1, 0);
         Stage primaryStage1 = login.primaryStage;
-        Scene primaryScene = new Scene(homePane, 600, 450);
+        Scene primaryScene = new Scene(mainPane, 900, 450);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Home");
         primaryStage.show();
