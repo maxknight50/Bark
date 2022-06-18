@@ -103,5 +103,12 @@ public class Animal {
     public void setVolID(int vol) {
         this.volID = vol;
     }
+    
+    public String toString(){
+        return "ID: " + animalID + " Name: " + name + " Species: " + species + 
+                " Age: " + age + " Medical History: " + medicalHistory +
+                " Feeding Needs: " + feedingNeeds + " Vet History: " + vetHistory + 
+                " EventID: " + eventID + " VolunteerID: " + volID; 
+      }
 }
     

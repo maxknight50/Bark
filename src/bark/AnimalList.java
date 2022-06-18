@@ -1,6 +1,7 @@
 package bark;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -111,10 +112,10 @@ public class AnimalList extends Login1 {
         volID_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("volID"));
 
         volTable.getColumns().addAll(id_col, name_col, species_col, age_col, history_col, feeding_col, vethist_col, event_col, volID_col);
+        Animal[] animalList = new Animal[25];
 
         sendDBCommand("SELECT animal_ID, name, species, age, medicalHistory, feedingNeeds, vetHistory, eventID, volID FROM Animal");
         try {
-            Animal[] animalList = new Animal[25];
             for (int i = 0; i < 100; i++) {
                 while (rs.next()) {
                     if (rs != null) {
@@ -137,6 +138,46 @@ public class AnimalList extends Login1 {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("List");
         primaryStage.show();
+
+        add.setOnAction(e -> {
+            System.out.println("add button clicked");
+            try {
+                int newID = Integer.valueOf(idTxt.getText());
+                String newName = nameTxt.getText();
+                String newSpecies = speciesTxt.getText();
+                int newAge = Integer.valueOf(ageTxt.getText());
+                String newHistory = medicalTxt.getText();
+                String newFeeding = feedingTxt.getText();
+
+                //String newVetHistory = MISSINGFIELDFORTHIS.getText(); 
+                String newVetHistory = "";
+
+                int newEventID = Integer.valueOf(eventIdTxt.getText());
+                int newVolID = Integer.valueOf(volIdTxt.getText());
+
+                //Create new animal in the animalList array
+                Animal newAnimal = new Animal(newID, newName, newSpecies, newAge,
+                        newHistory, newFeeding, newVetHistory, newEventID, newVolID);
+                
+                String query = "INSERT INTO ANIMAL(animal_ID, name,"
+                        + "species, age, medicalHistory, feedingNeeds, eventID, volID)"
+                        + "VALUES (" + newID + ", '" + newName + "', '" + newSpecies + "', " + newAge + ", '" + newHistory + "', '" + newFeeding + "', " + newEventID + ", " + newVolID + ")";
+
+                sendDBCommand(query);
+                tableData.clear(); 
+                for (int i = 0; i < animalList.length; i++) {
+                            if (animalList[i] == null) {
+                                animalList[i] = newAnimal;
+                                break;
+                            }
+                        }
+                for (Animal x : animalList) {
+                    tableData.add(x);
+                }
+            } catch (Exception ex) {
+                System.out.println("Error! " + ex);
+            }
+        });
     }
 
     public void sendDBCommand(String sqlQuery) {
@@ -157,7 +198,6 @@ public class AnimalList extends Login1 {
 
         } catch (SQLException e) {
             System.out.println(e.toString());
-            //Let me commit!
         }
     }
 }
