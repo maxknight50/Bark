@@ -12,13 +12,14 @@ public class Home extends Login1 {
     Label barkTitle;
     Button eventsBtn = new Button("View Events");
     Button socialHomeScreenBtn = new Button("View Social Home Screen");
-    Button volunteerInfoBtn = new Button("View Volunteer Information");
+    Button volunteerInfoBtn = new Button("View Your Information");
     Button assignSpecialBtn = new Button("Assign Specialization");
     Button volunteerReportBtn = new Button("View Volunteer Report");
     Button checkoutBtn = new Button("Check Out");
     Button donationBtn = new Button("Donations");
     Button animalInfoBtn = new Button("Animal Information");
     Button scheduleBtn = new Button("Schedule Availability");
+    Button logoutBtn = new Button("Logout");
     
     Label scrnTitleLbl = new Label("Social Home");
     Label dateLbl = new Label("Date");
@@ -52,6 +53,7 @@ public class Home extends Login1 {
         homePane.add(animalInfoBtn, 0, 7);
         homePane.add(scheduleBtn, 0, 8);
         homePane.add(checkoutBtn, 0, 9);
+        homePane.add(logoutBtn, 0, 10);
 
         paneSettings(socialPane);
         socialPane.add(scrnTitleLbl, 0, 0);
@@ -114,6 +116,11 @@ public class Home extends Login1 {
         //Schedule Button
         scheduleBtn.setOnAction(e -> {
             ScheduleAvailability sa = new ScheduleAvailability(this);
+        });
+        
+        //Logout Button
+        logoutBtn.setOnAction(e -> {
+            Logout lo = new Logout(this);
         });
 
     }
