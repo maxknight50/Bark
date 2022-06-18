@@ -16,7 +16,7 @@ public class Checkout extends Login1 {
     Button backBtn = new Button("Back");
     Label titleLbl = new Label("Check Out");
     Label currentHrsLbl = new Label("Your current hours: ");
-    TextField currentHrsTxt = new TextField();
+    Label currentHrsDisplayLbl = new Label();
     Label usernameLbl = new Label("Username");
     TextField usernameTxt = new TextField();
     Label passwordLbl = new Label("Password");
@@ -35,7 +35,7 @@ public class Checkout extends Login1 {
         checkoutPane.add(backBtn, 0, 0);
         checkoutPane.add(titleLbl, 1, 0);
         checkoutPane.add(currentHrsLbl, 1, 1);
-        checkoutPane.add(currentHrsTxt, 2, 1);
+        checkoutPane.add(currentHrsDisplayLbl, 2, 1);
         checkoutPane.add(usernameLbl, 1, 2);
         checkoutPane.add(usernameTxt, 1, 3);
         checkoutPane.add(passwordLbl, 1, 4);
