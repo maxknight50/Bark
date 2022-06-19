@@ -34,6 +34,8 @@ public class AnimalInfo extends Login1{
     Label feedingLbl = new Label("Feeding Needs");
     Label eventIdLbl = new Label ("Event ID");
     Label volIdLbl = new Label ("Volunteer ID");
+    Label vetHistory = new Label ("Vet History");
+    ComboBox<String> vetHistoryCB = new ComboBox();
     
     TextField idTxt = new TextField();
     TextField nameTxt = new TextField();
@@ -73,6 +75,8 @@ public class AnimalInfo extends Login1{
         pane.add(eventIdTxt, 1, 8);
         pane.add(volIdLbl, 0, 9);
         pane.add(volIdTxt, 1, 9);
+        pane.add(vetHistory,0,10);
+        pane.add(vetHistoryCB,1,10);
         
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
