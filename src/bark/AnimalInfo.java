@@ -15,6 +15,8 @@ import javafx.event.*;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import oracle.jdbc.pool.OracleDataSource;
@@ -44,6 +46,9 @@ public class AnimalInfo extends Login1{
     
     Button backBtn = new Button("Back");
     
+    Image paw = new Image("file:paw.jpg");
+    ImageView viewPaw = new ImageView(paw);
+    
     GridPane pane = new GridPane();
     
     AnimalInfo(Home home) {
@@ -68,6 +73,12 @@ public class AnimalInfo extends Login1{
         pane.add(eventIdTxt, 1, 8);
         pane.add(volIdLbl, 0, 9);
         pane.add(volIdTxt, 1, 9);
+        
+        viewPaw.setFitHeight(50);
+        viewPaw.setFitWidth(50);
+        viewPaw.setX(100);
+        viewPaw.setY(150);
+        pane.add(viewPaw, 0, 10);
 
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(pane, 600, 450);

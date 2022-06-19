@@ -17,6 +17,8 @@ import javafx.event.*;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import oracle.jdbc.pool.OracleDataSource;
@@ -48,6 +50,9 @@ public class VolunteerStatus extends Login1 {
     TextField statusBox = new TextField();
 
     Button backBtn = new Button("Back");
+    
+    Image paw = new Image("file:paw.jpg");
+    ImageView viewPaw = new ImageView(paw);
 
     GridPane pane = new GridPane();
 
@@ -80,6 +85,12 @@ public class VolunteerStatus extends Login1 {
         pane.add(statusBox, 1, 6);
         pane.add(availLbl, 0, 7);
         pane.add(availTxt, 1, 7);
+        
+        viewPaw.setFitHeight(50);
+        viewPaw.setFitWidth(50);
+        viewPaw.setX(100);
+        viewPaw.setY(150);
+        pane.add(viewPaw, 3, 8);
 
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(pane, 600, 450);

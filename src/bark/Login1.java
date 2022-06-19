@@ -66,7 +66,7 @@ public class Login1 extends Application {
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
         viewPaw.setY(150);
-        loginPane.getChildren().add(viewPaw);
+        loginPane.add(viewPaw, 0, 8);
 
         Scene primaryScene = new Scene(loginPane, 600, 450);
         primaryStage.setScene(primaryScene);

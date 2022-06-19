@@ -2,6 +2,8 @@ package bark;
 
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -23,6 +25,8 @@ public class HoursReport extends Login1 {
     Label categoryLabel = new Label("Activity Category:");
     TextField categoryField = new TextField();
     
+    Image paw = new Image("file:paw.jpg");
+    ImageView viewPaw = new ImageView(paw);
 
     GridPane hoursPane = new GridPane();
     
@@ -44,6 +48,11 @@ public class HoursReport extends Login1 {
         hoursPane.add(categoryLabel, 0, 6);
         hoursPane.add(categoryField, 1, 6);
 
+        viewPaw.setFitHeight(50);
+        viewPaw.setFitWidth(50);
+        viewPaw.setX(100);
+        viewPaw.setY(150);
+        hoursPane.add(viewPaw, 0, 7);
 
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(hoursPane, 600, 450);

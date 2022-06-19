@@ -2,6 +2,8 @@ package bark;
 
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -22,6 +24,9 @@ public class ScheduleAvailability extends Login1 {
     Label FridayLbl = new Label("Friday");
     ComboBox<String> scheduleIDCb5 = new ComboBox();
     GridPane schedulePane = new GridPane();
+    
+    Image paw = new Image("file:paw.jpg");
+    ImageView viewPaw = new ImageView(paw);
 
     public ScheduleAvailability(Home home) {
         this.home = home;
@@ -39,6 +44,12 @@ public class ScheduleAvailability extends Login1 {
         schedulePane.add(scheduleIDCb4, 2, 4);
         schedulePane.add(FridayLbl, 1, 5);
         schedulePane.add(scheduleIDCb5, 2, 5);
+        
+        viewPaw.setFitHeight(50);
+        viewPaw.setFitWidth(50);
+        viewPaw.setX(100);
+        viewPaw.setY(150);
+        schedulePane.add(viewPaw, 3, 6);
 
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(schedulePane, 600, 450);

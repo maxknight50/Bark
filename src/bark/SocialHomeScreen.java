@@ -8,6 +8,8 @@ package bark;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -31,6 +33,9 @@ public class SocialHomeScreen extends Login1 {
     Label takeOut2 = new Label("John Smith completed 20 hours of training. Congratulations!");
     Label takeOut4 = new Label("Elizabeth Ley joined BARK!");
     
+    Image paw = new Image("file:paw.jpg");
+    ImageView viewPaw = new ImageView(paw);
+    
     GridPane socialPane = new GridPane();
     
     SocialHomeScreen(Home home) {
@@ -45,6 +50,12 @@ public class SocialHomeScreen extends Login1 {
         socialPane.add(takeOut2, 2, 3);
         socialPane.add(takeOut3, 0, 4);
         socialPane.add(takeOut4, 2, 4);
+        
+        viewPaw.setFitHeight(50);
+        viewPaw.setFitWidth(50);
+        viewPaw.setX(100);
+        viewPaw.setY(150);
+        socialPane.add(viewPaw, 4, 0);
         
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(socialPane, 600, 450);

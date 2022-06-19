@@ -16,6 +16,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import oracle.jdbc.pool.OracleDataSource;
@@ -71,6 +73,9 @@ public class VolunteerList extends Login1 {
     Button add = new Button("Add");
     Button delete = new Button("Delete");
     Button modify = new Button("Modify");
+    
+    Image paw = new Image("file:paw.jpg");
+    ImageView viewPaw = new ImageView(paw);
 
     GridPane overall = new GridPane();
     GridPane modVolunteer = new GridPane();
@@ -103,6 +108,12 @@ public class VolunteerList extends Login1 {
 
         volTable.setItems(tableData);
         volunteerTable.add(volTable, 0, 0);
+        
+        viewPaw.setFitHeight(50);
+        viewPaw.setFitWidth(50);
+        viewPaw.setX(100);
+        viewPaw.setY(150);
+        modVolunteer.add(viewPaw, 0, 12);
 
         id_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Integer>("volunteerID"));
         fname_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("volFirst"));

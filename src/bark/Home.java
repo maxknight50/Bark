@@ -3,6 +3,8 @@ package bark;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -31,6 +33,9 @@ public class Home extends Login1 {
 
     Label takeOut2 = new Label("John Smith completed 20 hours of training. Congratulations!");
     Label takeOut4 = new Label("Elizabeth Ley joined BARK!");
+    
+    Image paw = new Image("file:paw.jpg");
+    ImageView viewPaw = new ImageView(paw);
 
     GridPane homePane = new GridPane();
     GridPane socialPane = new GridPane();
@@ -63,6 +68,12 @@ public class Home extends Login1 {
         socialPane.add(takeOut2, 2, 3);
         socialPane.add(takeOut3, 0, 5);
         socialPane.add(takeOut4, 2, 5);
+        
+        viewPaw.setFitHeight(50);
+        viewPaw.setFitWidth(50);
+        viewPaw.setX(100);
+        viewPaw.setY(150);
+        homePane.add(viewPaw, 0, 12);
 
         mainPane.add(homePane, 0, 0);
         socialPane.setAlignment(Pos.TOP_CENTER);

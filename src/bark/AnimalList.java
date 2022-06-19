@@ -17,6 +17,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import oracle.jdbc.pool.OracleDataSource;
@@ -69,6 +71,9 @@ public class AnimalList extends Login1 {
     Button add = new Button("Add");
     Button delete = new Button("Delete");
     Button modify = new Button("Modify");
+    
+    Image paw = new Image("file:paw.jpg");
+    ImageView viewPaw = new ImageView(paw);
 
     GridPane overall = new GridPane();
     GridPane modAnimal = new GridPane();
@@ -97,6 +102,12 @@ public class AnimalList extends Login1 {
         modAnimal.add(add, 0, 10);
         modAnimal.add(modify, 1, 10);
         modAnimal.add(delete, 0, 11);
+        
+        viewPaw.setFitHeight(50);
+        viewPaw.setFitWidth(50);
+        viewPaw.setX(100);
+        viewPaw.setY(150);
+        modAnimal.add(viewPaw, 0, 12);
 
         volTable.setItems(tableData);
         animalTable.add(volTable, 0, 0);

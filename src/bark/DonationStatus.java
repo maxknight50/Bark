@@ -3,6 +3,8 @@ package bark;
 
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -26,6 +28,9 @@ public class DonationStatus extends Login1 {
     TextField donationDateTxt = new TextField();
     Button submitBtn = new Button("Submit");
     
+    Image paw = new Image("file:paw.jpg");
+    ImageView viewPaw = new ImageView(paw);
+    
     GridPane donationPane = new GridPane();
     
     public DonationStatus(Home home) {
@@ -43,8 +48,13 @@ public class DonationStatus extends Login1 {
         donationPane.add(donationNameTxt, 1, 5);
         donationPane.add(donationDateLbl, 1, 6);
         donationPane.add(donationDateTxt, 1, 7);
-        donationPane.add(submitBtn, 2, 8);
+        donationPane.add(submitBtn, 1, 8);
         
+        viewPaw.setFitHeight(50);
+        viewPaw.setFitWidth(50);
+        viewPaw.setX(100);
+        viewPaw.setY(150);
+        donationPane.add(viewPaw, 2, 9);
         
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(donationPane, 600, 450);

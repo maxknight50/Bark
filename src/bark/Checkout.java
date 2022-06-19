@@ -3,6 +3,8 @@ package bark;
 
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -25,6 +27,9 @@ public class Checkout extends Login1 {
 //    TextField volIdTxt = new TextField();
     Button checkoutBtn = new Button("CHECK OUT");
     
+    Image paw = new Image("file:paw.jpg");
+    ImageView viewPaw = new ImageView(paw);
+    
     GridPane checkoutPane = new GridPane();
     
     Checkout(Home home) {
@@ -42,7 +47,13 @@ public class Checkout extends Login1 {
         checkoutPane.add(passwordTxt, 1, 5);
 //        checkoutPane.add(volIdLbl, 1, 6);
 //        checkoutPane.add(volIdTxt, 1, 7);
-        checkoutPane.add(checkoutBtn, 2, 8);
+        checkoutPane.add(checkoutBtn, 1, 8);
+        
+        viewPaw.setFitHeight(50);
+        viewPaw.setFitWidth(50);
+        viewPaw.setX(100);
+        viewPaw.setY(150);
+        checkoutPane.add(viewPaw, 2, 9);
         
         Stage primaryStage = home.primaryStage;
         Scene primaryScene = new Scene(checkoutPane, 600, 450);
