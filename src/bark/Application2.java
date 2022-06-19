@@ -13,6 +13,8 @@ import oracle.jdbc.pool.*;
 import java.util.*;
 import static javafx.application.Application.launch;
 import javafx.geometry.Insets;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  *
@@ -43,6 +45,9 @@ public class Application2 extends Login1 {
     TextField phoneTxt = new TextField();
     ComboBox<String> expCb = new ComboBox();
     Button submitBtn = new Button("Submit");
+    
+    Image paw = new Image("file:paw.jpg");
+    ImageView viewPaw = new ImageView(paw);
 
     GridPane pane1 = new GridPane();
 
@@ -72,6 +77,12 @@ public class Application2 extends Login1 {
         pane1.add(infoTxt, 1, 9);
         
         pane1.add(submitBtn, 1, 10);
+        
+        viewPaw.setFitHeight(50);
+        viewPaw.setFitWidth(50);
+        viewPaw.setX(100);
+        viewPaw.setY(150);
+        pane1.add(viewPaw, 3, 11);
 
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(pane1, 600, 450);
