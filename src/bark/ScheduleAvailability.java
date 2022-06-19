@@ -23,8 +23,13 @@ public class ScheduleAvailability extends Login1 {
     ComboBox<String> scheduleIDCb4 = new ComboBox();
     Label FridayLbl = new Label("Friday");
     ComboBox<String> scheduleIDCb5 = new ComboBox();
+    Label SaturdayLbl = new Label("Saturday");
+    ComboBox<String> scheduleIDCb6 = new ComboBox();
+    Label SundayLbl = new Label("Sunday");
+    ComboBox<String> scheduleIDCb7 = new ComboBox();
+
     GridPane schedulePane = new GridPane();
-    
+
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
 
@@ -44,7 +49,11 @@ public class ScheduleAvailability extends Login1 {
         schedulePane.add(scheduleIDCb4, 2, 4);
         schedulePane.add(FridayLbl, 1, 5);
         schedulePane.add(scheduleIDCb5, 2, 5);
-        
+        schedulePane.add(SaturdayLbl,1,6);
+        schedulePane.add(scheduleIDCb6,2,6);
+        schedulePane.add(SundayLbl,1,7);
+        schedulePane.add(scheduleIDCb7,2,7);
+
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
