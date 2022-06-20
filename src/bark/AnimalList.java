@@ -68,6 +68,8 @@ public class AnimalList extends Login1 {
     TextField eventIdTxt = new TextField();
     TextField volIdTxt = new TextField();
 
+    Label message = new Label();
+
     Button backBtn = new Button("Back");
     Button add = new Button("Add");
     Button delete = new Button("Delete");
@@ -114,8 +116,9 @@ public class AnimalList extends Login1 {
         modAnimal.add(viewPaw, 0, 12);
 
         volTable.setItems(tableData);
-        animalTable.add(volTable, 0, 0);
-        animalTable.add(populate, 0, 1);
+        animalTable.add(message, 0, 0);
+        animalTable.add(volTable, 0, 1);
+        animalTable.add(populate, 0, 2);
 
         id_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Integer>("animalID"));
         name_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("name"));
@@ -155,7 +158,7 @@ public class AnimalList extends Login1 {
         primaryStage.setTitle("List");
         primaryStage.show();
 
-                populate.setOnAction(e -> {
+        populate.setOnAction(e -> {
 //            System.out.println(volTable.getSelectionModel().getSelectedIndex());
 //            System.out.println(volTable.getSelectionModel().getSelectedItem().getAge());
             idTxt.setText(volTable.getSelectionModel().getSelectedItem().getAnimalID() + "");
@@ -164,8 +167,15 @@ public class AnimalList extends Login1 {
             ageTxt.setText(volTable.getSelectionModel().getSelectedItem().getAge() + "");
             medicalTxt.setText(volTable.getSelectionModel().getSelectedItem().getMedicalHistory() + "");
             feedingTxt.setText(volTable.getSelectionModel().getSelectedItem().getFeedingNeeds() + "");
-            
         });
+
+        delete.setOnAction(e -> {
+            System.out.println(volTable.getSelectionModel().getSelectedItem().getAnimalID());
+            String query = "DELETE FROM ANIMAL WHERE animal_ID = " + volTable.getSelectionModel().getSelectedItem().getAnimalID();
+            sendDBCommand(query);
+            message.setText("Entry removed successfully.");
+        });
+
         add.setOnAction(e -> {
             System.out.println("add button clicked");
             try {
@@ -191,6 +201,7 @@ public class AnimalList extends Login1 {
                         + "VALUES (" + newID + ", '" + newName + "', '" + newSpecies + "', " + newAge + ", '" + newHistory + "', '" + newFeeding + "', " + newEventID + ", " + newVolID + ")";
 
                 sendDBCommand(query);
+                message.setText("Entry added successfully.");
                 tableData.clear();
                 for (int i = 0; i < animalList.length; i++) {
                     if (animalList[i] == null) {
@@ -203,6 +214,7 @@ public class AnimalList extends Login1 {
                 }
             } catch (Exception ex) {
                 System.out.println("Error! " + ex);
+                message.setText("Error while adding entry. Please check your input and try again.");
             }
         });
 
