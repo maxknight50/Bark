@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
+import java.util.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -71,7 +71,7 @@ public class VolunteerList extends Login1 {
     Button add = new Button("Add");
     Button delete = new Button("Delete");
     Button modify = new Button("Modify");
-    
+
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
 
@@ -98,14 +98,13 @@ public class VolunteerList extends Login1 {
         modVolunteer.add(statusLbl, 0, 8);
         modVolunteer.add(statusBox, 1, 8);
 
-        
         modVolunteer.add(add, 0, 10);
         modVolunteer.add(modify, 1, 10);
         modVolunteer.add(delete, 0, 11);
 
         volTable.setItems(tableData);
         volunteerTable.add(volTable, 0, 0);
-        
+
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
@@ -123,14 +122,14 @@ public class VolunteerList extends Login1 {
         status_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("status"));
 
         volTable.getColumns().addAll(id_col, fname_col, lname_col, add_col, dob_col, email_col, phone_col, hours_col, status_col);
-        ListVolunteers[] volunteerList = new ListVolunteers[25];
+        ArrayList<ListVolunteers> volunteerList = new ArrayList<>();
 
         sendDBCommand("SELECT volID, vol_FirstName, vol_LastName, vol_Address, vol_DateOfBirth, vol_Email, vol_Phone, cumulativeHours, status FROM Volunteer");
         try {
             for (int i = 0; i < 100; i++) {
                 while (rs.next()) {
                     if (rs != null) {
-                        volunteerList[i] = new ListVolunteers(rs.getInt("volID"), rs.getString("vol_FirstName"), rs.getString("vol_LastName"), rs.getString("vol_Address"), rs.getDate("vol_DateOfBirth"), rs.getString("vol_Email"), rs.getString("vol_Phone"), rs.getDouble("cumulativeHours"), rs.getString("status"));
+                        volunteerList.add(new ListVolunteers(rs.getInt("volID"), rs.getString("vol_FirstName"), rs.getString("vol_LastName"), rs.getString("vol_Address"), rs.getDate("vol_DateOfBirth"), rs.getString("vol_Email"), rs.getString("vol_Phone"), rs.getDouble("cumulativeHours"), rs.getString("status")));
                         break;
                     }
                 }
@@ -149,44 +148,76 @@ public class VolunteerList extends Login1 {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Listed Volunteers");
         primaryStage.show();
-        
-        add.setOnAction(e -> {
-            System.out.println("Add button has been clicked");
-            try { 
-                String newFirst = fNameTxt.getText(); 
-                String newLast =  lNameTxt.getText(); 
-                String newAddress = addressTxt.getText(); 
-                String newEmail = emailTxt.getText(); 
-                String newPhone = phoneTxt.getText(); 
-                double newCumulative = Integer.valueOf(cumHrsTxt.getText());
-                
-                ListVolunteers newVolunteer = new ListVolunteers(newFirst, newLast, newAddress, newEmail, newPhone, newCumulative); 
-                
-                String query = "INSERT INTO VOLUNTEER(vol_FirstName, vol_LastName, vol_Address, vol_Email, vol_Phone, cumulativeHours) VALUES ('" + newFirst + "', '" + newLast + "', '" + newAddress + "', '" + newEmail + "', '" + newPhone + "', " + newCumulative + ")";
 
-                sendDBCommand(query); 
-                tableData.clear(); 
-                for (int i = 0; i < volunteerList.length; i++){
-                    if(volunteerList[i] == null){
-                        volunteerList[i] = newVolunteer; 
+        add.setOnAction(e -> {
+            int largest = 0;
+            try {
+                String q = "SELECT * FROM VOLUNTEER";
+                sendDBCommand(q);
+                try {
+                    while (rs.next()) {
+                        largest = rs.getInt("volID");
+                        System.out.println("First: " + largest);
+                        while (rs.next()) {
+                            int store = rs.getInt("volID");
+                            System.out.println(store);
+                            if (store > largest) {
+                                largest = store;
+                            }
+                        }
+
+                        System.out.println("Final largest: " + largest);
+                    }
+                } catch (Exception m) {
+                    System.out.println("Exception finding the largest! " + m);
+                }
+                int newID = largest + 1;
+                String newFirst = fNameTxt.getText();
+                String newLast = lNameTxt.getText();
+                String newAddress = addressTxt.getText();
+                String newEmail = emailTxt.getText();
+                String newPhone = phoneTxt.getText();
+                double newCumulative = Integer.valueOf(cumHrsTxt.getText());
+
+                ListVolunteers newVolunteer = new ListVolunteers(newID, newFirst, newLast, newAddress, newEmail, newPhone, newCumulative);
+
+                String query = "INSERT INTO VOLUNTEER(volID, vol_FirstName, vol_LastName, vol_Address, vol_Email, vol_Phone, cumulativeHours) VALUES (" + newID + ",'" + newFirst + "', '" + newLast + "', '" + newAddress + "', '" + newEmail + "', '" + newPhone + "', " + newCumulative + ")";
+
+                sendDBCommand(query);
+                tableData.clear();
+                for (int i = 0; i < volunteerList.size(); i++) {
+                    if (volunteerList.get(i) == null) {
+                        volunteerList.add(newVolunteer);
                         break;
                     }
                 }
-                for(ListVolunteers x : volunteerList){
-                    tableData.add(x); 
+                for (ListVolunteers x : volunteerList) {
+                    tableData.add(x);
                 }
-                
-            } catch (Exception ex){
-                System.out.println("Error! " + ex); 
+
+            } catch (Exception ex) {
+                System.out.println("Error! " + ex);
             }
         });
-        
+
         modify.setOnAction(e -> {
             System.out.println("Modify button clicked");
+            int newID = ListVolunteers.volunteerCount + 1;
+            String newFirst = fNameTxt.getText();
+            String newLast = lNameTxt.getText();
+            String newAddress = addressTxt.getText();
+            String newEmail = emailTxt.getText();
+            String newPhone = phoneTxt.getText();
+            double newCumulative = Integer.valueOf(cumHrsTxt.getText());
+            
+            String query = "UPDATE VOLUNTEER SET vol_FirstName = '" + newFirst + "', vol_LastName = '" + newLast + "', vol_Address = " + newAddress + "', vol_Email = '" + newEmail
+                    + "', vol_Phone = '" + newPhone + "', cumulativeHours = " + newCumulative + "WHERE volID = " + newID + "";
+            sendDBCommand(query);
+
         });
-        
+
         backBtn.setOnAction(e -> {
-            primaryStage.close(); 
+            primaryStage.close();
         });
     }
 

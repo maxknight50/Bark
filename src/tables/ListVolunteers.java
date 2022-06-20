@@ -12,6 +12,7 @@ public class ListVolunteers {
    String volPhone;
    Double totalHours;
    String status;
+   public static int volunteerCount = 0; 
    
    public ListVolunteers(int id, String first, String last, String address, Date date, String email, String phone, Double totalHours, String status){
        this.volunteerID = id; 
@@ -23,14 +24,17 @@ public class ListVolunteers {
        this.volPhone = phone; 
        this.totalHours = totalHours; 
        this.status = status; 
+       volunteerCount++; 
    }
-   public ListVolunteers(String first, String last, String address, String email, String phone, Double hours){
+   public ListVolunteers(int id, String first, String last, String address, String email, String phone, Double hours){
+        this.volunteerID = id; 
         this.volFirst = first;
         this.volLast = last; 
         this.volAddress = address; 
         this.volEmail = email; 
         this.volPhone = phone; 
         this.totalHours = hours; 
+        volunteerCount++; 
     }
 
     public int getVolunteerID() {
