@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -71,9 +72,12 @@ public class AnimalList extends Login1 {
     Button add = new Button("Add");
     Button delete = new Button("Delete");
     Button modify = new Button("Modify");
-    
+    Button populate = new Button("<-- Select and Populate");
+
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
+
+    ComboBox<String> vetHistoryCB = new ComboBox();
 
     GridPane overall = new GridPane();
     GridPane modAnimal = new GridPane();
@@ -92,7 +96,7 @@ public class AnimalList extends Login1 {
         modAnimal.add(ageLbl, 0, 5);
         modAnimal.add(ageTxt, 1, 5);
         modAnimal.add(medicalLbl, 0, 6);
-        modAnimal.add(medicalTxt, 1, 6);
+        modAnimal.add(vetHistoryCB, 1, 6);
         modAnimal.add(feedingLbl, 0, 7);
         modAnimal.add(feedingTxt, 1, 7);
         modAnimal.add(eventIdLbl, 0, 8);
@@ -102,7 +106,7 @@ public class AnimalList extends Login1 {
         modAnimal.add(add, 0, 10);
         modAnimal.add(modify, 1, 10);
         modAnimal.add(delete, 0, 11);
-        
+
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
@@ -111,6 +115,7 @@ public class AnimalList extends Login1 {
 
         volTable.setItems(tableData);
         animalTable.add(volTable, 0, 0);
+        animalTable.add(populate, 0, 1);
 
         id_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Integer>("animalID"));
         name_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("name"));
@@ -150,6 +155,17 @@ public class AnimalList extends Login1 {
         primaryStage.setTitle("List");
         primaryStage.show();
 
+                populate.setOnAction(e -> {
+//            System.out.println(volTable.getSelectionModel().getSelectedIndex());
+//            System.out.println(volTable.getSelectionModel().getSelectedItem().getAge());
+            idTxt.setText(volTable.getSelectionModel().getSelectedItem().getAnimalID() + "");
+            nameTxt.setText(volTable.getSelectionModel().getSelectedItem().getName() + "");
+            speciesTxt.setText(volTable.getSelectionModel().getSelectedItem().getSpecies() + "");
+            ageTxt.setText(volTable.getSelectionModel().getSelectedItem().getAge() + "");
+            medicalTxt.setText(volTable.getSelectionModel().getSelectedItem().getMedicalHistory() + "");
+            feedingTxt.setText(volTable.getSelectionModel().getSelectedItem().getFeedingNeeds() + "");
+            
+        });
         add.setOnAction(e -> {
             System.out.println("add button clicked");
             try {
@@ -169,19 +185,19 @@ public class AnimalList extends Login1 {
                 //Create new animal in the animalList array
                 Animal newAnimal = new Animal(newID, newName, newSpecies, newAge,
                         newHistory, newFeeding, newVetHistory, newEventID, newVolID);
-                
+
                 String query = "INSERT INTO ANIMAL(animal_ID, name,"
                         + "species, age, medicalHistory, feedingNeeds, eventID, volID)"
                         + "VALUES (" + newID + ", '" + newName + "', '" + newSpecies + "', " + newAge + ", '" + newHistory + "', '" + newFeeding + "', " + newEventID + ", " + newVolID + ")";
 
                 sendDBCommand(query);
-                tableData.clear(); 
+                tableData.clear();
                 for (int i = 0; i < animalList.length; i++) {
-                            if (animalList[i] == null) {
-                                animalList[i] = newAnimal;
-                                break;
-                            }
-                        }
+                    if (animalList[i] == null) {
+                        animalList[i] = newAnimal;
+                        break;
+                    }
+                }
                 for (Animal x : animalList) {
                     tableData.add(x);
                 }
@@ -189,9 +205,9 @@ public class AnimalList extends Login1 {
                 System.out.println("Error! " + ex);
             }
         });
-        
+
         backBtn.setOnAction(e -> {
-            primaryStage.close(); 
+            primaryStage.close();
         });
     }
 
