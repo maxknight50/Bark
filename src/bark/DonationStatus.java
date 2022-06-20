@@ -1,3 +1,4 @@
+
 package bark;
 
 import javafx.scene.*;
@@ -7,14 +8,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+
 /**
  *
- *
+ * 
  */
 public class DonationStatus extends Login1 {
-
     Home home;
-
+    
     Button backBtn = new Button("Back");
     Label donationTitleLbl = new Label("Donations");
     Label donationIDLbl = new Label("Donation ID");
@@ -26,21 +27,18 @@ public class DonationStatus extends Login1 {
     Label donationDateLbl = new Label("Date of Donation");
     TextField donationDateTxt = new TextField();
     Button submitBtn = new Button("Submit");
-    //MenuBar menuBar = new MenuBar();
-    //Menu menuDonations = new Menu("View Donations");
-    //MenuItem enterDonations = new MenuItem("Enter Donations");
-
+    
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
-
+    
     GridPane donationPane = new GridPane();
-
+    
     public DonationStatus(Home home) {
         this.home = home;
         paneSettings(donationPane);
-
-        donationPane.add(backBtn, 0, 1);
-        // donationPane.add(menuBar, 0, 1);
+        
+        
+        donationPane.add(backBtn, 0, 0);
         donationPane.add(donationTitleLbl, 1, 0);
         donationPane.add(donationIDLbl, 1, 1);
         donationPane.add(donationIDCb, 2, 1);
@@ -51,28 +49,21 @@ public class DonationStatus extends Login1 {
         donationPane.add(donationDateLbl, 1, 6);
         donationPane.add(donationDateTxt, 1, 7);
         donationPane.add(submitBtn, 1, 8);
-
+        
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
         viewPaw.setY(150);
         donationPane.add(viewPaw, 2, 9);
-
-       // menuDonations.getItems().add(enterDonations);
-        //menuBar.getMenus().addAll(menuDonations);
-        //donationPane.add(menuBar, 0, 0);
-
+        
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(donationPane, 600, 450);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Donations");
         primaryStage.show();
-
+        
         backBtn.setOnAction(e -> {
             primaryStage.close();
         });
-        //enterDonations.setOnAction(e -> {
-       //     EditDonations ec = new EditDonations(this);
-       // });
     }
 }
