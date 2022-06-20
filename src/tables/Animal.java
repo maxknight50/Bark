@@ -19,6 +19,7 @@ public class Animal {
     public String vetHistory;
     public int eventID;
     public int volID;
+    public static int animalCount = 0; 
     
     public Animal(int id, String name, String species, int age, String medical, String feeding, String vet, int eventid, int volid) {
         this.animalID = id;
@@ -30,6 +31,7 @@ public class Animal {
         this.vetHistory = vet;
         this.eventID = eventid;
         this.volID = volid;
+        animalCount++; 
     }
     
     public int getAnimalID() {

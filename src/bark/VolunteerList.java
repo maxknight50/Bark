@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
+import java.util.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -123,14 +123,14 @@ public class VolunteerList extends Login1 {
         status_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("status"));
 
         volTable.getColumns().addAll(id_col, fname_col, lname_col, add_col, dob_col, email_col, phone_col, hours_col, status_col);
-        ListVolunteers[] volunteerList = new ListVolunteers[25];
+        ArrayList<ListVolunteers> volunteerList = new ArrayList<>(); 
 
         sendDBCommand("SELECT volID, vol_FirstName, vol_LastName, vol_Address, vol_DateOfBirth, vol_Email, vol_Phone, cumulativeHours, status FROM Volunteer");
         try {
             for (int i = 0; i < 100; i++) {
                 while (rs.next()) {
                     if (rs != null) {
-                        volunteerList[i] = new ListVolunteers(rs.getInt("volID"), rs.getString("vol_FirstName"), rs.getString("vol_LastName"), rs.getString("vol_Address"), rs.getDate("vol_DateOfBirth"), rs.getString("vol_Email"), rs.getString("vol_Phone"), rs.getDouble("cumulativeHours"), rs.getString("status"));
+                        volunteerList.add(new ListVolunteers(rs.getInt("volID"), rs.getString("vol_FirstName"), rs.getString("vol_LastName"), rs.getString("vol_Address"), rs.getDate("vol_DateOfBirth"), rs.getString("vol_Email"), rs.getString("vol_Phone"), rs.getDouble("cumulativeHours"), rs.getString("status")));
                         break;
                     }
                 }
@@ -151,8 +151,8 @@ public class VolunteerList extends Login1 {
         primaryStage.show();
         
         add.setOnAction(e -> {
-            System.out.println("Add button has been clicked");
             try { 
+                int newID = ListVolunteers.volunteerCount + 1; 
                 String newFirst = fNameTxt.getText(); 
                 String newLast =  lNameTxt.getText(); 
                 String newAddress = addressTxt.getText(); 
@@ -160,15 +160,15 @@ public class VolunteerList extends Login1 {
                 String newPhone = phoneTxt.getText(); 
                 double newCumulative = Integer.valueOf(cumHrsTxt.getText());
                 
-                ListVolunteers newVolunteer = new ListVolunteers(newFirst, newLast, newAddress, newEmail, newPhone, newCumulative); 
+                ListVolunteers newVolunteer = new ListVolunteers(newID, newFirst, newLast, newAddress, newEmail, newPhone, newCumulative); 
                 
-                String query = "INSERT INTO VOLUNTEER(vol_FirstName, vol_LastName, vol_Address, vol_Email, vol_Phone, cumulativeHours) VALUES ('" + newFirst + "', '" + newLast + "', '" + newAddress + "', '" + newEmail + "', '" + newPhone + "', " + newCumulative + ")";
+                String query = "INSERT INTO VOLUNTEER(volID, vol_FirstName, vol_LastName, vol_Address, vol_Email, vol_Phone, cumulativeHours) VALUES (" + newID + ",'" + newFirst + "', '" + newLast + "', '" + newAddress + "', '" + newEmail + "', '" + newPhone + "', " + newCumulative + ")";
 
                 sendDBCommand(query); 
                 tableData.clear(); 
-                for (int i = 0; i < volunteerList.length; i++){
-                    if(volunteerList[i] == null){
-                        volunteerList[i] = newVolunteer; 
+                for (int i = 0; i < volunteerList.size(); i++){
+                    if(volunteerList.get(i) == null){
+                        volunteerList.add(newVolunteer); 
                         break;
                     }
                 }
