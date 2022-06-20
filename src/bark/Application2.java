@@ -42,7 +42,7 @@ public class Application2 extends Login1 {
     TextField fNameTxt = new TextField();
     TextField lNameTxt = new TextField();
     TextField addressTxt = new TextField();
-    TextField infoTxt = new TextField();
+    TextArea infoTxt = new TextArea();
     TextField emailTxt = new TextField();
     TextField phoneTxt = new TextField();
     ComboBox<String> expCb = new ComboBox();
@@ -88,7 +88,7 @@ public class Application2 extends Login1 {
         pane1.add(viewPaw, 3, 11);
 
         Stage primaryStage = new Stage();
-        Scene primaryScene = new Scene(pane1, 600, 450);
+        Scene primaryScene = new Scene(pane1, 700, 600);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Application");
         primaryStage.show();
