@@ -11,6 +11,9 @@ import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -39,39 +42,48 @@ public class DonationList extends Login1 {
     TableColumn dateColumn = new TableColumn("Date");
     TableColumn volIdColumn = new TableColumn("VolunteerID");
 
+    MenuBar menuBar = new MenuBar();
+    Menu menuDonations = new Menu("View Donations");
+    MenuItem enterDonations = new MenuItem("Enter Donations");
+
     GridPane tPane1 = new GridPane();
 
     DonationList(Home home) {
         donTable.setItems(tableData);
-        tPane1.add(donTable, 0, 0);
-        
+        tPane1.add(donTable, 0, 1);
+
+        //
+        tPane1.add(donTable, 0, 2);
+
         id_col.setCellValueFactory(new PropertyValueFactory<Donation, Integer>("donation_ID"));
         amountColumn.setCellValueFactory(new PropertyValueFactory<Donation, Double>("donationAmt"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Donation, String>("donationName"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<Donation, Date>("donationDate"));
         volIdColumn.setCellValueFactory(new PropertyValueFactory<Donation, Integer>("volID"));
 
-        donTable.getColumns().addAll(id_col, amountColumn, nameColumn, dateColumn, volIdColumn); 
-        
+        donTable.getColumns().addAll(id_col, amountColumn, nameColumn, dateColumn, volIdColumn);
+
         sendDBCommand("SELECT donation_ID, donationAmt, donationName, donationDate, volID FROM Donation");
         try {
             Donation[] dList = new Donation[25];
-            for(int i = 0; i < 100; i++){
-                while(rs.next()){
-                    if (rs != null){
+            for (int i = 0; i < 100; i++) {
+                while (rs.next()) {
+                    if (rs != null) {
                         dList[i] = new Donation(rs.getInt("donation_ID"), rs.getDouble("donationAmt"), rs.getString("donationName"), rs.getDate("donationDate"), rs.getInt("volID"));
                         break;
                     }
                 }
             }
-            for(Donation x : dList){
-                tableData.add(x); 
+            for (Donation x : dList) {
+                tableData.add(x);
             }
-            
-        } catch (SQLException e){
+
+        } catch (SQLException e) {
             System.out.println("SQL Exception! " + e);
         }
-
+        menuDonations.getItems().add(enterDonations);
+        menuBar.getMenus().addAll(menuDonations);
+        tPane1.add(menuBar, 0, 0);
         Scene primaryScene = new Scene(tPane1, 600, 450);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("List");
