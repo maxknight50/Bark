@@ -19,7 +19,7 @@ import oracle.jdbc.pool.OracleDataSource;
  * Assign Specialization screen
  */
 public class AssignSpecialization extends Login1 {
-
+    //Login1 login;
     Home home;
 
     // add title and back button
@@ -46,6 +46,7 @@ public class AssignSpecialization extends Login1 {
     ResultSet rs;
 
     AssignSpecialization(Home home) {
+        
         this.home = home;
         String[] defaultList = {"Feeding", "Enclosure Care", "Adopter Relations", "Event Volunteer", "Training", "Fundraising"}; 
         specialization.addAll(defaultList);
@@ -69,13 +70,15 @@ public class AssignSpecialization extends Login1 {
         currentList.setMaxSize(200.0, Control.USE_PREF_SIZE);
         
         
-        // DB connectivity
-        sendDBCommand("select * from volunteer");
+        // DB connectivity *** Found workaround -> DB doesn't do anything *** 
+        String sqlBuild = "select * from volunteer";
+        sendDBCommand(sqlBuild);
         String fullName = "";
         try {
             if (rs.next()) {
+                //System.out.print(rs.next());
                 fullName = rs.getString("vol_firstname") + " " + rs.getString("vol_lastname");
-                volNameTxt.setText(fullName);
+                //volNameTxt.setText(fullName);
             }
         } catch (SQLException e) {
             System.out.println("Error- " + e.toString());
@@ -87,6 +90,7 @@ public class AssignSpecialization extends Login1 {
         viewPaw.setX(100);
         viewPaw.setY(200);
         specialPane.add(viewPaw, 2, 8);
+        volNameTxt.setText(home.login.name);
         
         paneSettings(specialPane);
 
