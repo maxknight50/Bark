@@ -59,7 +59,7 @@ public class AnimalList extends Login1 {
     Label eventIdLbl = new Label("Event ID");
     Label volIdLbl = new Label("Volunteer ID");
 
-    TextField idTxt = new TextField();
+    Label idTxt = new Label();
     TextField nameTxt = new TextField();
     TextField speciesTxt = new TextField();
     TextField ageTxt = new TextField();
@@ -167,6 +167,9 @@ public class AnimalList extends Login1 {
             ageTxt.setText(volTable.getSelectionModel().getSelectedItem().getAge() + "");
             medicalTxt.setText(volTable.getSelectionModel().getSelectedItem().getMedicalHistory() + "");
             feedingTxt.setText(volTable.getSelectionModel().getSelectedItem().getFeedingNeeds() + "");
+            eventIdTxt.setText(volTable.getSelectionModel().getSelectedItem().getEventID() + "");
+            volIdTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolID() + "");
+
         });
 
         delete.setOnAction(e -> {
@@ -216,6 +219,43 @@ public class AnimalList extends Login1 {
                 System.out.println("Error! " + ex);
                 message.setText("Error while adding entry. Please check your input and try again.");
             }
+        });
+        
+        modify.setOnAction(e -> {
+            int newID = Integer.valueOf(idTxt.getText());
+            String newName = nameTxt.getText();
+            String newSpecies = speciesTxt.getText();
+            int newAge = Integer.valueOf(ageTxt.getText());
+            String newHistory = medicalTxt.getText();
+            String newFeeding = feedingTxt.getText();
+            String newVetHistory = "";
+            int newEventID = Integer.valueOf(eventIdTxt.getText());
+            int newVolID = Integer.valueOf(volIdTxt.getText());
+            
+            String query = "UPDATE ANIMAL SET name = '" + newName + "', species = '" + newSpecies + "', age = " + newAge + ", medicalHistory = '" + newHistory + 
+                            "', feedingNeeds = '" + newFeeding + "', vetHistory = '" + newVetHistory + "', eventID = " + newEventID + ", volID = " + newVolID + " WHERE animal_ID = " + newID + ""; 
+            sendDBCommand(query); 
+            for (int i = 0; i < animalList.length; i++) {
+                    if (animalList[i].getAnimalID() == Integer.valueOf(idTxt.getText())) {
+                        animalList[i].setAnimalID(newID); 
+                        animalList[i].setName(newName); 
+                        animalList[i].setSpecies(newSpecies); 
+                        animalList[i].setAge(newAge); 
+                        animalList[i].setMedicalHistory(newHistory); 
+                        animalList[i].setFeedingNeeds(newFeeding); 
+                        animalList[i].setVetHistory(newVetHistory); 
+                        animalList[i].setEventID(newEventID); 
+                        animalList[i].setVolID(newVolID); 
+                        break;
+                    }
+                }
+            message.setText("Modify entry successful!");
+            tableData.clear(); 
+            for (Animal x : animalList) {
+                    tableData.add(x);
+                }
+            
+            
         });
 
         backBtn.setOnAction(e -> {
