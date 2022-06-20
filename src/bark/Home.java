@@ -13,14 +13,14 @@ public class Home extends Login1 {
     Login1 login; // Create Login1 object
     Label barkTitle;
     Button eventsBtn = new Button("View Events");
-    Button socialHomeScreenBtn = new Button("View Social Home Screen");
+    Button reviewApplication = new Button("Review Applications"); // Admin only
     Button volunteerInfoBtn = new Button("View Your Information");
     Button assignSpecialBtn = new Button("Assign Specialization");
-    Button volunteerReportBtn = new Button("View Volunteer Report");
+    Button volunteerReportBtn = new Button("View Volunteer Report"); // Admin only
     Button checkoutBtn = new Button("Check Out");
     Button donationBtn = new Button("Donations");
-    Button animalInfoBtn = new Button("Animal Information");
-    Button scheduleBtn = new Button("Schedule Availability");
+    Button animalInfoBtn = new Button("Animal Information"); // Admin only?
+    Button scheduleBtn = new Button("Schedule Availability");   
     Button logoutBtn = new Button("Logout");
     
     Label scrnTitleLbl = new Label("Social Home");
@@ -50,7 +50,7 @@ public class Home extends Login1 {
 
         homePane.add(barkTitle, 0, 0);
         homePane.add(eventsBtn, 0, 1);
-        homePane.add(socialHomeScreenBtn, 0, 2);
+        homePane.add(reviewApplication, 0, 2);
         homePane.add(volunteerInfoBtn, 0, 3);
         homePane.add(assignSpecialBtn, 0, 4);
         homePane.add(volunteerReportBtn, 0, 5);
@@ -121,8 +121,8 @@ public class Home extends Login1 {
         });
 
         // Animal Info Button
-        socialHomeScreenBtn.setOnAction(e -> {
-            SocialHomeScreen soc = new SocialHomeScreen(this);
+        reviewApplication.setOnAction(e -> {
+            ReviewApplication app = new ReviewApplication(this);
         });
         //Schedule Button
         scheduleBtn.setOnAction(e -> {
