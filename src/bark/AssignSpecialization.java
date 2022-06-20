@@ -71,7 +71,7 @@ public class AssignSpecialization extends Login1 {
         
         
         // DB connectivity *** Found workaround -> DB doesn't do anything *** 
-        String sqlBuild = "select * from volunteer";
+        String sqlBuild = "select * from volunteer where volid equals ";
         sendDBCommand(sqlBuild);
         String fullName = "";
         try {
