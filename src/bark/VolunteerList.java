@@ -180,6 +180,10 @@ public class VolunteerList extends Login1 {
                 System.out.println("Error! " + ex); 
             }
         });
+        
+        backBtn.setOnAction(e -> {
+            primaryStage.close(); 
+        });
     }
 
     public void sendDBCommand(String sqlQuery) {
