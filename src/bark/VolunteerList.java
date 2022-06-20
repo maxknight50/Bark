@@ -181,6 +181,10 @@ public class VolunteerList extends Login1 {
             }
         });
         
+        modify.setOnAction(e -> {
+            System.out.println("Modify button clicked");
+        });
+        
         backBtn.setOnAction(e -> {
             primaryStage.close(); 
         });
