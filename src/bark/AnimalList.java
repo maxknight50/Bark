@@ -190,10 +190,28 @@ public class AnimalList extends Login1 {
         });
 
         add.setOnAction(e -> {
-            System.out.println("add button clicked");
+            int largest = 0;
+            String q = "SELECT * FROM ANIMAL";
+            sendDBCommand(q);
             try {
-                int newID = Animal.animalCount + 1;
-                idTxt.setText(String.valueOf(newID)); 
+                while (rs.next()) {
+                    largest = rs.getInt("animal_ID");
+                    System.out.println("First: " + largest);
+                    while (rs.next()) {
+                        int store = rs.getInt("animal_ID");
+                        System.out.println(store);
+                        if (store > largest) {
+                            largest = store;
+                        }
+                    }
+
+                    System.out.println("Final largest: " + largest);
+                }
+            } catch (Exception m) {
+                System.out.println("Exception finding the largest! " + m);
+            }
+            try {
+                int newID = largest + 1;
                 String newName = nameTxt.getText();
                 String newSpecies = speciesTxt.getText();
                 int newAge = Integer.valueOf(ageTxt.getText());
@@ -223,6 +241,7 @@ public class AnimalList extends Login1 {
                         break;
                     }
                 }
+                System.out.println("ANIMAL LIST: " + animalList); 
                 for (Animal x : animalList) {
                     tableData.add(x);
                 }
@@ -244,7 +263,7 @@ public class AnimalList extends Login1 {
             int newVolID = Integer.valueOf(volIdTxt.getText());
 
             String query = "UPDATE ANIMAL SET name = '" + newName + "', species = '" + newSpecies + "', age = " + newAge + ", medicalHistory = '" + newHistory
-                    + "', feedingNeeds = '" + newFeeding + "', vetHistory = '" + newVetHistory + "', eventID = " + newEventID + ", volID = " + newVolID + " WHERE animal_ID = " + newID + "";
+                    + "', feedingNeeds = '" + newFeeding + "', eventID = " + newEventID + ", volID = " + newVolID + " WHERE animal_ID = " + newID + "";
             sendDBCommand(query);
             for (int i = 0; i < animalList.size(); i++) {
                 if (animalList.get(i).getAnimalID() == Integer.valueOf(idTxt.getText())) {
