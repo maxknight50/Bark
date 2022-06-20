@@ -57,7 +57,6 @@ public class VolunteerList extends Login1 {
     Label phoneLbl = new Label("Phone");
     Label cumHrsLbl = new Label("Cumulative Hours");
     Label statusLbl = new Label("Status");
-    Label availLbl = new Label("Availability");
 
     TextField fNameTxt = new TextField();
     TextField lNameTxt = new TextField();
@@ -65,7 +64,6 @@ public class VolunteerList extends Login1 {
     TextField emailTxt = new TextField();
     TextField phoneTxt = new TextField();
     TextField cumHrsTxt = new TextField();
-    TextField availTxt = new TextField();
 
     TextField statusBox = new TextField();
 
@@ -99,8 +97,7 @@ public class VolunteerList extends Login1 {
         modVolunteer.add(cumHrsTxt, 1, 7);
         modVolunteer.add(statusLbl, 0, 8);
         modVolunteer.add(statusBox, 1, 8);
-        modVolunteer.add(availLbl, 0, 9);
-        modVolunteer.add(availTxt, 1, 9);
+
         
         modVolunteer.add(add, 0, 10);
         modVolunteer.add(modify, 1, 10);
@@ -126,11 +123,10 @@ public class VolunteerList extends Login1 {
         status_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("status"));
 
         volTable.getColumns().addAll(id_col, fname_col, lname_col, add_col, dob_col, email_col, phone_col, hours_col, status_col);
+        ListVolunteers[] volunteerList = new ListVolunteers[25];
 
         sendDBCommand("SELECT volID, vol_FirstName, vol_LastName, vol_Address, vol_DateOfBirth, vol_Email, vol_Phone, cumulativeHours, status FROM Volunteer");
-        System.out.println("RESULTSET: " + rs);
         try {
-            ListVolunteers[] volunteerList = new ListVolunteers[25];
             for (int i = 0; i < 100; i++) {
                 while (rs.next()) {
                     if (rs != null) {
@@ -153,6 +149,37 @@ public class VolunteerList extends Login1 {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Listed Volunteers");
         primaryStage.show();
+        
+        add.setOnAction(e -> {
+            System.out.println("Add button has been clicked");
+            try { 
+                String newFirst = fNameTxt.getText(); 
+                String newLast =  lNameTxt.getText(); 
+                String newAddress = addressTxt.getText(); 
+                String newEmail = emailTxt.getText(); 
+                String newPhone = phoneTxt.getText(); 
+                double newCumulative = Integer.valueOf(cumHrsTxt.getText());
+                
+                ListVolunteers newVolunteer = new ListVolunteers(newFirst, newLast, newAddress, newEmail, newPhone, newCumulative); 
+                
+                String query = "INSERT INTO VOLUNTEER(vol_FirstName, vol_LastName, vol_Address, vol_Email, vol_Phone, cumulativeHours) VALUES ('" + newFirst + "', '" + newLast + "', '" + newAddress + "', '" + newEmail + "', '" + newPhone + "', " + newCumulative + ")";
+
+                sendDBCommand(query); 
+                tableData.clear(); 
+                for (int i = 0; i < volunteerList.length; i++){
+                    if(volunteerList[i] == null){
+                        volunteerList[i] = newVolunteer; 
+                        break;
+                    }
+                }
+                for(ListVolunteers x : volunteerList){
+                    tableData.add(x); 
+                }
+                
+            } catch (Exception ex){
+                System.out.println("Error! " + ex); 
+            }
+        });
     }
 
     public void sendDBCommand(String sqlQuery) {

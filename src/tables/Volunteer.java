@@ -2,10 +2,7 @@ package tables;
 
 import java.util.Date;
 
-/**
- *
- * @author coolm
- */
+
 public class Volunteer {
 
     int volunteerID;
@@ -21,6 +18,7 @@ public class Volunteer {
     String username;
     String password;
     int schedID;
+    int volunteerCount = 0; 
 
     public Volunteer(int volunteerID, String volFirst, String volLast, String volAddress, Date dateOfBirth, String volInfo, String volEmail, String volPhone, Double totalHours, String status, String username, String password, int schedID) {
         this.volunteerID = volunteerID;
@@ -36,7 +34,10 @@ public class Volunteer {
         this.username = username;
         this.password = password;
         this.schedID = schedID;
+        volunteerCount++; 
     }
+    
+
 
     public int getVolunteerID() {
         return volunteerID;

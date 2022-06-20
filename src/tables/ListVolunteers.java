@@ -24,6 +24,14 @@ public class ListVolunteers {
        this.totalHours = totalHours; 
        this.status = status; 
    }
+   public ListVolunteers(String first, String last, String address, String email, String phone, Double hours){
+        this.volFirst = first;
+        this.volLast = last; 
+        this.volAddress = address; 
+        this.volEmail = email; 
+        this.volPhone = phone; 
+        this.totalHours = hours; 
+    }
 
     public int getVolunteerID() {
         return volunteerID;
