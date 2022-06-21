@@ -198,19 +198,15 @@ public class VolunteerList extends Login1 {
                 String newEmail = emailTxt.getText();
                 String newPhone = phoneTxt.getText();
                 double newCumulative = Integer.valueOf(cumHrsTxt.getText());
+                String newStatus = statusBox.getText(); 
 
-                ListVolunteers newVolunteer = new ListVolunteers(newID, newFirst, newLast, newAddress, newEmail, newPhone, newCumulative);
+                ListVolunteers newVolunteer = new ListVolunteers(newID, newFirst, newLast, newAddress, newEmail, newPhone, newCumulative, newStatus);
 
-                String query = "INSERT INTO VOLUNTEER(volID, vol_FirstName, vol_LastName, vol_Address, vol_Email, vol_Phone, cumulativeHours) VALUES (" + newID + ",'" + newFirst + "', '" + newLast + "', '" + newAddress + "', '" + newEmail + "', '" + newPhone + "', " + newCumulative + ")";
+                String query = "INSERT INTO VOLUNTEER(volID, vol_FirstName, vol_LastName, vol_Address, vol_Email, vol_Phone, cumulativeHours, status) VALUES (" + newID + ",'" + newFirst + "', '" + newLast + "', '" + newAddress + "', '" + newEmail + "', '" + newPhone + "', " + newCumulative + ", '" + newStatus + "')";
 
                 sendDBCommand(query);
                 tableData.clear();
-//                for (int i = 0; i < volunteerList.size(); i++) {
-//                    if (volunteerList.get(i) == null) {
-//                        volunteerList.add(newVolunteer);
-//                        break;
-//                    }
-//                }
+
                 volunteerList.add(newVolunteer);
                 for (ListVolunteers x : volunteerList) {
                     tableData.add(x);
@@ -230,9 +226,10 @@ public class VolunteerList extends Login1 {
             String newEmail = emailTxt.getText();
             String newPhone = phoneTxt.getText();
             double newCumulative = Double.valueOf(cumHrsTxt.getText());
+            String newStatus = statusBox.getText(); 
 
             String query = "UPDATE VOLUNTEER SET vol_FirstName = '" + newFirst + "', vol_LastName = '" + newLast + "', vol_Address = '" + newAddress + "', vol_Email = '" + newEmail
-                    + "', vol_Phone = '" + newPhone + "', cumulativeHours = " + newCumulative + " WHERE volID = " + newID + "";
+                    + "', vol_Phone = '" + newPhone + "', cumulativeHours = " + newCumulative + ", status = '" + newStatus + "' WHERE volID = " + newID + "";
             sendDBCommand(query);
             for (int i = 0; i < volunteerList.size(); i++) {
                 if (volunteerList.get(i).getVolunteerID() == newID) {
@@ -243,6 +240,7 @@ public class VolunteerList extends Login1 {
                     volunteerList.get(i).setVolEmail(newEmail);
                     volunteerList.get(i).setVolPhone(newPhone);
                     volunteerList.get(i).setTotalHours(newCumulative);
+                    volunteerList.get(i).setStatus(newStatus); 
                     break;
                 }
             }
