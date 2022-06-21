@@ -59,7 +59,7 @@ public class VolunteerList extends Login1 {
     Label cumHrsLbl = new Label("Cumulative Hours");
     Label statusLbl = new Label("Status");
 
-    TextField idField = new TextField(); 
+    TextField idField = new TextField();
     TextField fNameTxt = new TextField();
     TextField lNameTxt = new TextField();
     TextField addressTxt = new TextField();
@@ -67,7 +67,7 @@ public class VolunteerList extends Login1 {
     TextField phoneTxt = new TextField();
     TextField cumHrsTxt = new TextField();
     TextField statusBox = new TextField();
-    
+
     Label message = new Label();
 
     Button backBtn = new Button("Back");
@@ -75,7 +75,6 @@ public class VolunteerList extends Login1 {
     Button delete = new Button("Delete");
     Button modify = new Button("Modify");
     Button populate = new Button("<-- Select and Populate");
-
 
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
@@ -88,8 +87,8 @@ public class VolunteerList extends Login1 {
         paneSettings(modVolunteer);
         modVolunteer.add(backBtn, 0, 0);
         modVolunteer.add(topLbl, 1, 1);
-        modVolunteer.add(volID, 0, 2); 
-        modVolunteer.add(idField, 1, 2); 
+        modVolunteer.add(volID, 0, 2);
+        modVolunteer.add(idField, 1, 2);
         modVolunteer.add(fNameLbl, 0, 3);
         modVolunteer.add(fNameTxt, 1, 3);
         modVolunteer.add(lNameLbl, 0, 4);
@@ -110,9 +109,9 @@ public class VolunteerList extends Login1 {
         modVolunteer.add(delete, 0, 11);
 
         volTable.setItems(tableData);
-        volunteerTable.add(message, 0, 0); 
+        volunteerTable.add(message, 0, 0);
         volunteerTable.add(volTable, 0, 1);
-        volunteerTable.add(populate, 0, 2); 
+        volunteerTable.add(populate, 0, 2);
 
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
@@ -157,17 +156,17 @@ public class VolunteerList extends Login1 {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Listed Volunteers");
         primaryStage.show();
-        
+
         populate.setOnAction(e -> {
             System.out.println("Populate button clicked");
-            idField.setText(volTable.getSelectionModel().getSelectedItem().getVolunteerID() + ""); 
-            fNameTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolFirst() + ""); 
-            lNameTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolLast() + ""); 
-            addressTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolAddress() + ""); 
-            emailTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolEmail() + ""); 
-            phoneTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolPhone() + ""); 
-            cumHrsTxt.setText(volTable.getSelectionModel().getSelectedItem().getTotalHours() + ""); 
-            statusBox.setText(volTable.getSelectionModel().getSelectedItem().getStatus() + ""); 
+            idField.setText(volTable.getSelectionModel().getSelectedItem().getVolunteerID() + "");
+            fNameTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolFirst() + "");
+            lNameTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolLast() + "");
+            addressTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolAddress() + "");
+            emailTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolEmail() + "");
+            phoneTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolPhone() + "");
+            cumHrsTxt.setText(volTable.getSelectionModel().getSelectedItem().getTotalHours() + "");
+            statusBox.setText(volTable.getSelectionModel().getSelectedItem().getStatus() + "");
         });
 
         add.setOnAction(e -> {
@@ -206,12 +205,13 @@ public class VolunteerList extends Login1 {
 
                 sendDBCommand(query);
                 tableData.clear();
-                for (int i = 0; i < volunteerList.size(); i++) {
-                    if (volunteerList.get(i) == null) {
-                        volunteerList.add(newVolunteer);
-                        break;
-                    }
-                }
+//                for (int i = 0; i < volunteerList.size(); i++) {
+//                    if (volunteerList.get(i) == null) {
+//                        volunteerList.add(newVolunteer);
+//                        break;
+//                    }
+//                }
+                volunteerList.add(newVolunteer);
                 for (ListVolunteers x : volunteerList) {
                     tableData.add(x);
                 }
@@ -223,19 +223,19 @@ public class VolunteerList extends Login1 {
 
         modify.setOnAction(e -> {
             System.out.println("Modify button clicked");
-            int newID = Integer.valueOf(idField.getText()); 
+            int newID = Integer.valueOf(idField.getText());
             String newFirst = fNameTxt.getText();
             String newLast = lNameTxt.getText();
             String newAddress = addressTxt.getText();
             String newEmail = emailTxt.getText();
             String newPhone = phoneTxt.getText();
             double newCumulative = Double.valueOf(cumHrsTxt.getText());
-            
+
             String query = "UPDATE VOLUNTEER SET vol_FirstName = '" + newFirst + "', vol_LastName = '" + newLast + "', vol_Address = '" + newAddress + "', vol_Email = '" + newEmail
                     + "', vol_Phone = '" + newPhone + "', cumulativeHours = " + newCumulative + " WHERE volID = " + newID + "";
             sendDBCommand(query);
-            for(int i = 0; i < volunteerList.size(); i++){
-                if(volunteerList.get(i).getVolunteerID() == newID){
+            for (int i = 0; i < volunteerList.size(); i++) {
+                if (volunteerList.get(i).getVolunteerID() == newID) {
                     volunteerList.get(i).setVolunteerID(newID);
                     volunteerList.get(i).setVolFirst(newFirst);
                     volunteerList.get(i).setVolLast(newLast);
@@ -247,22 +247,22 @@ public class VolunteerList extends Login1 {
                 }
             }
             message.setText("Modify entry successful!");
-            tableData.clear(); 
-            for(ListVolunteers x: volunteerList){
-                tableData.add(x); 
+            tableData.clear();
+            for (ListVolunteers x : volunteerList) {
+                tableData.add(x);
             }
         });
-        
+
         delete.setOnAction(e -> {
-            System.out.println(volTable.getSelectionModel().getSelectedItem().getVolunteerID()); 
+            System.out.println(volTable.getSelectionModel().getSelectedItem().getVolunteerID());
             String query = "DELETE FROM VOLUNTEER WHERE volID = " + volTable.getSelectionModel().getSelectedItem().getVolunteerID();
             sendDBCommand(query);
-            message.setText("Entry removed successfully."); 
-            int x = volTable.getSelectionModel().getSelectedIndex(); 
-            volunteerList.remove(x); 
-            tableData.clear(); 
-            for(ListVolunteers z : volunteerList){
-                tableData.add(z); 
+            message.setText("Entry removed successfully.");
+            int x = volTable.getSelectionModel().getSelectedIndex();
+            volunteerList.remove(x);
+            tableData.clear();
+            for (ListVolunteers z : volunteerList) {
+                tableData.add(z);
             }
         });
 
