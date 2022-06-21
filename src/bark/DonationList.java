@@ -47,7 +47,7 @@ public class DonationList extends Login1 {
 
     GridPane tPane1 = new GridPane();
 
-    DonationList(Home home) {
+    public DonationList(Home home) {
         donTable.setItems(tableData);
         tPane1.add(donTable, 0, 0);
 
@@ -84,10 +84,6 @@ public class DonationList extends Login1 {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("List");
         primaryStage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
     public void sendDBCommand(String sqlQuery) {

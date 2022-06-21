@@ -107,12 +107,12 @@ public class Home extends Login1 {
 
         // Events Menu button
         eventsBtn.setOnAction(e -> {
-            EventsMenu em = new EventsMenu(this);
+            EventsRetry em = new EventsRetry(this);
         });
 
         // Donations Button
         donationBtn.setOnAction(e -> {
-            DonationStatus don = new DonationStatus(this);
+            DonationList don = new DonationList(this);
         });
 
         // Animal Info Button
