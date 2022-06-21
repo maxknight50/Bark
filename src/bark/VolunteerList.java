@@ -49,6 +49,7 @@ public class VolunteerList extends Login1 {
     TableColumn status_col = new TableColumn("Status");
 
     // Left side
+    Label volID = new Label("Volunteer ID");
     Label topLbl = new Label("Volunteer Status");
     Label fNameLbl = new Label("First Name");
     Label lNameLbl = new Label("Last Name");
@@ -58,6 +59,7 @@ public class VolunteerList extends Login1 {
     Label cumHrsLbl = new Label("Cumulative Hours");
     Label statusLbl = new Label("Status");
 
+    TextField idField = new TextField(); 
     TextField fNameTxt = new TextField();
     TextField lNameTxt = new TextField();
     TextField addressTxt = new TextField();
@@ -86,20 +88,22 @@ public class VolunteerList extends Login1 {
         paneSettings(modVolunteer);
         modVolunteer.add(backBtn, 0, 0);
         modVolunteer.add(topLbl, 1, 1);
-        modVolunteer.add(fNameLbl, 0, 2);
-        modVolunteer.add(fNameTxt, 1, 2);
-        modVolunteer.add(lNameLbl, 0, 3);
-        modVolunteer.add(lNameTxt, 1, 3);
-        modVolunteer.add(addressLbl, 0, 4);
-        modVolunteer.add(addressTxt, 1, 4);
-        modVolunteer.add(emailLbl, 0, 5);
-        modVolunteer.add(emailTxt, 1, 5);
-        modVolunteer.add(phoneLbl, 0, 6);
-        modVolunteer.add(phoneTxt, 1, 6);
-        modVolunteer.add(cumHrsLbl, 0, 7);
-        modVolunteer.add(cumHrsTxt, 1, 7);
-        modVolunteer.add(statusLbl, 0, 8);
-        modVolunteer.add(statusBox, 1, 8);
+        modVolunteer.add(volID, 0, 2); 
+        modVolunteer.add(idField, 1, 2); 
+        modVolunteer.add(fNameLbl, 0, 3);
+        modVolunteer.add(fNameTxt, 1, 3);
+        modVolunteer.add(lNameLbl, 0, 4);
+        modVolunteer.add(lNameTxt, 1, 4);
+        modVolunteer.add(addressLbl, 0, 5);
+        modVolunteer.add(addressTxt, 1, 5);
+        modVolunteer.add(emailLbl, 0, 6);
+        modVolunteer.add(emailTxt, 1, 6);
+        modVolunteer.add(phoneLbl, 0, 7);
+        modVolunteer.add(phoneTxt, 1, 7);
+        modVolunteer.add(cumHrsLbl, 0, 8);
+        modVolunteer.add(cumHrsTxt, 1, 8);
+        modVolunteer.add(statusLbl, 0, 9);
+        modVolunteer.add(statusBox, 1, 9);
 
         modVolunteer.add(add, 0, 10);
         modVolunteer.add(modify, 1, 10);
@@ -156,6 +160,7 @@ public class VolunteerList extends Login1 {
         
         populate.setOnAction(e -> {
             System.out.println("Populate button clicked");
+            idField.setText(volTable.getSelectionModel().getSelectedItem().getVolunteerID() + ""); 
             fNameTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolFirst() + ""); 
             lNameTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolLast() + ""); 
             addressTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolAddress() + ""); 
@@ -218,17 +223,34 @@ public class VolunteerList extends Login1 {
 
         modify.setOnAction(e -> {
             System.out.println("Modify button clicked");
-            int newID = ListVolunteers.volunteerCount + 1;
+            int newID = Integer.valueOf(idField.getText()); 
             String newFirst = fNameTxt.getText();
             String newLast = lNameTxt.getText();
             String newAddress = addressTxt.getText();
             String newEmail = emailTxt.getText();
             String newPhone = phoneTxt.getText();
-            double newCumulative = Integer.valueOf(cumHrsTxt.getText());
+            double newCumulative = Double.valueOf(cumHrsTxt.getText());
             
-            String query = "UPDATE VOLUNTEER SET vol_FirstName = '" + newFirst + "', vol_LastName = '" + newLast + "', vol_Address = " + newAddress + "', vol_Email = '" + newEmail
-                    + "', vol_Phone = '" + newPhone + "', cumulativeHours = " + newCumulative + "WHERE volID = " + newID + "";
+            String query = "UPDATE VOLUNTEER SET vol_FirstName = '" + newFirst + "', vol_LastName = '" + newLast + "', vol_Address = '" + newAddress + "', vol_Email = '" + newEmail
+                    + "', vol_Phone = '" + newPhone + "', cumulativeHours = " + newCumulative + " WHERE volID = " + newID + "";
             sendDBCommand(query);
+            for(int i = 0; i < volunteerList.size(); i++){
+                if(volunteerList.get(i).getVolunteerID() == newID){
+                    volunteerList.get(i).setVolunteerID(newID);
+                    volunteerList.get(i).setVolFirst(newFirst);
+                    volunteerList.get(i).setVolLast(newLast);
+                    volunteerList.get(i).setVolAddress(newAddress);
+                    volunteerList.get(i).setVolEmail(newEmail);
+                    volunteerList.get(i).setVolPhone(newPhone);
+                    volunteerList.get(i).setTotalHours(newCumulative);
+                    break;
+                }
+            }
+            message.setText("Modify entry successful!");
+            tableData.clear(); 
+            for(ListVolunteers x: volunteerList){
+                tableData.add(x); 
+            }
 
         });
 
