@@ -64,13 +64,16 @@ public class VolunteerList extends Login1 {
     TextField emailTxt = new TextField();
     TextField phoneTxt = new TextField();
     TextField cumHrsTxt = new TextField();
-
     TextField statusBox = new TextField();
+    
+    Label message = new Label();
 
     Button backBtn = new Button("Back");
     Button add = new Button("Add");
     Button delete = new Button("Delete");
     Button modify = new Button("Modify");
+    Button populate = new Button("<-- Select and Populate");
+
 
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
@@ -103,7 +106,9 @@ public class VolunteerList extends Login1 {
         modVolunteer.add(delete, 0, 11);
 
         volTable.setItems(tableData);
-        volunteerTable.add(volTable, 0, 0);
+        volunteerTable.add(message, 0, 0); 
+        volunteerTable.add(volTable, 0, 1);
+        volunteerTable.add(populate, 0, 2); 
 
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
@@ -148,6 +153,17 @@ public class VolunteerList extends Login1 {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Listed Volunteers");
         primaryStage.show();
+        
+        populate.setOnAction(e -> {
+            System.out.println("Populate button clicked");
+            fNameTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolFirst() + ""); 
+            lNameTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolLast() + ""); 
+            addressTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolAddress() + ""); 
+            emailTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolEmail() + ""); 
+            phoneTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolPhone() + ""); 
+            cumHrsTxt.setText(volTable.getSelectionModel().getSelectedItem().getTotalHours() + ""); 
+            statusBox.setText(volTable.getSelectionModel().getSelectedItem().getStatus() + ""); 
+        });
 
         add.setOnAction(e -> {
             int largest = 0;
