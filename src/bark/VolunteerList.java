@@ -251,7 +251,19 @@ public class VolunteerList extends Login1 {
             for(ListVolunteers x: volunteerList){
                 tableData.add(x); 
             }
-
+        });
+        
+        delete.setOnAction(e -> {
+            System.out.println(volTable.getSelectionModel().getSelectedItem().getVolunteerID()); 
+            String query = "DELETE FROM VOLUNTEER WHERE volID = " + volTable.getSelectionModel().getSelectedItem().getVolunteerID();
+            sendDBCommand(query);
+            message.setText("Entry removed successfully."); 
+            int x = volTable.getSelectionModel().getSelectedIndex(); 
+            volunteerList.remove(x); 
+            tableData.clear(); 
+            for(ListVolunteers z : volunteerList){
+                tableData.add(z); 
+            }
         });
 
         backBtn.setOnAction(e -> {
