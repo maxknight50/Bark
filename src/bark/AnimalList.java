@@ -227,7 +227,7 @@ public class AnimalList extends Login1 {
                 //Create new animal in the animalList array
                 Animal newAnimal = new Animal(newID, newName, newSpecies, newAge,
                         newHistory, newFeeding, newVetHistory, newEventID, newVolID);
-
+                System.out.println("NEW ANIMAL: " + newAnimal.toString()); 
                 String query = "INSERT INTO ANIMAL(animal_ID, name,"
                         + "species, age, medicalHistory, feedingNeeds, eventID, volID)"
                         + "VALUES (" + newID + ", '" + newName + "', '" + newSpecies + "', " + newAge + ", '" + newHistory + "', '" + newFeeding + "', " + newEventID + ", " + newVolID + ")";
@@ -235,12 +235,12 @@ public class AnimalList extends Login1 {
                 sendDBCommand(query);
                 message.setText("Entry added successfully.");
                 tableData.clear();
-                for (int i = 0; i < animalList.size(); i++) {
+                for (int i = 0; i < animalList.size() + 1; i++) {
                     if (animalList.get(i) == null) {
                         animalList.add(newAnimal);
                         break;
                     }
-                }
+                } 
                 System.out.println("ANIMAL LIST: " + animalList); 
                 for (Animal x : animalList) {
                     tableData.add(x);
