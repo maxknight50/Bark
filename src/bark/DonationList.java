@@ -11,11 +11,7 @@ import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -44,6 +40,20 @@ public class DonationList extends Login1 {
     //MenuBar menuBar = new MenuBar();
     //Menu menuDonations = new Menu("Donations");
     //MenuItem enterDonations = new MenuItem("Enter Donations...");
+    
+    Label donorName = new Label("Donor Name");
+    Label donoAmount = new Label("Donation Amount");
+    Label donoDate = new Label("Donation Date");
+    
+    TextField nameField = new TextField(); 
+    TextField amountField = new TextField(); 
+    TextField dateField = new TextField(); 
+    
+    Button backBtn = new Button("Back");
+    Button add = new Button("Add");
+    Button delete = new Button("Delete");
+    Button modify = new Button("Modify");
+    Button populate = new Button("<-- Select and Populate");
 
     GridPane tPane1 = new GridPane();
 
