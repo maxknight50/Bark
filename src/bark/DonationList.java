@@ -33,8 +33,8 @@ public class DonationList extends Login1 {
     static Connection conn;
     ResultSet rs;
 
-    TableView<Donation> donTable = new TableView<>();
-    ObservableList<Donation> tableData = FXCollections.observableArrayList();
+    TableView<Donation1> donTable = new TableView<>();
+    ObservableList<Donation1> tableData = FXCollections.observableArrayList();
 
     TableColumn id_col = new TableColumn("Donation ID");
     TableColumn amountColumn = new TableColumn("Amount");
@@ -51,26 +51,26 @@ public class DonationList extends Login1 {
         donTable.setItems(tableData);
         tPane1.add(donTable, 0, 0);
 
-        id_col.setCellValueFactory(new PropertyValueFactory<Donation, Integer>("donation_ID"));
-        amountColumn.setCellValueFactory(new PropertyValueFactory<Donation, Double>("donationAmt"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Donation, String>("donationName"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<Donation, Date>("donationDate"));
-        volIdColumn.setCellValueFactory(new PropertyValueFactory<Donation, Integer>("volID"));
+        id_col.setCellValueFactory(new PropertyValueFactory<Donation1, Integer>("donation_ID"));
+        amountColumn.setCellValueFactory(new PropertyValueFactory<Donation1, String>("donationAmt"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<Donation1, String>("donationName"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<Donation1, Date>("donationDate"));
+        volIdColumn.setCellValueFactory(new PropertyValueFactory<Donation1, Integer>("volID"));
 
         donTable.getColumns().addAll(id_col, amountColumn, nameColumn, dateColumn, volIdColumn);
 
         sendDBCommand("SELECT donation_ID, donationAmt, donationName, donationDate, volID FROM Donation");
         try {
-            Donation[] dList = new Donation[25];
+            Donation1[] dList = new Donation1[25];
             for (int i = 0; i < 100; i++) {
                 while (rs.next()) {
                     if (rs != null) {
-                        dList[i] = new Donation(rs.getInt("donation_ID"), rs.getDouble("donationAmt"), rs.getString("donationName"), rs.getDate("donationDate"), rs.getInt("volID"));
+                        dList[i] = new Donation1(rs.getInt("donation_ID"), rs.getString("donationAmt"), rs.getString("donationName"), rs.getDate("donationDate"), rs.getInt("volID"));
                         break;
                     }
                 }
             }
-            for (Donation x : dList) {
+            for (Donation1 x : dList) {
                 tableData.add(x);
             }
 
@@ -81,6 +81,7 @@ public class DonationList extends Login1 {
         //menuBar.getMenus().addAll(menuDonations);
         //tPane1.add(menuBar, 0, 0);
         Scene primaryScene = new Scene(tPane1, 600, 450);
+        donTable.setMinWidth(primaryScene.getWidth()); 
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("List");
         primaryStage.show();
