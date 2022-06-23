@@ -109,8 +109,8 @@ public class VolunteerList extends Login1 {
         modVolunteer.add(statusBox, 1, 10);
 
         modVolunteer.add(add, 0, 11);
-        modVolunteer.add(modify, 1, 11);
-        modVolunteer.add(delete, 0, 12);
+        modVolunteer.add(modify, 0, 12);
+        modVolunteer.add(delete, 0, 13);
 
         volTable.setItems(tableData);
         volunteerTable.add(message, 0, 0);
@@ -121,7 +121,7 @@ public class VolunteerList extends Login1 {
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
         viewPaw.setY(150);
-        modVolunteer.add(viewPaw, 1, 12);
+        modVolunteer.add(viewPaw, 1, 14);
 
         id_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Integer>("volunteerID"));
         fname_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("volFirst"));
