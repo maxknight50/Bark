@@ -79,7 +79,7 @@ public class Home extends Login1 {
         socialPane.setAlignment(Pos.TOP_CENTER);
         mainPane.add(socialPane, 1, 0);
         Stage primaryStage1 = login.primaryStage;
-        Scene primaryScene = new Scene(mainPane, 900, 450);
+        Scene primaryScene = new Scene(mainPane, 900, 550);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Home");
         primaryStage.show();
