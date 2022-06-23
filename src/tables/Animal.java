@@ -17,11 +17,9 @@ public class Animal {
     public String medicalHistory;
     public String feedingNeeds;
     public String vetHistory;
-    public int eventID;
-    public int volID;
     public static int animalCount = 0; 
     
-    public Animal(int id, String name, String species, int age, String medical, String feeding, String vet, int eventid, int volid) {
+    public Animal(int id, String name, String species, int age, String medical, String feeding, String vet) {
         this.animalID = id;
         this.name = name;
         this.species = species;
@@ -29,8 +27,6 @@ public class Animal {
         this.medicalHistory = medical;
         this.feedingNeeds = feeding;
         this.vetHistory = vet;
-        this.eventID = eventid;
-        this.volID = volid;
         animalCount++; 
     }
     
@@ -90,27 +86,11 @@ public class Animal {
         this.vetHistory = vet;
     }
     
-    public int getEventID() {
-        return eventID;
-    }
-    
-    public void setEventID(int event) {
-        this.eventID = event;
-    }
-    
-    public int getVolID() {
-        return volID;
-    }
-    
-    public void setVolID(int vol) {
-        this.volID = vol;
-    }
     
     public String toString(){
         return "ID: " + animalID + " Name: " + name + " Species: " + species + 
                 " Age: " + age + " Medical History: " + medicalHistory +
-                " Feeding Needs: " + feedingNeeds + " Vet History: " + vetHistory + 
-                " EventID: " + eventID + " VolunteerID: " + volID; 
+                " Feeding Needs: " + feedingNeeds + " Vet History: " + vetHistory; 
       }
 }
     
