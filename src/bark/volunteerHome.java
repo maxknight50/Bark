@@ -15,7 +15,7 @@ public class volunteerHome extends Home {
     //Button reviewApplication = new Button("Review Applications"); // Admin only
     Button volunteerInfoBtn = new Button("View Your Information");
     Button assignSpecialBtn = new Button("Assign Specialization");
-    Button volunteerReportBtn = new Button("View Volunteer Report"); // Admin only
+    //Button volunteerReportBtn = new Button("View Volunteer Report"); // Admin only
     Button checkoutBtn = new Button("Check Out");
     //Button donationBtn = new Button("Donations");
     //Button animalInfoBtn = new Button("Animal Information"); // Admin only?
@@ -52,7 +52,7 @@ public class volunteerHome extends Home {
         //homePane.add(reviewApplication, 0, 2);
         homePane.add(volunteerInfoBtn, 0, 3);
         homePane.add(assignSpecialBtn, 0, 4);
-        homePane.add(volunteerReportBtn, 0, 5);
+        //homePane.add(volunteerReportBtn, 0, 5);
         //homePane.add(donationBtn, 0, 6);
         //homePane.add(animalInfoBtn, 0, 7);
         //homePane.add(scheduleBtn, 0, 8);
@@ -82,7 +82,7 @@ public class volunteerHome extends Home {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Volunteer Home");
         primaryStage.show();
-
+        
         // Check out button
         checkoutBtn.setOnAction(e -> {
             //primaryStage.setScene(Checkout.primaryScene);
@@ -101,7 +101,7 @@ public class volunteerHome extends Home {
 
         // Events Menu button
         eventsBtn.setOnAction(e -> {
-            //EventsRetry em = new EventsRetry(this);
+            EventsRetry em = new EventsRetry(this);
         });
         
         //Logout Button
