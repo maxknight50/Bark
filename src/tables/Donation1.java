@@ -2,19 +2,19 @@ package tables;
 
 import java.util.*;
 
-public class Donation {
+public class Donation1 {
 
-    private int donationID;
-    private double donationAmt;
-    private String donationName;
-    private Date donationDate;
+    public int donationID;
+    public String donationAmt;
+    public String donationName;
+    public Date donationDate;
     int volunteerID;
 
-    public Donation(int donationID, double donationAmt, String donoName, Date donoDate, int volID) {
+    public Donation1(int donationID, String donationAmt, String donoName, Date donoDate, int volID) {
         this.donationID = donationID;
         this.donationAmt = donationAmt;
-        this.donationName = donationName;
-        this.donationDate = donationDate;
+        this.donationName = donoName;
+        this.donationDate = donoDate;
         this.volunteerID = volID;
     }
 
@@ -26,11 +26,11 @@ public class Donation {
         this.donationID = donationID;
     }
 
-    public double getDonationAmt() {
+    public String getDonationAmt() {
         return donationAmt;
     }
 
-    public void setDonationAmt(double donationAmt) {
+    public void setDonationAmt(String donationAmt) {
         this.donationAmt = donationAmt;
     }
 
