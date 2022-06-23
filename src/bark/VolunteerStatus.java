@@ -101,8 +101,10 @@ public class VolunteerStatus extends Login1 {
         backBtn.setOnAction(e -> {
             primaryStage.close();
         });
-        System.out.println("ID:" + login.name);
-        sendDBCommand("select * from Volunteer");
+        System.out.println("ID:" + home.login.id);
+        String tmp = "select * from Volunteer where volID = ";
+        tmp += home.login.id;
+        sendDBCommand(tmp);
 
         try {
             // Read in first values
