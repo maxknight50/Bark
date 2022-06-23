@@ -41,9 +41,6 @@ public class AssignSpecialization extends Login1 {
     
     ObservableList<String> specialization = FXCollections.observableArrayList();
     
-    Statement stmt;
-    static Connection conn;
-    ResultSet rs;
 
     AssignSpecialization(Home home) {
         
@@ -68,22 +65,6 @@ public class AssignSpecialization extends Login1 {
         currentList.setPrefHeight(200);
         currentList.setMinSize(200.0, Control.USE_PREF_SIZE);
         currentList.setMaxSize(200.0, Control.USE_PREF_SIZE);
-        
-        
-        // DB connectivity *** Found workaround -> DB doesn't do anything *** 
-        String sqlBuild = "select * from volunteer where volid equals ";
-        sendDBCommand(sqlBuild);
-        String fullName = "";
-        try {
-            if (rs.next()) {
-                //System.out.print(rs.next());
-                fullName = rs.getString("vol_firstname") + " " + rs.getString("vol_lastname");
-                //volNameTxt.setText(fullName);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error- " + e.toString());
-        }
-        
         
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
@@ -126,26 +107,6 @@ public class AssignSpecialization extends Login1 {
         pane.setAlignment(Pos.CENTER);
     }
     
-    @Override
-    public void sendDBCommand(String sqlQuery) {
-        String URL = "jdbc:oracle:thin:@localhost:1521:XE";
-        String userID = "javauser";
-        String userPASS = "javapass";
-        OracleDataSource ds;
 
-        // You can comment this line out when your program is finished
-        System.out.println(sqlQuery);
-
-        try {
-            ds = new OracleDataSource();
-            ds.setURL(URL);
-            conn = ds.getConnection(userID, userPASS);
-            stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            rs = stmt.executeQuery(sqlQuery); // Sends the Query to the DB
-
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-        }
-    }
     
 }
