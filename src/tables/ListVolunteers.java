@@ -7,14 +7,14 @@ public class ListVolunteers {
    String volFirst;
    String volLast;
    String volAddress;
-   Date dateOfBirth;
+   String dateOfBirth;
    String volEmail;
    String volPhone;
    Double totalHours;
    String status;
    public static int volunteerCount = 0; 
    
-   public ListVolunteers(int id, String first, String last, String address, Date date, String email, String phone, Double totalHours, String status){
+   public ListVolunteers(int id, String first, String last, String address, String date, String email, String phone, Double totalHours, String status){
        this.volunteerID = id; 
        this.volFirst = first; 
        this.volLast = last; 
@@ -69,11 +69,11 @@ public class ListVolunteers {
         this.volAddress = volAddress;
     }
 
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
