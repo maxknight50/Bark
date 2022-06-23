@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 public class Checkout extends Login1 {
     Home home;
     
-    Button backBtn = new Button("Back");
+    //Button backBtn = new Button("Back");
     Label titleLbl = new Label("Check Out");
     Label currentHrsLbl = new Label("Your current hours: ");
     Label currentHrsDisplayLbl = new Label();
@@ -37,7 +37,7 @@ public class Checkout extends Login1 {
         paneSettings(checkoutPane);
         
         // add nodes
-        checkoutPane.add(backBtn, 0, 0);
+        //checkoutPane.add(backBtn, 0, 0);
         checkoutPane.add(titleLbl, 1, 0);
         checkoutPane.add(currentHrsLbl, 1, 1);
         checkoutPane.add(currentHrsDisplayLbl, 2, 1);
@@ -61,10 +61,10 @@ public class Checkout extends Login1 {
         primaryStage.setTitle("BARK Checkout");
         primaryStage.show();
         
-        backBtn.setOnAction(e -> {
-            Home backHome = new Home(home);
-            primaryStage.close();
-        });
+        //backBtn.setOnAction(e -> {
+            //Home backHome = new Home(home);
+            //primaryStage.close();
+        //});
     }
     
     
