@@ -12,19 +12,22 @@ public class Event {
     public Date eventDate; 
     public String eventTime; 
     public String eventLocation; 
+    public String eventCategory;
+    public String eventStatus;
     
-    public static int eventCount = 0; 
-    
-    public Event(){
-        this.eventID = eventCount + 1; 
-        this.eventType = "";
-        this.eventName = ""; 
-        this.eventDescription = ""; 
-        this.maxVolunteers = 0; 
-       // this.eventDate - ???; 
-        this.eventTime = ""; 
-        this.eventLocation = ""; 
+    //public static int eventCount = 0; 
 
+    public Event(int eventID, String eventType, String eventName, String eventDescription, int maxVolunteers, Date eventDate, String eventTime, String eventLocation, String eventCategory, String eventStatus) {
+        this.eventID = eventID;
+        this.eventType = eventType;
+        this.eventName = eventName;
+        this.eventDescription = eventDescription;
+        this.maxVolunteers = maxVolunteers;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.eventLocation = eventLocation;
+        this.eventCategory = eventCategory;
+        this.eventStatus = eventStatus;
     }
 
     public int getEventID() {
@@ -91,11 +94,20 @@ public class Event {
         this.eventLocation = eventLocation;
     }
 
-    public static int getEventCount() {
-        return eventCount;
+    public String getEventCategory() {
+        return eventCategory;
     }
 
-    public static void setEventCount(int eventCount) {
-        Event.eventCount = eventCount;
+    public void setEventCategory(String eventCategory) {
+        this.eventCategory = eventCategory;
     }
+
+    public String getEventStatus() {
+        return eventStatus;
+    }
+
+    public void setEventStatus(String eventStatus) {
+        this.eventStatus = eventStatus;
+    }
+    
 }

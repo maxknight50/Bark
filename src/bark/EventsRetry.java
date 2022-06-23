@@ -27,9 +27,12 @@ public class EventsRetry extends Login1 {
     TableView<Event> hostedTable = new TableView<>();
     TableView<Event> pastTable = new TableView<>();
 
-    ObservableList<DailyEvent> dailyData = FXCollections.observableArrayList();
-    ObservableList<PastEvent> pastData = FXCollections.observableArrayList();
-    ObservableList<YourEvent> yourData = FXCollections.observableArrayList();
+    ObservableList<Event> dailyData = FXCollections.observableArrayList();
+    ObservableList<Event> pastData = FXCollections.observableArrayList();
+    ObservableList<Event> yourData = FXCollections.observableArrayList();
+    ArrayList<Event> daily = new ArrayList<>();
+    ArrayList<Event> past = new ArrayList<>();
+    ArrayList<Event> your = new ArrayList<>();
 
     //Create the columns for each table
     TableColumn yourName = new TableColumn("Event Name");
@@ -60,21 +63,25 @@ public class EventsRetry extends Login1 {
     GridPane tPane3 = new GridPane();
 
     // Tab creation
-    Tab tab1 = new Tab("Daily Events");
+    Tab tab1 = new Tab("Your Events");
     Tab tab2 = new Tab("Past Events");
-    Tab tab3 = new Tab("Your Events");
+    Tab tab3 = new Tab("Daily Events");
 
     GridPane eventsPane = new GridPane();
     TabPane tabPane = new TabPane();
 
-    EventsRetry(Home home) {
+    EventsRetry(Home home) throws SQLException {
         this.home = home;
+
+        yourTable.setItems(yourData);
+        dailyTable.setItems(dailyData);
+        pastTable.setItems(pastData);
 
         eventsPane.add(tabPane, 0, 1);
 
-        tab1.setContent(tPane1);
+        tab1.setContent(tPane3);
         tab2.setContent(tPane2);
-        tab3.setContent(tPane3);
+        tab3.setContent(tPane1);
         tabPane.getTabs().addAll(tab1, tab2, tab3);
         //TabPane tabClosingPolicy="UNAVAILABLE";
         tab1.setClosable(false);
@@ -90,10 +97,12 @@ public class EventsRetry extends Login1 {
         dailyEvent.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
         dailyDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
         dailyDuration.setCellValueFactory(new PropertyValueFactory<Event, String>("eventTime"));
+
         pastEvent.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
         pastMax.setCellValueFactory(new PropertyValueFactory<Event, Integer>("maxVolunteers"));
         //pastAssigned.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
         pastDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
+
         yourName.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
         yourDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
         yourDuration.setCellValueFactory(new PropertyValueFactory<Event, String>("eventTime"));
@@ -103,47 +112,34 @@ public class EventsRetry extends Login1 {
         dailyTable.getColumns().addAll(dailyEvent, dailyDate, dailyDuration);
         pastTable.getColumns().addAll(pastEvent, pastMax, pastDate);
         yourTable.getColumns().addAll(yourName, yourDate, yourDuration, yourDistance, yourCategory);
-        
+
 //        dailyTable.setItems(table1Data);
 //        eventTable2.setItems(table2Data);
 //        eventTable3.setItems(table3Data);
-
         //Query the database and populate the tables
-        sendDBCommand("SELECT E.eventID, eventType, eventName, maxVolunteers, eventDate, eventTime, EH.Miles_Driven "
-                + "FROM Event E INNER JOIN EventHistory EH ON EH.EventID = E.EventID");
+//        sendDBCommand("SELECT E.eventID, eventType, eventName, eventDescription, maxVolunteers, eventDate, eventTime, eventLocation, eventCategory, eventStatus, EH.Miles_Driven "
+//                + "FROM Event E INNER JOIN EventHistory EH ON EH.EventID = E.EventID WHERE eventCategory = 'Daily event'"");
         try {
-            ArrayList<Event> daily = new ArrayList<>();
-            ArrayList<Event> past = new ArrayList<>();
-            ArrayList<Event> your = new ArrayList<>();
-            DailyEvent[] dailyEvents = new DailyEvent[20];
-            PastEvent[] pastEvents = new PastEvent[20];
-            YourEvent[] yourEvents = new YourEvent[20];
-             for(int i = 0; i < 100; i++){
-                while (rs.next()) {
-                    if (rs != null) {
-                        System.out.println("FOR TABLE 1: " + rs.getString("eventName") + " " + rs.getString("eventDate") + " " + rs.getString("eventTime"));
-                        dailyEvents[i] = new DailyEvent(rs.getString("eventName"), rs.getDate("eventDate"), rs.getString("eventTime"));
-                        pastEvents[i] = new PastEvent(rs.getString("eventName"), rs.getInt("maxVolunteers"), rs.getDate("eventDate"));
-                        yourEvents[i] = new YourEvent(rs.getString("eventName"), rs.getInt("maxVolunteers"), rs.getDate("eventDate"), rs.getString("eventTime"), rs.getInt("miles_Driven"), rs.getString("eventType"));                   
-                        System.out.println(dailyEvents[i].toString());
-                        System.out.println(pastEvents[i].toString());
-                        System.out.println(yourEvents[i].toString()); 
-                        break;
-                    }
-                }
-             }
-             for (DailyEvent x : dailyEvents){
-                 dailyData.add(x); 
-             }
-             for(PastEvent x: pastEvents){
-                 pastData.add(x); 
-             }
-             for(YourEvent x : yourEvents){
-                 yourData.add(x); 
-             }
-             
-        } catch (SQLException e) {
-            System.out.println("SQL Exception! " + e);
+
+            sendDBCommand("SELECT E.eventID, eventType, eventName, eventDescription, maxVolunteers, eventDate, eventTime, eventLocation, eventCategory, eventStatus "
+                    + "FROM Event E WHERE eventCategory = 'Daily event'");
+            while (rs.next()) {
+                dailyData.add(new Event(rs.getInt("eventID"), rs.getString("eventType"), rs.getString("eventName"), rs.getString("eventDescription"),
+                        rs.getInt("maxVolunteers"), rs.getDate("eventDate"), rs.getString("eventTime"), rs.getString("eventLocation"), rs.getString("eventCategory"),
+                        rs.getString("eventStatus")));
+                System.out.println("FOR TABLE 1: " + rs.getString("eventName") + " " + rs.getString("eventDate") + " " + rs.getString("eventTime"));
+            }
+            sendDBCommand("SELECT E.eventID, eventType, eventName, eventDescription, maxVolunteers, eventDate, eventTime, eventLocation, eventCategory, eventStatus "
+                    + "FROM Event E WHERE eventStatus = 'completed'");
+            while (rs.next()) {
+                pastData.add(new Event(rs.getInt("eventID"), rs.getString("eventType"), rs.getString("eventName"), rs.getString("eventDescription"),
+                        rs.getInt("maxVolunteers"), rs.getDate("eventDate"), rs.getString("eventTime"), rs.getString("eventLocation"), rs.getString("eventCategory"),
+                        rs.getString("eventStatus")));
+                System.out.println("FOR TABLE 2: " + rs.getString("eventName") + " " + rs.getString("eventDate") + " " + rs.getString("eventTime"));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
         }
 
         Stage primaryStage = new Stage();
