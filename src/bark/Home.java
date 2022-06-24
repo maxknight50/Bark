@@ -7,6 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import java.sql.SQLException;
+import java.awt.Color;
 
 public class Home extends Login1 {
 
@@ -20,12 +22,12 @@ public class Home extends Login1 {
     Button checkoutBtn = new Button("Check Out");
     Button donationBtn = new Button("Donations");
     Button animalInfoBtn = new Button("Animal Information"); // Admin only?
-    Button scheduleBtn = new Button("Schedule Availability");   
+    Button scheduleBtn = new Button("Schedule Availability");
     Button logoutBtn = new Button("Logout");
-    
+
     Label scrnTitleLbl = new Label("Social Home");
     Label dateLbl = new Label("Date");
-    
+
     Label takeOut = new Label("06/01/22");
     Label takeOut3 = new Label("05/28/22");
 
@@ -33,7 +35,7 @@ public class Home extends Login1 {
 
     Label takeOut2 = new Label("John Smith completed 20 hours of training. Congratulations!");
     Label takeOut4 = new Label("Elizabeth Ley joined BARK!");
-    
+
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
 
@@ -59,7 +61,6 @@ public class Home extends Login1 {
         homePane.add(scheduleBtn, 0, 8);
         homePane.add(checkoutBtn, 0, 9);
         homePane.add(logoutBtn, 0, 10);
-
         paneSettings(socialPane);
         socialPane.add(scrnTitleLbl, 0, 0);
         socialPane.add(dateLbl, 0, 1);
@@ -68,7 +69,7 @@ public class Home extends Login1 {
         socialPane.add(takeOut2, 2, 3);
         socialPane.add(takeOut3, 0, 5);
         socialPane.add(takeOut4, 2, 5);
-        
+
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
@@ -107,7 +108,11 @@ public class Home extends Login1 {
 
         // Events Menu button
         eventsBtn.setOnAction(e -> {
-            EventsRetry em = new EventsRetry(this);
+            try {
+                EventsRetry em = new EventsRetry(this);
+            } catch (SQLException ex) {
+                System.out.println("SQL Exception! " + ex);
+            }
         });
 
         // Donations Button
@@ -128,7 +133,7 @@ public class Home extends Login1 {
         scheduleBtn.setOnAction(e -> {
             ScheduleAvailability sa = new ScheduleAvailability(this);
         });
-        
+
         //Logout Button
         logoutBtn.setOnAction(e -> {
             Logout lo = new Logout(this);

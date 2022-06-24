@@ -7,8 +7,10 @@ import javafx.scene.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import java.sql.SQLException;
 
 public class volunteerHome extends Home {
+
     Login1 login; // Create Login1 object
     Label barkTitle;
     Button eventsBtn = new Button("View Events");
@@ -21,10 +23,10 @@ public class volunteerHome extends Home {
     //Button animalInfoBtn = new Button("Animal Information"); // Admin only?
     //Button scheduleBtn = new Button("Schedule Availability");   
     Button logoutBtn = new Button("Logout");
-    
+
     Label scrnTitleLbl = new Label("Social Home");
     Label dateLbl = new Label("Date");
-    
+
     Label takeOut = new Label("06/01/22");
     Label takeOut3 = new Label("05/28/22");
 
@@ -32,7 +34,7 @@ public class volunteerHome extends Home {
 
     Label takeOut2 = new Label("John Smith completed 20 hours of training. Congratulations!");
     Label takeOut4 = new Label("Elizabeth Ley joined BARK!");
-    
+
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
 
@@ -42,11 +44,11 @@ public class volunteerHome extends Home {
 
     volunteerHome(Login1 login) {
         super(login);
-        
+
         barkTitle = new Label("Welcome to BARK, " + login.name + "!"); // Get name identified in login
-        
+
         paneSettings(homePane);
-        
+
         homePane.add(barkTitle, 0, 0);
         homePane.add(eventsBtn, 0, 1);
         //homePane.add(reviewApplication, 0, 2);
@@ -67,7 +69,7 @@ public class volunteerHome extends Home {
         socialPane.add(takeOut2, 2, 3);
         socialPane.add(takeOut3, 0, 5);
         socialPane.add(takeOut4, 2, 5);
-        
+
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
@@ -82,18 +84,18 @@ public class volunteerHome extends Home {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Volunteer Home");
         primaryStage.show();
-        
+
         // Check out button
         checkoutBtn.setOnAction(e -> {
             //primaryStage.setScene(Checkout.primaryScene);
             Checkout volChkOut = new Checkout(this);
         });
-        
+
         // Volunteer summary button
         volunteerInfoBtn.setOnAction(e -> {
             VolunteerStatus myInfo = new VolunteerStatus(this);
         });
-        
+
         // Assign Specialization btn
         assignSpecialBtn.setOnAction(e -> {
             AssignSpecialization assign1 = new AssignSpecialization(this);
@@ -101,9 +103,13 @@ public class volunteerHome extends Home {
 
         // Events Menu button
         eventsBtn.setOnAction(e -> {
-            EventsRetry em = new EventsRetry(this);
+            try {
+                EventsRetry em = new EventsRetry(this);
+            } catch (SQLException E) {
+                System.out.println("SQLException!" + E);
+            }
         });
-        
+
         //Logout Button
         logoutBtn.setOnAction(e -> {
             Logout volLogout = new Logout(this);
