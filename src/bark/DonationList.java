@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
+import java.util.*;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
@@ -91,13 +91,22 @@ public class DonationList extends Login1 {
         nameColumn.setCellValueFactory(new PropertyValueFactory<Donation1, String>("donationName"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<Donation1, Date>("donationDate"));
 
-        donTable.getColumns().addAll(id_col, amountColumn, nameColumn, dateColumn);
+        donTable.getColumns().addAll(id_col, amountColumn, nameColumn, dateColumn, volIdColumn);
+        ArrayList<Donation1> donList = new ArrayList<>();
 
         sendDBCommand("SELECT donation_ID, donationAmt, donationName, donationDate, volID FROM Donation");
         try {
-            while (rs.next()) {
-                    tableData.add(new Donation1(rs.getInt("donation_ID"), rs.getString("donationAmt"), 
-                            rs.getString("donationName"), rs.getDate("donationDate"), rs.getInt("volID")));
+            for (int i = 0; i < 100; i++) {
+                while (rs.next()) {
+                    if (rs != null) {
+                        donList.add(new Donation1(rs.getInt("donation_ID"), rs.getString("donationAmt"),
+                                rs.getString("donationName"), rs.getDate("donationDate"), rs.getInt("volID")));
+                        break;
+                    }
+                }
+            }
+            for (Donation1 x : donList) {
+                tableData.add(x);
             }
 
         } catch (SQLException e) {
@@ -109,13 +118,31 @@ public class DonationList extends Login1 {
 
         overall.add(buttons, 0, 0);
         overall.add(table, 1, 0);
-        
+
         Scene primaryScene = new Scene(overall, 1000, 550);
         donTable.setMinWidth(600);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Donation List");
         primaryStage.show();
-        
+
+        delete.setOnAction(e -> {
+            String query = "DELETE FROM DONATION WHERE donation_ID =  " + donTable.getSelectionModel().getSelectedItem().getDonationID();
+            sendDBCommand(query);
+            //message.setText("Entry removed successfully."); 
+            int x = donTable.getSelectionModel().getSelectedIndex();
+            donList.remove(x);
+            tableData.clear();
+            for (Donation1 a : donList) {
+                tableData.add(a);
+            }
+        });
+
+        populate.setOnAction(e -> {
+            nameField.setText(donTable.getSelectionModel().getSelectedItem().getDonationName());
+            amountField.setText(donTable.getSelectionModel().getSelectedItem().getDonationAmt());
+            dateField.setText(donTable.getSelectionModel().getSelectedItem().getDonationDate().toString()); 
+        });
+
     }
 
     public void sendDBCommand(String sqlQuery) {
