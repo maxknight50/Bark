@@ -60,6 +60,23 @@ public class DonationList extends Login1 {
     public DonationList(Home home) {
         donTable.setItems(tableData);
         tPane1.add(donTable, 0, 0);
+         tPane1.add(backBtn, 0, 1);
+         tPane1.add(donorName, 1, 0);
+         tPane1.add(nameField, 1, 1);
+         tPane1.add(donoAmount, 2, 1);
+         tPane1.add(amountField, 1, 2);
+         tPane1.add(donoDate, 1, 3);
+         tPane1.add(dateField, 1, 4);
+         tPane1.add(add, 1, 5);
+         tPane1.add(delete, 1, 6);
+         tPane1.add(modify, 1, 7);
+         tPane1.add(populate, 1, 8);
+
+        viewPaw.setFitHeight(50);
+        viewPaw.setFitWidth(50);
+        viewPaw.setX(100);
+        viewPaw.setY(150);
+         tPane1.add(viewPaw, 2, 9);
 
         id_col.setCellValueFactory(new PropertyValueFactory<Donation1, Integer>("donation_ID"));
         amountColumn.setCellValueFactory(new PropertyValueFactory<Donation1, String>("donationAmt"));
