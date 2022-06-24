@@ -59,18 +59,18 @@ public class DonationList extends Login1 {
 
     public DonationList(Home home) {
         donTable.setItems(tableData);
-        tPane1.add(donTable, 0, 0);
-         tPane1.add(backBtn, 0, 1);
-         tPane1.add(donorName, 1, 0);
+        tPane1.add(donTable, 1, 0);
+         tPane1.add(backBtn, 0, 0);
+         tPane1.add(donorName, 0, 1);
          tPane1.add(nameField, 1, 1);
-         tPane1.add(donoAmount, 2, 1);
+         tPane1.add(donoAmount, 0, 2);
          tPane1.add(amountField, 1, 2);
-         tPane1.add(donoDate, 1, 3);
-         tPane1.add(dateField, 1, 4);
-         tPane1.add(add, 1, 5);
-         tPane1.add(delete, 1, 6);
-         tPane1.add(modify, 1, 7);
-         tPane1.add(populate, 1, 8);
+         tPane1.add(donoDate, 0, 3);
+         tPane1.add(dateField, 1, 3);
+         tPane1.add(add, 0, 5);
+         tPane1.add(delete, 0, 6);
+         tPane1.add(modify, 0, 7);
+         tPane1.add(populate, 0, 8);
 
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
