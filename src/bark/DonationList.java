@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
+import java.util.*;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
@@ -40,64 +40,72 @@ public class DonationList extends Login1 {
     //MenuBar menuBar = new MenuBar();
     //Menu menuDonations = new Menu("Donations");
     //MenuItem enterDonations = new MenuItem("Enter Donations...");
-    
+
     Label donorName = new Label("Donor Name");
     Label donoAmount = new Label("Donation Amount");
     Label donoDate = new Label("Donation Date");
-    
-    TextField nameField = new TextField(); 
-    TextField amountField = new TextField(); 
-    TextField dateField = new TextField(); 
-    
+
+    TextField nameField = new TextField();
+    TextField amountField = new TextField();
+    TextField dateField = new TextField();
+    Label message = new Label();
+
     Button backBtn = new Button("Back");
     Button add = new Button("Add");
     Button delete = new Button("Delete");
     Button modify = new Button("Modify");
     Button populate = new Button("<-- Select and Populate");
 
-    GridPane tPane1 = new GridPane();
+    GridPane table = new GridPane();
+    GridPane buttons = new GridPane();
+    GridPane overall = new GridPane();
 
     public DonationList(Home home) {
-        donTable.setItems(tableData);
-        tPane1.add(donTable, 0, 0);
-         tPane1.add(backBtn, 0, 1);
-         tPane1.add(donorName, 1, 0);
-         tPane1.add(nameField, 1, 1);
-         tPane1.add(donoAmount, 2, 1);
-         tPane1.add(amountField, 1, 2);
-         tPane1.add(donoDate, 1, 3);
-         tPane1.add(dateField, 1, 4);
-         tPane1.add(add, 1, 5);
-         tPane1.add(delete, 1, 6);
-         tPane1.add(modify, 1, 7);
-         tPane1.add(populate, 1, 8);
+        paneSettings(buttons);
+
+        table.add(message, 0, 0);
+        table.add(donTable, 0, 1);
+        table.add(populate, 0, 2);
+
+        buttons.add(backBtn, 0, 0);
+        buttons.add(donorName, 0, 1);
+        buttons.add(nameField, 1, 1);
+        buttons.add(donoAmount, 0, 2);
+        buttons.add(amountField, 1, 2);
+        buttons.add(donoDate, 0, 3);
+        buttons.add(dateField, 1, 3);
+        buttons.add(add, 0, 5);
+        buttons.add(delete, 1, 5);
+        buttons.add(modify, 0, 6);
 
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
         viewPaw.setY(150);
-         tPane1.add(viewPaw, 2, 9);
+        table.add(viewPaw, 2, 9);
+
+        donTable.setItems(tableData);
 
         id_col.setCellValueFactory(new PropertyValueFactory<Donation1, Integer>("donation_ID"));
         amountColumn.setCellValueFactory(new PropertyValueFactory<Donation1, String>("donationAmt"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Donation1, String>("donationName"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<Donation1, Date>("donationDate"));
-        volIdColumn.setCellValueFactory(new PropertyValueFactory<Donation1, Integer>("volID"));
 
         donTable.getColumns().addAll(id_col, amountColumn, nameColumn, dateColumn, volIdColumn);
+        ArrayList<Donation1> donList = new ArrayList<>();
 
         sendDBCommand("SELECT donation_ID, donationAmt, donationName, donationDate, volID FROM Donation");
         try {
-            Donation1[] dList = new Donation1[25];
             for (int i = 0; i < 100; i++) {
                 while (rs.next()) {
                     if (rs != null) {
-                        dList[i] = new Donation1(rs.getInt("donation_ID"), rs.getString("donationAmt"), rs.getString("donationName"), rs.getDate("donationDate"), rs.getInt("volID"));
+                        donList.add(new Donation1(rs.getInt("donation_ID"), rs.getString("donationAmt"),
+                                rs.getString("donationName"), rs.getDate("donationDate"), rs.getInt("volID")));
                         break;
                     }
                 }
             }
-            for (Donation1 x : dList) {
+            for (Donation1 x : donList) {
                 tableData.add(x);
             }
 
@@ -107,11 +115,34 @@ public class DonationList extends Login1 {
         //menuDonations.getItems().add(enterDonations);
         //menuBar.getMenus().addAll(menuDonations);
         //tPane1.add(menuBar, 0, 0);
-        Scene primaryScene = new Scene(tPane1, 600, 450);
-        donTable.setMinWidth(primaryScene.getWidth()); 
+
+        overall.add(buttons, 0, 0);
+        overall.add(table, 1, 0);
+
+        Scene primaryScene = new Scene(overall, 1000, 550);
+        donTable.setMinWidth(600);
         primaryStage.setScene(primaryScene);
-        primaryStage.setTitle("List");
+        primaryStage.setTitle("Donation List");
         primaryStage.show();
+
+        delete.setOnAction(e -> {
+            String query = "DELETE FROM DONATION WHERE donation_ID =  " + donTable.getSelectionModel().getSelectedItem().getDonationID();
+            sendDBCommand(query);
+            //message.setText("Entry removed successfully."); 
+            int x = donTable.getSelectionModel().getSelectedIndex();
+            donList.remove(x);
+            tableData.clear();
+            for (Donation1 a : donList) {
+                tableData.add(a);
+            }
+        });
+
+        populate.setOnAction(e -> {
+            nameField.setText(donTable.getSelectionModel().getSelectedItem().getDonationName());
+            amountField.setText(donTable.getSelectionModel().getSelectedItem().getDonationAmt());
+            dateField.setText(donTable.getSelectionModel().getSelectedItem().getDonationDate().toString()); 
+        });
+
     }
 
     public void sendDBCommand(String sqlQuery) {
