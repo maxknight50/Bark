@@ -90,9 +90,8 @@ public class DonationList extends Login1 {
         amountColumn.setCellValueFactory(new PropertyValueFactory<Donation1, String>("donationAmt"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Donation1, String>("donationName"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<Donation1, Date>("donationDate"));
-        volIdColumn.setCellValueFactory(new PropertyValueFactory<Donation1, Integer>("volID"));
 
-        donTable.getColumns().addAll(id_col, amountColumn, nameColumn, dateColumn, volIdColumn);
+        donTable.getColumns().addAll(id_col, amountColumn, nameColumn, dateColumn);
 
         sendDBCommand("SELECT donation_ID, donationAmt, donationName, donationDate, volID FROM Donation");
         try {
@@ -110,11 +109,13 @@ public class DonationList extends Login1 {
 
         overall.add(buttons, 0, 0);
         overall.add(table, 1, 0);
+        
         Scene primaryScene = new Scene(overall, 1000, 550);
-        donTable.setMinWidth(primaryScene.getWidth());
+        donTable.setMinWidth(600);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Donation List");
         primaryStage.show();
+        
     }
 
     public void sendDBCommand(String sqlQuery) {
