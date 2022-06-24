@@ -199,10 +199,10 @@ public class DonationList extends Login1 {
                 String newAmount = amountField.getText();
                 String newDate = dateField.getText();
                 
-                Donation1 newDonation = new Donation1(newID, newName, newAmount, newDate); 
+                Donation1 newDonation = new Donation1(newID, newAmount, newName, newDate); 
                 donList.add(newDonation); 
 
-                String query = "INSERT INTO DONATION(donation_ID, donationAmt, donationName, donationDate) VALUES (" + newID + ", '" + newName + "', '" + newAmount + "', '" + newDate + "')";
+                String query = "INSERT INTO DONATION(donation_ID, donationAmt, donationName, donationDate) VALUES (" + newID + ", '" + newAmount + "', '" + newName + "', '" + newDate + "')";
        
                 sendDBCommand(query); 
                 tableData.clear();
