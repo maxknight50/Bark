@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-import java.sql.Date; 
+import java.sql.Date;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
@@ -47,7 +47,7 @@ public class DonationList extends Login1 {
     Label donoAmount = new Label("Donation Amount");
     Label donoDate = new Label("Donation Date");
 
-    TextField idField = new TextField();
+    Label idField = new Label();
     TextField nameField = new TextField();
     TextField amountField = new TextField();
     TextField dateField = new TextField();
@@ -108,7 +108,7 @@ public class DonationList extends Login1 {
                                 rs.getString("donationName"), rs.getString("donationDate"), rs.getInt("volID")));
                         break;
                     }
-                    System.out.println("ID: " + donList.get(i).getDonationID()); 
+                    System.out.println("ID: " + donList.get(i).getDonationID());
                 }
             }
             for (Donation1 x : donList) {
@@ -144,14 +144,14 @@ public class DonationList extends Login1 {
         });
 
         populate.setOnAction(e -> {
-            idField.setText(donTable.getSelectionModel().getSelectedItem().getDonationID() + ""); 
+            idField.setText(donTable.getSelectionModel().getSelectedItem().getDonationID() + "");
             nameField.setText(donTable.getSelectionModel().getSelectedItem().getDonationName());
             amountField.setText(donTable.getSelectionModel().getSelectedItem().getDonationAmt());
             dateField.setText(donTable.getSelectionModel().getSelectedItem().getDonationDate());
         });
 
         modify.setOnAction(e -> {
-            int newID = Integer.valueOf(idField.getText()); 
+            int newID = Integer.valueOf(idField.getText());
             String newName = nameField.getText();
             String newAmount = amountField.getText();
             String newDate = dateField.getText();
@@ -160,10 +160,10 @@ public class DonationList extends Login1 {
             sendDBCommand(query);
             for (int i = 0; i < donList.size(); i++) {
                 if (donList.get(i).getDonationID() == newID) {
-                    donList.get(i).setDonationID(newID); 
+                    donList.get(i).setDonationID(newID);
                     donList.get(i).setDonationAmt(newAmount);
                     donList.get(i).setDonationName(newName);
-                    donList.get(i).setDonationDate(newDate); 
+                    donList.get(i).setDonationDate(newDate);
                     break;
                 }
             }
@@ -174,7 +174,48 @@ public class DonationList extends Login1 {
             }
         });
 
- }
+        add.setOnAction(e -> {
+            int largest = 0;
+            try {
+                String q = "SELECT * FROM DONATION";
+                sendDBCommand(q);
+                try {
+                    while (rs.next()) {
+                        largest = rs.getInt("donation_ID");
+                        System.out.println("First: " + largest);
+                        while (rs.next()) {
+                            int store = rs.getInt("donation_ID");
+                            System.out.println(store);
+                            if (store > largest) {
+                                largest = store;
+                            }
+                        }
+                    }
+                } catch (Exception m) {
+                    System.out.println("Exception finding the largest! " + m);
+                }
+                int newID = largest + 1; 
+                String newName = nameField.getText();
+                String newAmount = amountField.getText();
+                String newDate = dateField.getText();
+                
+                Donation1 newDonation = new Donation1(newID, newName, newAmount, newDate); 
+                donList.add(newDonation); 
+
+                String query = "INSERT INTO DONATION(donation_ID, donationAmt, donationName, donationDate) VALUES (" + newID + ", '" + newName + "', '" + newAmount + "', '" + newDate + "')";
+       
+                sendDBCommand(query); 
+                tableData.clear();
+                for(Donation1 x : donList) {
+                    tableData.add(x); 
+                }
+                
+            } catch (Exception ex) {
+                System.out.println("Error! " + ex);
+            }
+        });
+
+    }
 
     public void sendDBCommand(String sqlQuery) {
         String URL = "jdbc:oracle:thin:@localhost:1521:XE";
