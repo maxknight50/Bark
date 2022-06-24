@@ -1,10 +1,8 @@
 package bark;
 
-import static bark.Login1.conn;
 import static bark.VolunteerStatus.conn;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.ArrayList;
@@ -24,15 +22,13 @@ public class EventsRetry extends Login1 {
 
     TableView<Event> yourTable = new TableView<>();
     TableView<Event> dailyTable = new TableView<>();
-    TableView<Event> hostedTable = new TableView<>();
     TableView<Event> pastTable = new TableView<>();
+    TableView<Event> hostedTable = new TableView<>();
 
     ObservableList<Event> dailyData = FXCollections.observableArrayList();
     ObservableList<Event> pastData = FXCollections.observableArrayList();
     ObservableList<Event> yourData = FXCollections.observableArrayList();
-    ArrayList<Event> daily = new ArrayList<>();
-    ArrayList<Event> past = new ArrayList<>();
-    ArrayList<Event> your = new ArrayList<>();
+    ObservableList<Event> hostedData = FXCollections.observableArrayList();
 
     //Create the columns for each table
     TableColumn yourName = new TableColumn("Event Name");
@@ -48,24 +44,42 @@ public class EventsRetry extends Login1 {
     TableColumn hostedEvent = new TableColumn("Event");
     TableColumn hostedDate = new TableColumn("Event Date");
     TableColumn hostedDuration = new TableColumn("Event Time");
+    TableColumn hostedVol = new TableColumn("Max Volunteers");
 
     TableColumn pastEvent = new TableColumn("Event");
     TableColumn pastMax = new TableColumn("Max Volunteers");
     TableColumn pastAssigned = new TableColumn("Assigned Volunteers");
     TableColumn pastDate = new TableColumn("Event Date");
 
-    // Tab 1 Controls
-    // Tab 2 Controls
-    // Tab 3 Controls
     // GridPane associated for each tab
-    GridPane tPane1 = new GridPane();
-    GridPane tPane2 = new GridPane();
-    GridPane tPane3 = new GridPane();
+    GridPane dailyTablePane = new GridPane();
+    GridPane hostedTablePane = new GridPane();
+
+    GridPane yourOverall = new GridPane();
+    GridPane yourTablePane = new GridPane();
+    GridPane yourButtons = new GridPane();
+    GridPane pastTablePane = new GridPane();
+    GridPane dailyButtons = new GridPane();
+    GridPane hostedButtons = new GridPane();
+    GridPane pastButtons = new GridPane();
+
+    Button test = new Button("Hello");
+    Label nameLbl = new Label("Event:");
+    TextField nameTxt = new TextField();
+    Label dateLbl = new Label("Date:");
+    TextField dateTxt = new TextField();
+    Label timeLbl = new Label("Time:");
+    TextField timeTxt = new TextField();
+    Label distanceLbl = new Label("Distance:");
+    TextField distanceTxt = new TextField();
+    Label catLbl = new Label("Category:");
+    TextField catTxt = new TextField();
 
     // Tab creation
     Tab tab1 = new Tab("Your Events");
-    Tab tab2 = new Tab("Past Events");
+    Tab tab2 = new Tab("Bark-Hosted");
     Tab tab3 = new Tab("Daily Events");
+    Tab tab4 = new Tab("Past Events");
 
     GridPane eventsPane = new GridPane();
     TabPane tabPane = new TabPane();
@@ -76,22 +90,38 @@ public class EventsRetry extends Login1 {
         yourTable.setItems(yourData);
         dailyTable.setItems(dailyData);
         pastTable.setItems(pastData);
+        hostedTable.setItems(hostedData);
 
         eventsPane.add(tabPane, 0, 1);
 
-        tab1.setContent(tPane3);
-        tab2.setContent(tPane2);
-        tab3.setContent(tPane1);
-        tabPane.getTabs().addAll(tab1, tab2, tab3);
-        //TabPane tabClosingPolicy="UNAVAILABLE";
+        yourButtons.add(nameLbl, 0, 1);
+        yourButtons.add(nameTxt, 1, 1);
+        yourButtons.add(dateLbl, 0, 2);
+        yourButtons.add(dateTxt, 1, 2);
+        yourButtons.add(timeLbl, 0, 3);
+        yourButtons.add(timeTxt, 1, 3);
+        yourButtons.add(distanceLbl, 0, 4);
+        yourButtons.add(distanceTxt, 1, 4);
+
+        yourOverall.add(yourButtons, 0, 0);
+        yourOverall.add(yourTablePane, 1, 0);
+
+        tab1.setContent(yourOverall);
+        tab2.setContent(hostedTablePane);
+        tab3.setContent(dailyTablePane);
+        tab4.setContent(pastTablePane);
+        tabPane.getTabs().addAll(tab1, tab2, tab3, tab4);
+
         tab1.setClosable(false);
         tab2.setClosable(false);
         tab3.setClosable(false);
+        tab4.setClosable(false);
 
         // Add the tables to the tabs
-        tPane1.add(dailyTable, 0, 0);
-        tPane2.add(pastTable, 0, 0);
-        tPane3.add(yourTable, 0, 0);
+        dailyTablePane.add(dailyTable, 0, 0);
+        hostedTablePane.add(hostedTable, 0, 0);
+        yourTablePane.add(yourTable, 0, 0);
+        pastTablePane.add(pastTable, 0, 0);
 
         //Set the cell values for eventTable (Daily Events)
         dailyEvent.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
@@ -109,9 +139,15 @@ public class EventsRetry extends Login1 {
         yourDistance.setCellValueFactory(new PropertyValueFactory<EventHistory, Integer>("miles_Driven"));
         yourCategory.setCellValueFactory(new PropertyValueFactory<Event, String>("eventType"));
 
+        hostedEvent.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
+        hostedVol.setCellValueFactory(new PropertyValueFactory<Event, Integer>("maxVolunteers"));
+        hostedDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
+        hostedDuration.setCellValueFactory(new PropertyValueFactory<Event, String>("eventTime"));
+
         dailyTable.getColumns().addAll(dailyEvent, dailyDate, dailyDuration);
         pastTable.getColumns().addAll(pastEvent, pastMax, pastDate);
         yourTable.getColumns().addAll(yourName, yourDate, yourDuration, yourDistance, yourCategory);
+        hostedTable.getColumns().addAll(hostedEvent, hostedVol, hostedDate, hostedDuration);
 
 //        dailyTable.setItems(table1Data);
 //        eventTable2.setItems(table2Data);
@@ -120,22 +156,32 @@ public class EventsRetry extends Login1 {
 //        sendDBCommand("SELECT E.eventID, eventType, eventName, eventDescription, maxVolunteers, eventDate, eventTime, eventLocation, eventCategory, eventStatus, EH.Miles_Driven "
 //                + "FROM Event E INNER JOIN EventHistory EH ON EH.EventID = E.EventID WHERE eventCategory = 'Daily event'"");
         try {
-
+            // Display daily events
             sendDBCommand("SELECT E.eventID, eventType, eventName, eventDescription, maxVolunteers, eventDate, eventTime, eventLocation, eventCategory, eventStatus "
-                    + "FROM Event E WHERE eventCategory = 'Daily event'");
+                    + "FROM Event E WHERE eventCategory = 'Daily event' AND eventStatus != 'completed'");
             while (rs.next()) {
                 dailyData.add(new Event(rs.getInt("eventID"), rs.getString("eventType"), rs.getString("eventName"), rs.getString("eventDescription"),
                         rs.getInt("maxVolunteers"), rs.getDate("eventDate"), rs.getString("eventTime"), rs.getString("eventLocation"), rs.getString("eventCategory"),
                         rs.getString("eventStatus")));
                 System.out.println("FOR TABLE 1: " + rs.getString("eventName") + " " + rs.getString("eventDate") + " " + rs.getString("eventTime"));
             }
+
+            // Display completed events
             sendDBCommand("SELECT E.eventID, eventType, eventName, eventDescription, maxVolunteers, eventDate, eventTime, eventLocation, eventCategory, eventStatus "
                     + "FROM Event E WHERE eventStatus = 'completed'");
             while (rs.next()) {
                 pastData.add(new Event(rs.getInt("eventID"), rs.getString("eventType"), rs.getString("eventName"), rs.getString("eventDescription"),
                         rs.getInt("maxVolunteers"), rs.getDate("eventDate"), rs.getString("eventTime"), rs.getString("eventLocation"), rs.getString("eventCategory"),
                         rs.getString("eventStatus")));
-                System.out.println("FOR TABLE 2: " + rs.getString("eventName") + " " + rs.getString("eventDate") + " " + rs.getString("eventTime"));
+            }
+
+            // Display BARK-hosted events
+            sendDBCommand("SELECT E.eventID, eventType, eventName, eventDescription, maxVolunteers, eventDate, eventTime, eventLocation, eventCategory, eventStatus "
+                    + "FROM Event E WHERE eventCategory = 'BARK hosted' AND eventStatus != 'completed'");
+            while (rs.next()) {
+                hostedData.add(new Event(rs.getInt("eventID"), rs.getString("eventType"), rs.getString("eventName"), rs.getString("eventDescription"),
+                        rs.getInt("maxVolunteers"), rs.getDate("eventDate"), rs.getString("eventTime"), rs.getString("eventLocation"), rs.getString("eventCategory"),
+                        rs.getString("eventStatus")));
             }
 
         } catch (Exception e) {
@@ -148,6 +194,7 @@ public class EventsRetry extends Login1 {
         dailyTable.setMinWidth(primaryScene.getWidth());
         pastTable.setMinWidth(primaryScene.getWidth());
         yourTable.setMinWidth(primaryScene.getWidth());
+        hostedTable.setMinWidth(primaryScene.getWidth());
 
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Events Menu");
