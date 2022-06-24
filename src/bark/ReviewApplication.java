@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,11 +33,12 @@ public class ReviewApplication extends Login1 {
     TextField fNameTxt = new TextField();
     TextField lNameTxt = new TextField();
     TextField addressTxt = new TextField();
-    TextField infoTxt = new TextField();
+    TextArea infoTxt = new TextArea();
     TextField emailTxt = new TextField();
     TextField phoneTxt = new TextField();
     ComboBox<String> expCb = new ComboBox();
     Button submitBtn = new Button("Approve");
+    Button denyBtn = new Button("Deny");
     
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
@@ -69,6 +71,7 @@ public class ReviewApplication extends Login1 {
         pane1.add(infoTxt, 1, 7);
         
         pane1.add(submitBtn, 1, 8);
+        pane1.add(denyBtn, 1, 9);
         
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
@@ -77,11 +80,32 @@ public class ReviewApplication extends Login1 {
         pane1.add(viewPaw, 3, 9);
 
         Stage primaryStage = new Stage();
-        Scene primaryScene = new Scene(pane1, 600, 450);
+        Scene primaryScene = new Scene(pane1, pane1.getMaxWidth(), pane1.getMaxHeight());
         primaryStage.setScene(primaryScene);
-        primaryStage.setTitle("BARK Application");
+        primaryStage.setTitle("Review Application");
         primaryStage.show();
+        
+        // DB Connectivity
+        String query = "select* from volunteer where status = 'applicant'";
+        sendDBCommand(query);
+        //System.out.println(rs);
+        try {
+            while (rs.next()) {
+                fNameTxt.setText(rs.getString("vol_firstname"));
+                lNameTxt.setText(rs.getString("vol_lastname"));
+                addressTxt.setText(rs.getString("vol_address"));
+                emailTxt.setText(rs.getString("vol_email"));  
+                phoneTxt.setText(rs.getString("vol_phone"));  
+                // experience..??
+                infoTxt.setText(rs.getString("vol_info"));
+            }
+        } catch (Exception e) {
+            
+        }
+        
+        
     }
+    
 
 }
 
