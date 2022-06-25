@@ -7,15 +7,21 @@ public class Donation1 {
     public int donationID;
     public String donationAmt;
     public String donationName;
-    public Date donationDate;
-    int volunteerID;
+    public String donationDate;
+    public int volunteerID;
 
-    public Donation1(int donationID, String donationAmt, String donoName, Date donoDate, int volID) {
+    public Donation1(int donationID, String donationAmt, String donoName, String donoDate, int volID) {
         this.donationID = donationID;
         this.donationAmt = donationAmt;
         this.donationName = donoName;
         this.donationDate = donoDate;
         this.volunteerID = volID;
+    }
+    public Donation1(int donationID, String donationAmt, String donoName, String donoDate) {
+        this.donationID = donationID;
+        this.donationAmt = donationAmt;
+        this.donationName = donoName;
+        this.donationDate = donoDate;
     }
 
     public int getDonationID() {
@@ -42,11 +48,11 @@ public class Donation1 {
         this.donationName = donationName;
     }
 
-    public Date getDonationDate() {
+    public String getDonationDate() {
         return donationDate;
     }
 
-    public void setDonationDate(Date donationDate) {
+    public void setDonationDate(String donationDate) {
         this.donationDate = donationDate;
     }
 
