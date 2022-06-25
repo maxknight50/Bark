@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
+import java.io.*;
 import java.sql.Date;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -58,6 +59,9 @@ public class DonationList extends Login1 {
     Button delete = new Button("Delete");
     Button modify = new Button("Modify");
     Button populate = new Button("<-- Select and Populate");
+    Button report = new Button("Generate Report");
+
+    ComboBox donationYears = new ComboBox();
 
     GridPane table = new GridPane();
     GridPane buttons = new GridPane();
@@ -69,6 +73,8 @@ public class DonationList extends Login1 {
         table.add(message, 0, 0);
         table.add(donTable, 0, 1);
         table.add(populate, 0, 2);
+        table.add(donationYears, 0, 3);
+        table.add(report, 0, 4);
 
         buttons.add(backBtn, 0, 0);
         buttons.add(donoID, 0, 1);
@@ -99,7 +105,42 @@ public class DonationList extends Login1 {
         donTable.getColumns().addAll(id_col, amountColumn, nameColumn, dateColumn, volIdColumn);
         ArrayList<Donation1> donList = new ArrayList<>();
 
-        sendDBCommand("SELECT donation_ID, donationAmt, donationName, donationDate, volID FROM Donation");
+        sendDBCommand("SELECT donationDate from DONATION");
+        String[] dates = new String[25];
+        String[] years = new String[25];
+        try {
+            for (int i = 0; i < 100; i++) {
+                while (rs.next()) {
+                    if (rs != null) {
+                        dates[i] = rs.getString("donationDate");
+                        break;
+                    }
+                }
+            }
+            int counter = 1;
+            for (int i = 0; i < dates.length; i++) {
+                if (dates[i] != null) {
+                    String[] array1 = dates[i].split("-");
+                    for (String a : array1) {
+                        if (counter % 3 == 0) {
+                            years[i] = a;
+                        }
+                        counter++;
+                    }
+                }
+            }
+            String[] unique = Arrays.stream(years).distinct().toArray(String[]::new);
+            for (String a : unique) {
+                if (a != null) {
+                    donationYears.getItems().add("20" + a);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Exception! " + e);
+        }
+
+        sendDBCommand(
+                "SELECT donation_ID, donationAmt, donationName, donationDate, volID FROM Donation");
         try {
             for (int i = 0; i < 100; i++) {
                 while (rs.next()) {
@@ -126,12 +167,17 @@ public class DonationList extends Login1 {
         overall.add(table, 1, 0);
 
         Scene primaryScene = new Scene(overall, 1000, 550);
-        donTable.setMinWidth(600);
+
+        donTable.setMinWidth(
+                600);
         primaryStage.setScene(primaryScene);
-        primaryStage.setTitle("Donation List");
+
+        primaryStage.setTitle(
+                "Donation List");
         primaryStage.show();
 
-        delete.setOnAction(e -> {
+        delete.setOnAction(e
+                -> {
             String query = "DELETE FROM DONATION WHERE donation_ID =  " + donTable.getSelectionModel().getSelectedItem().getDonationID();
             sendDBCommand(query);
             //message.setText("Entry removed successfully."); 
@@ -141,16 +187,20 @@ public class DonationList extends Login1 {
             for (Donation1 a : donList) {
                 tableData.add(a);
             }
-        });
+        }
+        );
 
-        populate.setOnAction(e -> {
+        populate.setOnAction(e
+                -> {
             idField.setText(donTable.getSelectionModel().getSelectedItem().getDonationID() + "");
             nameField.setText(donTable.getSelectionModel().getSelectedItem().getDonationName());
             amountField.setText(donTable.getSelectionModel().getSelectedItem().getDonationAmt());
             dateField.setText(donTable.getSelectionModel().getSelectedItem().getDonationDate());
-        });
+        }
+        );
 
-        modify.setOnAction(e -> {
+        modify.setOnAction(e
+                -> {
             int newID = Integer.valueOf(idField.getText());
             String newName = nameField.getText();
             String newAmount = amountField.getText();
@@ -172,9 +222,11 @@ public class DonationList extends Login1 {
             for (Donation1 don : donList) {
                 tableData.add(don);
             }
-        });
+        }
+        );
 
-        add.setOnAction(e -> {
+        add.setOnAction(e
+                -> {
             int largest = 0;
             try {
                 String q = "SELECT * FROM DONATION";
@@ -194,26 +246,31 @@ public class DonationList extends Login1 {
                 } catch (Exception m) {
                     System.out.println("Exception finding the largest! " + m);
                 }
-                int newID = largest + 1; 
+                int newID = largest + 1;
                 String newName = nameField.getText();
                 String newAmount = amountField.getText();
                 String newDate = dateField.getText();
-                
-                Donation1 newDonation = new Donation1(newID, newAmount, newName, newDate); 
-                donList.add(newDonation); 
+
+                Donation1 newDonation = new Donation1(newID, newAmount, newName, newDate);
+                donList.add(newDonation);
 
                 String query = "INSERT INTO DONATION(donation_ID, donationAmt, donationName, donationDate) VALUES (" + newID + ", '" + newAmount + "', '" + newName + "', '" + newDate + "')";
-       
-                sendDBCommand(query); 
+
+                sendDBCommand(query);
                 tableData.clear();
-                for(Donation1 x : donList) {
-                    tableData.add(x); 
+                for (Donation1 x : donList) {
+                    tableData.add(x);
                 }
-                
+
             } catch (Exception ex) {
                 System.out.println("Error! " + ex);
             }
-        });
+        }
+        );
+        report.setOnAction(e -> {
+            System.out.println(donationYears.getValue()); 
+        }); 
+        
 
     }
 
