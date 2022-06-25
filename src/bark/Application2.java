@@ -33,18 +33,24 @@ public class Application2 extends Login1 {
     Label fNameLbl = new Label("First Name");
     Label lNameLbl = new Label("Last Name");
     Label addressLbl = new Label("Address");
+    Label dobLbl = new Label("Date of Birth");
     Label infoLbl = new Label("Tell us about yourself!");
     Label emailLbl = new Label("Email");
     Label phoneLbl = new Label("Phone");
+    Label usernameLbl = new Label("Enter Username: ");
+    Label passwordLbl = new Label("Enter Password: ");
     Label expLbl = new Label("Experience");
 
     // FX Controls - Textfields, comboboxes, etc.
     TextField fNameTxt = new TextField();
     TextField lNameTxt = new TextField();
     TextField addressTxt = new TextField();
+    TextField dobTxt = new TextField();
     TextArea infoTxt = new TextArea();
     TextField emailTxt = new TextField();
     TextField phoneTxt = new TextField();
+    TextField usernameTxt = new TextField();
+    TextField passwordTxt = new TextField();
     ComboBox<String> expCb = new ComboBox();
     Button submitBtn = new Button("Submit");
     Button deny = new Button("Deny");
@@ -68,18 +74,24 @@ public class Application2 extends Login1 {
 
         pane1.add(addressLbl, 0, 5);
         pane1.add(addressTxt, 1, 5);
-        pane1.add(emailLbl, 0, 6);
-        pane1.add(emailTxt, 1, 6);
+        pane1.add(dobLbl, 0, 6);
+        pane1.add(dobTxt, 1, 6);
+        pane1.add(emailLbl, 0, 7);
+        pane1.add(emailTxt, 1, 7);
 
-        pane1.add(phoneLbl, 0, 7);
-        pane1.add(phoneTxt, 1, 7);
-        pane1.add(expLbl, 0, 8);
-        pane1.add(expCb, 1, 8);
-        pane1.add(infoLbl, 0, 9);
-        pane1.add(infoTxt, 1, 9);
+        pane1.add(phoneLbl, 0, 8);
+        pane1.add(phoneTxt, 1, 8);
+        pane1.add(expLbl, 0, 9);
+        pane1.add(expCb, 1, 9);
+        pane1.add(usernameLbl, 0, 10);
+        pane1.add(usernameTxt, 1, 10);
+        pane1.add(passwordLbl, 0, 11);
+        pane1.add(passwordTxt, 1, 11);
+        pane1.add(infoLbl, 0, 12);
+        pane1.add(infoTxt, 1, 12);
 
-        pane1.add(submitBtn, 1, 10);
-        pane1.add(deny, 0, 10);
+        pane1.add(submitBtn, 1, 13);
+        //pane1.add(deny, 0, 10);
 
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
@@ -88,7 +100,7 @@ public class Application2 extends Login1 {
         pane1.add(viewPaw, 3, 11);
 
         Stage primaryStage = new Stage();
-        Scene primaryScene = new Scene(pane1, 700, 600);
+        Scene primaryScene = new Scene(pane1, pane1.getMaxWidth(), pane1.getMaxHeight());
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Application");
         primaryStage.show();
@@ -107,27 +119,42 @@ public class Application2 extends Login1 {
 
             String q = "SELECT * FROM VOLUNTEER";
             sendDBCommand(q);
-            int largest;
+            int largestVolId = 0;
+            int largestScheduleId = 0;
             try {
                 while (rs.next()) {
-                    largest = rs.getInt("volID"); // Look at first number, set it as largest
-                    System.out.println("First " + largest);
+                    largestVolId = rs.getInt("volID"); // Look at first number, set it as largest
+                    largestScheduleId = rs.getInt("schedule_ID"); // Look at first number, set it as largest
+                    System.out.println("First " + largestVolId);
                     while (rs.next()) { // Loop through all numbers after it
-                        int stored = rs.getInt("volID"); // Store the next number
-                        System.out.println(stored);
-                        if (stored > largest) { // If that number is greater than the last largest
-                            largest = stored; // It becomes the largest
+                        int storedVolId = rs.getInt("volID"); // Store the next number
+                        int storedScheduleId = rs.getInt("schedule_ID"); // Store the next number
+                        System.out.println(storedVolId);
+                        System.out.println(storedScheduleId);
+                        if (storedVolId > largestVolId) { // If that number is greater than the last largest
+                            largestVolId = storedVolId; // It becomes the largest
+                        }
+                        if (storedScheduleId > largestScheduleId) {
+                            largestScheduleId = storedScheduleId;
                         }
                     }
 
-                    System.out.println("Final largest:" + largest);
+                    System.out.println("Final largest volID:" + largestVolId);
+                    System.out.println("Final largest schedule_ID:" + largestScheduleId);
                 }
                 
             } catch (SQLException ex) {
                 Logger.getLogger(Application2.class.getName()).log(Level.SEVERE, null, ex);
             }
-            //String query = "INSERT INTO VOLUNTEER(vol_FirstName, vol_LastName, vol_Address, vol_Email, vol_Phone, cumulativeHours)"
-            //         + "VALUES ('" + fNameTxt.getText() + "', '" + lNameTxt.getText() + "', '" + addressTxt.getText() + "', '" + infoTxt.getText() + "', '" + emailTxt.getText() + "', '" + phoneTxt.getText() + ")";
+            String query = "INSERT INTO VOLUNTEER(volid, vol_FirstName, vol_LastName, vol_Address, vol_dateofbirth, vol_info, vol_Email, vol_Phone, cumulativeHours, status, username, password, schedule_id)"
+                     + "VALUES ('" + largestVolId+1 + "', '" + fNameTxt.getText() + "', '" + lNameTxt.getText() + "', '" + 
+                    addressTxt.getText() + "', '" + dobTxt.getText() + "', '" + infoTxt.getText() + "', '" + 
+                    emailTxt.getText() + "', '" + phoneTxt.getText() + "', " + "0, 'applicant', '" + usernameTxt.getText() +"', '" + 
+                    passwordTxt.getText() + "', '" +largestScheduleId + "')";
+            System.out.println(query);
+            sendDBCommand(query);
+            
+            primaryStage.close();
 
         });
 
