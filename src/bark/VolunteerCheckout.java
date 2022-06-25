@@ -1,4 +1,3 @@
-
 package bark;
 
 import java.text.DecimalFormat;
@@ -13,7 +12,7 @@ import javafx.stage.Stage;
  *
  * 
  */
-public class Checkout extends Login1 {
+public class VolunteerCheckout extends Login1 {
     Login1 login;
     Home home;
     volunteerHome vHome;
@@ -36,11 +35,11 @@ public class Checkout extends Login1 {
     
     GridPane checkoutPane = new GridPane();
     
-    Checkout(Home home) {
-        this.home = home;
+    VolunteerCheckout(volunteerHome vhome) {
+        this.vHome = vhome;
         paneSettings(checkoutPane);
-        System.out.println("Test admin: " + df.format(home.cumHours));
-        currentHrsLbl = new Label("Your current hours: " + df.format(home.cumHours));
+        System.out.println("Test volunteer: " + df.format(vhome.cumHours));
+        currentHrsLbl = new Label("Your current hours: " + df.format(vhome.cumHours));
         
         // add nodes
         //checkoutPane.add(backBtn, 0, 0);
@@ -61,17 +60,10 @@ public class Checkout extends Login1 {
         viewPaw.setY(150);
         checkoutPane.add(viewPaw, 2, 9);
         
-        Stage primaryStage = home.primaryStage;
+        Stage primaryStage = vhome.primaryStage;
         Scene primaryScene = new Scene(checkoutPane, 600, 450);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Checkout");
         primaryStage.show();
-        
-        //backBtn.setOnAction(e -> {
-            //Home backHome = new Home(home);
-            //primaryStage.close();
-        //});
     }
-    
-    
 }

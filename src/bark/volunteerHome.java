@@ -109,7 +109,7 @@ public class volunteerHome extends Home {
             totalMinute = totalMinute = (abs(minute2 - minute)*(1.66666666667) /100);
             cumHours = cumHours + totalMinute;
             System.out.println("Total time: " + df.format(cumHours));
-            Checkout volChkOut = new Checkout(this);
+            VolunteerCheckout volChkOut = new VolunteerCheckout(this);
         });
 
         // Volunteer summary button
