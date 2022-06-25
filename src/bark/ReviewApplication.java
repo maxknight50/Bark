@@ -1,6 +1,9 @@
 
 package bark;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -39,6 +42,9 @@ public class ReviewApplication extends Login1 {
     ComboBox<String> expCb = new ComboBox();
     Button submitBtn = new Button("Approve");
     Button denyBtn = new Button("Deny");
+    Button nextBtn = new Button("Next");
+    Button prevBtn = new Button("Previous");
+    
     
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
@@ -72,6 +78,8 @@ public class ReviewApplication extends Login1 {
         
         pane1.add(submitBtn, 1, 8);
         pane1.add(denyBtn, 1, 9);
+        pane1.add(prevBtn, 0, 10);
+        pane1.add(nextBtn, 1, 10);
         
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
@@ -86,8 +94,9 @@ public class ReviewApplication extends Login1 {
         primaryStage.show();
         
         // DB Connectivity
-        String query = "select* from volunteer where status = 'applicant'";
+        String query = "select * from volunteer where status = 'applicant'";
         sendDBCommand(query);
+        System.out.println(rs);
         //System.out.println(rs);
         try {
             while (rs.next()) {
@@ -102,6 +111,22 @@ public class ReviewApplication extends Login1 {
         } catch (Exception e) {
             
         }
+        
+        nextBtn.setOnAction(e -> {
+            try {
+                rs.next();
+                fNameTxt.setText(rs.getString("vol_firstname"));
+                lNameTxt.setText(rs.getString("vol_lastname"));
+                addressTxt.setText(rs.getString("vol_address"));
+                emailTxt.setText(rs.getString("vol_email"));  
+                phoneTxt.setText(rs.getString("vol_phone"));  
+                // experience..??
+                infoTxt.setText(rs.getString("vol_info"));
+                
+            } catch (SQLException ex) {
+                
+            }
+        });
         
         
     }
