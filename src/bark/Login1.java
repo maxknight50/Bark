@@ -1,4 +1,3 @@
-
 package bark;
 
 import static bark.VolunteerStatus.conn;
@@ -7,8 +6,10 @@ import javafx.collections.*; // ObservableArrayLists
 import javafx.geometry.Pos;
 import javafx.scene.chart.*; // Charts and Tables
 import javafx.scene.control.cell.*; // Tableview
-import javafx.scene.control.PasswordField; 
+import javafx.scene.control.PasswordField;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import oracle.jdbc.pool.*;
 import java.util.*;
 import javafx.application.Application;
@@ -29,10 +30,10 @@ public class Login1 extends Application {
     Statement stmt;
     static Connection conn;
     ResultSet rs;
-    
+
     public String name; // Stores the identified user name for use in other classes
     public int id;
-    
+
     //FX Labels
     Label userNameLbl = new Label("Username");
     Label passwordLbl = new Label("Password");
@@ -45,9 +46,13 @@ public class Login1 extends Application {
 
     TextField userNameTxt = new TextField();
     PasswordField passwordTxt = new PasswordField();
+
+    public double hour;
+    public double minute;
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
     //FX GridPane
     GridPane loginPane = new GridPane();
-    
+
     Stage primaryStage = new Stage();
 
     @Override
@@ -72,8 +77,7 @@ public class Login1 extends Application {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Log In / Sign Up");
         primaryStage.show();
-        
-        
+
         // Begin application button
         applicationButton.setOnAction(e -> {
             Application2 app = new Application2(this);
@@ -115,15 +119,19 @@ public class Login1 extends Application {
                         System.out.println("Success! " + userName + " = " + rs.getString("username"));
                         sendDBCommand("select * from Volunteer where username = '" + userName + "'"); // Update query to specify found username
                         System.out.println(password);
-                        
+
                         if (rs.next()) {
                             if (password.equals(rs.getString("password"))) { // If the password matches the found username, it is successful
                                 System.out.println("Success! " + password + " = " + rs.getString("password"));
-                                
+
                                 name = rs.getString("vol_firstname") + " " + rs.getString("vol_lastname");
                                 id = rs.getInt("volID");
                                 System.out.println(id);
-                                
+
+                                LocalDateTime now = LocalDateTime.now();
+                                System.out.println(dtf.format(now));
+                                hour = now.getHour();
+                                minute = now.getMinute();
                                 ////////////////////////////////////////////////////////////////////
                                 if (rs.getString("status").equalsIgnoreCase("admin")) {
                                     Home home = new Home(this); // Display the admin home screen
@@ -133,7 +141,7 @@ public class Login1 extends Application {
                                     primaryStage.close();
                                 }
                                 test = 0; // Both username and password were correct, so stop while loop 
-                                
+
                             } else {
                                 login = new Label("Incorrect login. Please try again.");
                                 loginPane.add(login, 0, 0);
@@ -164,6 +172,13 @@ public class Login1 extends Application {
             //passwordTxt.clear();
         });
     }
+    public double getHour() {
+        return hour;
+    }
+    
+    public double getMinute() {
+        return minute;
+    }
 
     public boolean loginAttempt(String username) {
         return true;
@@ -179,7 +194,7 @@ public class Login1 extends Application {
         pane.setAlignment(Pos.CENTER);
 
     }
-    
+
     public void getPrimaryStage(Stage loginStage) {
         loginStage = primaryStage;
     }

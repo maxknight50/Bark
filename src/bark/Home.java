@@ -9,6 +9,9 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.sql.SQLException;
 import java.awt.Color;
+import static java.lang.Math.abs;
+import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 
 public class Home extends Login1 {
 
@@ -38,6 +41,14 @@ public class Home extends Login1 {
 
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
+    
+    double hour;
+    double minute;
+    double hour2;
+    double minute2;
+    double totalMinute;
+    public static double cumHours;
+    DecimalFormat df = new DecimalFormat("#.##");
 
     GridPane homePane = new GridPane();
     GridPane socialPane = new GridPane();
@@ -75,6 +86,9 @@ public class Home extends Login1 {
         viewPaw.setX(100);
         viewPaw.setY(150);
         homePane.add(viewPaw, 0, 12);
+        
+        hour = login.getHour();
+        minute = login.getMinute();
 
         mainPane.add(homePane, 0, 0);
         socialPane.setAlignment(Pos.TOP_CENTER);
@@ -88,6 +102,14 @@ public class Home extends Login1 {
         // Check out button
         checkoutBtn.setOnAction(e -> {
             //primaryStage.setScene(Checkout.primaryScene);
+            LocalDateTime now = LocalDateTime.now();
+            System.out.println(dtf.format(now));
+            System.out.println(login.getHour() + " " + login.getMinute());
+            hour2 = now.getHour();
+            minute2 = now.getMinute();
+            totalMinute = totalMinute = (abs(minute2 - minute)*(1.66666666667) /100);
+            cumHours = cumHours + totalMinute;
+            System.out.println("Total time: " + df.format(cumHours));
             Checkout chkOut = new Checkout(this);
         });
 
@@ -138,7 +160,11 @@ public class Home extends Login1 {
         logoutBtn.setOnAction(e -> {
             Logout lo = new Logout(this);
         });
-
+    }
+        public double getCumHours(){
+            return cumHours;
+        }
+        
     }
 
-}
+
