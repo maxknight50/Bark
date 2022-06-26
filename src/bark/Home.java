@@ -27,6 +27,7 @@ public class Home extends Login1 {
     Button animalInfoBtn = new Button("Animal Information"); // Admin only?
     Button scheduleBtn = new Button("Schedule Availability");
     Button logoutBtn = new Button("Logout");
+    Button checkIn = new Button("Check In");
 
     Label scrnTitleLbl = new Label("Social Home");
     Label dateLbl = new Label("Date");
@@ -41,7 +42,7 @@ public class Home extends Login1 {
 
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
-    
+
     double hour;
     double minute;
     double hour2;
@@ -62,21 +63,22 @@ public class Home extends Login1 {
         paneSettings(homePane);
 
         homePane.add(barkTitle, 0, 0);
-        homePane.add(eventsBtn, 0, 1);
+        homePane.add(checkIn, 0, 1);
         homePane.add(reviewApplication, 0, 2);
         homePane.add(volunteerInfoBtn, 0, 3);
-        homePane.add(assignSpecialBtn, 0, 4);
-        homePane.add(volunteerReportBtn, 0, 5);
-        homePane.add(donationBtn, 0, 6);
-        homePane.add(animalInfoBtn, 0, 7);
-        homePane.add(scheduleBtn, 0, 8);
-        homePane.add(checkoutBtn, 0, 9);
-        homePane.add(logoutBtn, 0, 10);
+        homePane.add(eventsBtn, 0, 4);
+        homePane.add(assignSpecialBtn, 0, 5);
+        homePane.add(volunteerReportBtn, 0, 6);
+        homePane.add(donationBtn, 0, 7);
+        homePane.add(animalInfoBtn, 0, 8);
+        homePane.add(scheduleBtn, 0, 9);
+        homePane.add(checkoutBtn, 0, 10);
+        homePane.add(logoutBtn, 0, 11);
         paneSettings(socialPane);
-        socialPane.add(scrnTitleLbl, 0, 0);
-        socialPane.add(dateLbl, 0, 1);
+        socialPane.add(scrnTitleLbl, 0, 1);
+        socialPane.add(dateLbl, 0, 2);
         socialPane.add(takeOut, 0, 3);
-        socialPane.add(descLbl, 2, 1);
+        socialPane.add(descLbl, 2, 2);
         socialPane.add(takeOut2, 2, 3);
         socialPane.add(takeOut3, 0, 5);
         socialPane.add(takeOut4, 2, 5);
@@ -85,8 +87,8 @@ public class Home extends Login1 {
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
         viewPaw.setY(150);
-        homePane.add(viewPaw, 0, 12);
-        
+        socialPane.add(viewPaw, 0, 0);
+
         hour = login.getHour();
         minute = login.getMinute();
 
@@ -107,7 +109,7 @@ public class Home extends Login1 {
             System.out.println(login.getHour() + " " + login.getMinute());
             hour2 = now.getHour();
             minute2 = now.getMinute();
-            totalMinute = totalMinute = (abs(minute2 - minute)*(1.66666666667) /100);
+            totalMinute = totalMinute = (abs(minute2 - minute) * (1.66666666667) / 100);
             cumHours = cumHours + totalMinute;
             System.out.println("Total time: " + df.format(cumHours));
             Checkout chkOut = new Checkout(this);
@@ -161,10 +163,9 @@ public class Home extends Login1 {
             Logout lo = new Logout(this);
         });
     }
-        public double getCumHours(){
-            return cumHours;
-        }
-        
+
+    public double getCumHours() {
+        return cumHours;
     }
 
-
+}
