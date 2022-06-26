@@ -44,9 +44,9 @@ public class ReviewApplication extends Login1 {
     TextField emailTxt = new TextField();
     TextField phoneTxt = new TextField();
     ComboBox<String> expCb = new ComboBox();
-    Button submitBtn = new Button("Approve");
+    Button approveBtn = new Button("Approve");
     Button denyBtn = new Button("Deny");
-    ComboBox<String> selectNameCb = new ComboBox();
+    ComboBox<String> selectIDCb = new ComboBox();
 
     ObservableList<String> idList = FXCollections.observableArrayList();
 
@@ -62,7 +62,7 @@ public class ReviewApplication extends Login1 {
         //pane1.add(title, 1,0);
 //        pane1.add(description1, 1, 1);
 //        pane1.add(description2, 1, 2);
-        pane1.add(selectNameCb, 1, 1);
+        pane1.add(selectIDCb, 1, 1);
         pane1.add(selectNameLbl, 0, 1);
         pane1.add(fNameLbl, 0, 2);
         pane1.add(fNameTxt, 1, 2);
@@ -81,7 +81,7 @@ public class ReviewApplication extends Login1 {
         pane1.add(infoLbl, 0, 8);
         pane1.add(infoTxt, 1, 8);
 
-        pane1.add(submitBtn, 1, 9);
+        pane1.add(approveBtn, 1, 9);
         pane1.add(denyBtn, 1, 10);
 
         viewPaw.setFitHeight(50);
@@ -103,30 +103,43 @@ public class ReviewApplication extends Login1 {
         //System.out.println(rs);
         try {
             while (rs.next()) {
-//                fNameTxt.setText(rs.getString("vol_firstname"));
-//                lNameTxt.setText(rs.getString("vol_lastname"));
-//                addressTxt.setText(rs.getString("vol_address"));
-//                emailTxt.setText(rs.getString("vol_email"));  
-//                phoneTxt.setText(rs.getString("vol_phone"));  
-//                // experience..??
-//                infoTxt.setText(rs.getString("vol_info"));
                 idList.add(rs.getString("volid"));
-
             }
         } catch (Exception e) {
 
         }
+        selectIDCb.setItems(idList);
 
-        selectNameCb.setItems(idList);
-
-        selectNameCb.setOnAction(e -> {
-            fillFields(selectNameCb.getSelectionModel().getSelectedItem());
+        selectIDCb.setOnAction(e -> {
+            fillFields(selectIDCb.getSelectionModel().getSelectedItem());
         });
-
+        approveBtn.setOnAction(e ->{
+            String update = "update volunteer set status = 'volunteer in training' "
+                    + "where volid = " + selectIDCb.getSelectionModel().getSelectedItem();
+            sendDBCommand(update);
+            idList.remove(selectIDCb.getSelectionModel().getSelectedIndex());
+            fNameTxt.clear();
+            lNameTxt.clear();
+            addressTxt.clear();
+            emailTxt.clear();
+            phoneTxt.clear();
+            infoTxt.clear();
+        });
+        denyBtn.setOnAction(e -> {
+            String delete = "delete from volunteer where volid = " + selectIDCb.getSelectionModel().getSelectedItem();
+            sendDBCommand(delete);
+            idList.remove(selectIDCb.getSelectionModel().getSelectedIndex());
+            fNameTxt.clear();
+            lNameTxt.clear();
+            addressTxt.clear();
+            emailTxt.clear();
+            phoneTxt.clear();
+            infoTxt.clear();
+        });
     }
 
     public void fillFields(String id) {
-        id = selectNameCb.getSelectionModel().getSelectedItem();
+        id = selectIDCb.getSelectionModel().getSelectedItem();
         String query = "select * from volunteer where volid = " + id + "";
 //        query += id + "'";
         sendDBCommand(query);
