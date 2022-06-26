@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 public class Checkout extends Login1 {
     Login1 login;
     Home home;
-    volunteerHome vHome;
+    VolunteerHome vHome;
     DecimalFormat df = new DecimalFormat("#.##");
     
     //Button backBtn = new Button("Back");

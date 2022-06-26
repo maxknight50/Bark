@@ -22,6 +22,7 @@ import tables.*;
 public class EventsRetry extends Login1 {
 
     Home home;
+    VolunteerHome volHome;
 
     TableView<Event> yourTable = new TableView<>();
     TableView<Event> dailyTable = new TableView<>();
@@ -80,9 +81,69 @@ public class EventsRetry extends Login1 {
     GridPane eventsPane = new GridPane();
     TabPane tabPane = new TabPane();
 
+    EventsRetry(VolunteerHome vol) throws SQLException {
+        this.volHome = vol;
+
+        System.out.print("Hello. I am in volunteer home");
+        setTables();
+        
+        Stage primaryStage = new Stage();
+        Scene primaryScene = new Scene(eventsPane, 1000, 550);
+        tabPane.setMaxWidth(eventsPane.getWidth());
+
+        dailyTable.setMinWidth(primaryScene.getWidth() - dailyButtons.getWidth());
+        pastTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
+        yourTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
+        hostedTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
+
+        HBox.setHgrow(tabPane, Priority.ALWAYS);
+        HBox.setHgrow(dailyTable, Priority.ALWAYS);
+        VBox.setVgrow(dailyTable, Priority.ALWAYS);
+        HBox.setHgrow(pastTable, Priority.ALWAYS);
+        HBox.setHgrow(yourTable, Priority.ALWAYS);
+        HBox.setHgrow(hostedTable, Priority.ALWAYS);
+
+        primaryStage.setScene(primaryScene);
+        primaryStage.setTitle("Events Menu");
+        primaryStage.show();
+
+        tabPane.setMinHeight(primaryScene.getHeight());
+        tabPane.setMinWidth(primaryScene.getWidth());
+
+    }
+
     EventsRetry(Home home) throws SQLException {
         this.home = home;
 
+        System.out.print("Hello. I am in admin home");
+        setTables();
+
+        Stage primaryStage = new Stage();
+        Scene primaryScene = new Scene(eventsPane, 1000, 550);
+        tabPane.setMaxWidth(eventsPane.getWidth());
+
+        dailyTable.setMinWidth(primaryScene.getWidth() - dailyButtons.getWidth());
+        pastTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
+        yourTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
+        hostedTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
+
+        HBox.setHgrow(tabPane, Priority.ALWAYS);
+        HBox.setHgrow(dailyTable, Priority.ALWAYS);
+        VBox.setVgrow(dailyTable, Priority.ALWAYS);
+        HBox.setHgrow(pastTable, Priority.ALWAYS);
+        HBox.setHgrow(yourTable, Priority.ALWAYS);
+        HBox.setHgrow(hostedTable, Priority.ALWAYS);
+
+        primaryStage.setScene(primaryScene);
+        primaryStage.setTitle("Events Menu");
+        primaryStage.show();
+
+        tabPane.setMinHeight(primaryScene.getHeight());
+        tabPane.setMinWidth(primaryScene.getWidth());
+
+    }
+
+    public void setTables() {
         yourTable.setItems(yourData);
         dailyTable.setItems(dailyData);
         pastTable.setItems(pastData);
@@ -149,7 +210,7 @@ public class EventsRetry extends Login1 {
                 dailyData.add(new Event(rs.getInt("eventID"), rs.getString("eventType"), rs.getString("eventName"), rs.getString("eventDescription"),
                         rs.getInt("maxVolunteers"), rs.getDate("eventDate"), rs.getString("eventTime"), rs.getString("eventLocation"), rs.getString("eventCategory"),
                         rs.getString("eventStatus")));
-                System.out.println("FOR TABLE 1: " + rs.getString("eventName") + " " + rs.getString("eventDate") + " " + rs.getString("eventTime"));
+               // System.out.println("FOR TABLE 1: " + rs.getString("eventName") + " " + rs.getString("eventDate") + " " + rs.getString("eventTime"));
             }
 
             // Display completed events
@@ -172,52 +233,6 @@ public class EventsRetry extends Login1 {
 
         } catch (Exception e) {
             System.out.println(e);
-        }
-
-        Stage primaryStage = new Stage();
-        Scene primaryScene = new Scene(eventsPane, 1000, 550);
-        tabPane.setMaxWidth(eventsPane.getWidth());
-
-        dailyTable.setMinWidth(primaryScene.getWidth() - dailyButtons.getWidth());
-        pastTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
-        yourTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
-        hostedTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
-
-        HBox.setHgrow(tabPane, Priority.ALWAYS);
-        HBox.setHgrow(dailyTable, Priority.ALWAYS);
-        VBox.setVgrow(dailyTable, Priority.ALWAYS);
-        HBox.setHgrow(pastTable, Priority.ALWAYS);
-        HBox.setHgrow(yourTable, Priority.ALWAYS);
-        HBox.setHgrow(hostedTable, Priority.ALWAYS);
-        
-        primaryStage.setScene(primaryScene);
-        primaryStage.setTitle("Events Menu");
-        primaryStage.show();
-
-        tabPane.setMinHeight(primaryScene.getHeight());
-        tabPane.setMinWidth(primaryScene.getWidth());
-
-    }
-
-    public void sendDBCommand(String sqlQuery) {
-        String URL = "jdbc:oracle:thin:@localhost:1521:XE";
-        String userID = "javauser";
-        String userPASS = "javapass";
-        OracleDataSource ds;
-
-        // You can comment this line out when your program is finished
-        System.out.println(sqlQuery);
-
-        try {
-            ds = new OracleDataSource();
-            ds.setURL(URL);
-            conn = ds.getConnection(userID, userPASS);
-            stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            rs = stmt.executeQuery(sqlQuery); // Sends the Query to the DB
-            System.out.println("RESULT SET: " + rs);
-
-        } catch (SQLException e) {
-            System.out.println(e.toString());
         }
     }
 
@@ -323,6 +338,28 @@ public class EventsRetry extends Login1 {
 //        dailyTablePane.setMinWidth(300);
 //        yourTablePane.setMinWidth(300);
 //        pastTablePane.setMinWidth(300);
+    }
+    
+    public void sendDBCommand(String sqlQuery) {
+        String URL = "jdbc:oracle:thin:@localhost:1521:XE";
+        String userID = "javauser";
+        String userPASS = "javapass";
+        OracleDataSource ds;
+
+        // You can comment this line out when your program is finished
+        System.out.println(sqlQuery);
+
+        try {
+            ds = new OracleDataSource();
+            ds.setURL(URL);
+            conn = ds.getConnection(userID, userPASS);
+            stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            rs = stmt.executeQuery(sqlQuery); // Sends the Query to the DB
+     //       System.out.println("RESULT SET: " + rs);
+
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
     }
 
 }

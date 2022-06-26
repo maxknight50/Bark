@@ -1,4 +1,3 @@
-
 package bark;
 
 import java.sql.SQLException;
@@ -19,7 +18,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
- * This is for admins to review all submitted applications and either accept or deny them
+ * This is for admins to review all submitted applications and either accept or
+ * deny them
  */
 public class ReviewApplication extends Login1 {
 
@@ -47,9 +47,9 @@ public class ReviewApplication extends Login1 {
     Button submitBtn = new Button("Approve");
     Button denyBtn = new Button("Deny");
     ComboBox<String> selectNameCb = new ComboBox();
-    
+
     ObservableList<String> idList = FXCollections.observableArrayList();
-    
+
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
 
@@ -68,23 +68,22 @@ public class ReviewApplication extends Login1 {
         pane1.add(fNameTxt, 1, 2);
         pane1.add(lNameLbl, 0, 3);
         pane1.add(lNameTxt, 1, 3);
-        
-        pane1.add(addressLbl, 0, 4); 
-        pane1.add(addressTxt, 1, 4); 
-        pane1.add(emailLbl, 0, 5); 
-        pane1.add(emailTxt, 1, 5); 
-        
-        
+
+        pane1.add(addressLbl, 0, 4);
+        pane1.add(addressTxt, 1, 4);
+        pane1.add(emailLbl, 0, 5);
+        pane1.add(emailTxt, 1, 5);
+
         pane1.add(phoneLbl, 0, 6);
         pane1.add(phoneTxt, 1, 6);
         pane1.add(expLbl, 0, 7);
         pane1.add(expCb, 1, 7);
         pane1.add(infoLbl, 0, 8);
         pane1.add(infoTxt, 1, 8);
-        
+
         pane1.add(submitBtn, 1, 9);
         pane1.add(denyBtn, 1, 10);
-        
+
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
@@ -96,7 +95,7 @@ public class ReviewApplication extends Login1 {
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Review Application");
         primaryStage.show();
-        
+
         // DB Connectivity
         String query = "select * from volunteer where status = 'applicant'";
         sendDBCommand(query);
@@ -112,45 +111,39 @@ public class ReviewApplication extends Login1 {
 //                // experience..??
 //                infoTxt.setText(rs.getString("vol_info"));
                 idList.add(rs.getString("volid"));
-                
-                
-                
+
             }
         } catch (Exception e) {
-            
+
         }
-        
-        
-        
+
         selectNameCb.setItems(idList);
-        
-        selectNameCb.setOnAction(e ->{
+
+        selectNameCb.setOnAction(e -> {
             fillFields(selectNameCb.getSelectionModel().getSelectedItem());
         });
-        
-        
-        
+
     }
-    
+
     public void fillFields(String id) {
-        //id = selectNameCb.getSelectionModel().getSelectedItem();
-        String query = "select * from volunteer where volid = '";
-        query += id + "'";
+        id = selectNameCb.getSelectionModel().getSelectedItem();
+        String query = "select * from volunteer where volid = " + id + "";
+//        query += id + "'";
+        sendDBCommand(query);
         try {
-            sendDBCommand(query);
-            fNameTxt.setText(rs.getString("vol_firstname"));
-            lNameTxt.setText(rs.getString("vol_lastname"));
-            addressTxt.setText(rs.getString("vol_address"));
-            emailTxt.setText(rs.getString("vol_email"));  
-            phoneTxt.setText(rs.getString("vol_phone"));
-            infoTxt.setText(rs.getString("vol_info"));
-        
+            while (rs.next()) {
+                System.out.println("First name: " + rs.getString("vol_firstname"));
+                fNameTxt.setText(rs.getString("vol_firstname"));
+                lNameTxt.setText(rs.getString("vol_lastname"));
+                addressTxt.setText(rs.getString("vol_address"));
+                emailTxt.setText(rs.getString("vol_email"));
+                phoneTxt.setText(rs.getString("vol_phone"));
+                infoTxt.setText(rs.getString("vol_info"));
+            }
         } catch (SQLException sql) {
-            
+            System.out.println(sql);
         }
-    
+
     }
-    
 
 }
-

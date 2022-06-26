@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 public class VolunteerCheckout extends Login1 {
     Login1 login;
     Home home;
-    volunteerHome vHome;
+    VolunteerHome vHome;
     DecimalFormat df = new DecimalFormat("#.##");
     
     //Button backBtn = new Button("Back");
@@ -35,7 +35,7 @@ public class VolunteerCheckout extends Login1 {
     
     GridPane checkoutPane = new GridPane();
     
-    VolunteerCheckout(volunteerHome vhome) {
+    VolunteerCheckout(VolunteerHome vhome) {
         this.vHome = vhome;
         paneSettings(checkoutPane);
         System.out.println("Test volunteer: " + df.format(vhome.cumHours));

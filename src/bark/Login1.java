@@ -137,7 +137,7 @@ public class Login1 extends Application {
                                     Home home = new Home(this); // Display the admin home screen
                                     primaryStage.close();
                                 } else {
-                                    Home home = new volunteerHome(this); // Display the regular volunteer home screen
+                                    Home home = new VolunteerHome(this); // Display the regular volunteer home screen
                                     primaryStage.close();
                                 }
                                 test = 0; // Both username and password were correct, so stop while loop 
