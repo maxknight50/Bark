@@ -67,7 +67,7 @@ public class volunteerHome extends Home {
         homePane.add(assignSpecialBtn, 0, 4);
         //homePane.add(volunteerReportBtn, 0, 5);
         //homePane.add(donationBtn, 0, 6);
-        //homePane.add(animalInfoBtn, 0, 7);
+        homePane.add(animalInfoBtn, 0, 7);
         //homePane.add(scheduleBtn, 0, 8);
         homePane.add(checkoutBtn, 0, 9);
         homePane.add(logoutBtn, 0, 10);
@@ -120,6 +120,11 @@ public class volunteerHome extends Home {
         // Assign Specialization btn
         assignSpecialBtn.setOnAction(e -> {
             AssignSpecialization assign1 = new AssignSpecialization(this);
+        });
+        
+        // Assign Specialization btn
+        animalInfoBtn.setOnAction(e -> {
+            AnimalList al = new AnimalList(this);
         });
 
         // Events Menu button
