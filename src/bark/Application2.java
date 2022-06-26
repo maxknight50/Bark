@@ -138,6 +138,7 @@ public class Application2 extends Login1 {
                             largestScheduleId = storedScheduleId;
                         }
                     }
+                    largestVolId += 1;
 
                     System.out.println("Final largest volID:" + largestVolId);
                     System.out.println("Final largest schedule_ID:" + largestScheduleId);
@@ -147,7 +148,7 @@ public class Application2 extends Login1 {
                 Logger.getLogger(Application2.class.getName()).log(Level.SEVERE, null, ex);
             }
             String query = "INSERT INTO VOLUNTEER(volid, vol_FirstName, vol_LastName, vol_Address, vol_dateofbirth, vol_info, vol_Email, vol_Phone, cumulativeHours, status, username, password, schedule_id)"
-                     + "VALUES ('" + largestVolId+1 + "', '" + fNameTxt.getText() + "', '" + lNameTxt.getText() + "', '" + 
+                     + "VALUES ('" + largestVolId + "', '" + fNameTxt.getText() + "', '" + lNameTxt.getText() + "', '" + 
                     addressTxt.getText() + "', '" + dobTxt.getText() + "', '" + infoTxt.getText() + "', '" + 
                     emailTxt.getText() + "', '" + phoneTxt.getText() + "', " + "0, 'applicant', '" + usernameTxt.getText() +"', '" + 
                     passwordTxt.getText() + "', '" +largestScheduleId + "')";
