@@ -2,8 +2,11 @@
 package bark;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -31,6 +34,7 @@ public class ReviewApplication extends Login1 {
     Label emailLbl = new Label("Email");
     Label phoneLbl = new Label("Phone");
     Label expLbl = new Label("Experience");
+    Label selectNameLbl = new Label("Select Applicant: ");
 
     // FX Controls - Textfields, comboboxes, etc.
     TextField fNameTxt = new TextField();
@@ -42,9 +46,9 @@ public class ReviewApplication extends Login1 {
     ComboBox<String> expCb = new ComboBox();
     Button submitBtn = new Button("Approve");
     Button denyBtn = new Button("Deny");
-    Button nextBtn = new Button("Next");
-    Button prevBtn = new Button("Previous");
+    ComboBox<String> selectNameCb = new ComboBox();
     
+    ObservableList<String> idList = FXCollections.observableArrayList();
     
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
@@ -58,34 +62,34 @@ public class ReviewApplication extends Login1 {
         //pane1.add(title, 1,0);
 //        pane1.add(description1, 1, 1);
 //        pane1.add(description2, 1, 2);
-        pane1.add(fNameLbl, 0, 1);
-        pane1.add(fNameTxt, 1, 1);
-        pane1.add(lNameLbl, 0, 2);
-        pane1.add(lNameTxt, 1, 2);
+        pane1.add(selectNameCb, 1, 1);
+        pane1.add(selectNameLbl, 0, 1);
+        pane1.add(fNameLbl, 0, 2);
+        pane1.add(fNameTxt, 1, 2);
+        pane1.add(lNameLbl, 0, 3);
+        pane1.add(lNameTxt, 1, 3);
         
-        pane1.add(addressLbl, 0, 3); 
-        pane1.add(addressTxt, 1, 3); 
-        pane1.add(emailLbl, 0, 4); 
-        pane1.add(emailTxt, 1, 4); 
+        pane1.add(addressLbl, 0, 4); 
+        pane1.add(addressTxt, 1, 4); 
+        pane1.add(emailLbl, 0, 5); 
+        pane1.add(emailTxt, 1, 5); 
         
         
-        pane1.add(phoneLbl, 0, 5);
-        pane1.add(phoneTxt, 1, 5);
-        pane1.add(expLbl, 0, 6);
-        pane1.add(expCb, 1, 6);
-        pane1.add(infoLbl, 0, 7);
-        pane1.add(infoTxt, 1, 7);
+        pane1.add(phoneLbl, 0, 6);
+        pane1.add(phoneTxt, 1, 6);
+        pane1.add(expLbl, 0, 7);
+        pane1.add(expCb, 1, 7);
+        pane1.add(infoLbl, 0, 8);
+        pane1.add(infoTxt, 1, 8);
         
-        pane1.add(submitBtn, 1, 8);
-        pane1.add(denyBtn, 1, 9);
-        pane1.add(prevBtn, 0, 10);
-        pane1.add(nextBtn, 1, 10);
+        pane1.add(submitBtn, 1, 9);
+        pane1.add(denyBtn, 1, 10);
         
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
         viewPaw.setY(150);
-        pane1.add(viewPaw, 3, 9);
+        pane1.add(viewPaw, 3, 10);
 
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(pane1, pane1.getMaxWidth(), pane1.getMaxHeight());
@@ -100,35 +104,51 @@ public class ReviewApplication extends Login1 {
         //System.out.println(rs);
         try {
             while (rs.next()) {
-                fNameTxt.setText(rs.getString("vol_firstname"));
-                lNameTxt.setText(rs.getString("vol_lastname"));
-                addressTxt.setText(rs.getString("vol_address"));
-                emailTxt.setText(rs.getString("vol_email"));  
-                phoneTxt.setText(rs.getString("vol_phone"));  
-                // experience..??
-                infoTxt.setText(rs.getString("vol_info"));
+//                fNameTxt.setText(rs.getString("vol_firstname"));
+//                lNameTxt.setText(rs.getString("vol_lastname"));
+//                addressTxt.setText(rs.getString("vol_address"));
+//                emailTxt.setText(rs.getString("vol_email"));  
+//                phoneTxt.setText(rs.getString("vol_phone"));  
+//                // experience..??
+//                infoTxt.setText(rs.getString("vol_info"));
+                idList.add(rs.getString("volid"));
+                
+                
+                
             }
         } catch (Exception e) {
             
         }
         
-        nextBtn.setOnAction(e -> {
-            try {
-                rs.next();
-                fNameTxt.setText(rs.getString("vol_firstname"));
-                lNameTxt.setText(rs.getString("vol_lastname"));
-                addressTxt.setText(rs.getString("vol_address"));
-                emailTxt.setText(rs.getString("vol_email"));  
-                phoneTxt.setText(rs.getString("vol_phone"));  
-                // experience..??
-                infoTxt.setText(rs.getString("vol_info"));
-                
-            } catch (SQLException ex) {
-                
-            }
+        
+        
+        selectNameCb.setItems(idList);
+        
+        selectNameCb.setOnAction(e ->{
+            fillFields(selectNameCb.getSelectionModel().getSelectedItem());
         });
         
         
+        
+    }
+    
+    public void fillFields(String id) {
+        //id = selectNameCb.getSelectionModel().getSelectedItem();
+        String query = "select * from volunteer where volid = '";
+        query += id + "'";
+        try {
+            sendDBCommand(query);
+            fNameTxt.setText(rs.getString("vol_firstname"));
+            lNameTxt.setText(rs.getString("vol_lastname"));
+            addressTxt.setText(rs.getString("vol_address"));
+            emailTxt.setText(rs.getString("vol_email"));  
+            phoneTxt.setText(rs.getString("vol_phone"));
+            infoTxt.setText(rs.getString("vol_info"));
+        
+        } catch (SQLException sql) {
+            
+        }
+    
     }
     
 
