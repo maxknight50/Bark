@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
-public class VolunteerHome extends Home {
+public class VolunteerHome1 extends Home {
 
     Login1 login; // Create Login1 object
     Label barkTitle;
@@ -50,7 +50,7 @@ public class VolunteerHome extends Home {
     GridPane socialPane = new GridPane();
     GridPane mainPane = new GridPane();
 
-    VolunteerHome(Login1 login) {
+    VolunteerHome1(Login1 login) {
         super(login);
 
         barkTitle = new Label("Welcome to BARK, " + login.name + "!"); // Get name identified in login

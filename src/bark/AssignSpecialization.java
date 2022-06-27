@@ -25,7 +25,7 @@ public class AssignSpecialization extends Login1 {
 
     //Login1 login;
     Home home;
-    VolunteerHome volHome;
+    VolunteerHome1 volHome;
 
     // add title and back button
     Label volNameLbl = new Label("Volunteer Name");
@@ -46,7 +46,7 @@ public class AssignSpecialization extends Login1 {
 
     ObservableList<String> specialization = FXCollections.observableArrayList();
 
-    AssignSpecialization(VolunteerHome volHome) {
+    AssignSpecialization(VolunteerHome1 volHome) {
         this.volHome = volHome;
 
         ArrayList<String> defaultList = new ArrayList<>();

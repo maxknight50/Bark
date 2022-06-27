@@ -22,7 +22,7 @@ import tables.*;
 public class EventsRetry extends Login1 {
 
     Home home;
-    VolunteerHome volHome;
+    VolunteerHome1 volHome;
 
     TableView<Event> yourTable = new TableView<>();
     TableView<Event> dailyTable = new TableView<>();
@@ -81,7 +81,7 @@ public class EventsRetry extends Login1 {
     GridPane eventsPane = new GridPane();
     TabPane tabPane = new TabPane();
 
-    EventsRetry(VolunteerHome vol) throws SQLException {
+    EventsRetry(VolunteerHome1 vol) throws SQLException {
         this.volHome = vol;
 
         System.out.print("Hello. I am in volunteer home");
