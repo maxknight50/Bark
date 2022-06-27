@@ -103,6 +103,8 @@ public class AssignSpecialization extends Login1 {
         // Lambda create
         create.setOnAction(e -> {
             currentList.getItems().add(newSpecialTxt.getText());
+            
+            newSpecialTxt.clear();
         });
     }
 
