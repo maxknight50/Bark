@@ -1,6 +1,3 @@
-//THIS IS A COMMENT #2
-// HELLO
-// Josh's comment test
 package bark;
 
 import javafx.scene.Scene;
@@ -21,7 +18,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
- *
+ * Applicant fills out information, temporary entry created in database until
+ * admin approves
  *
  */
 public class Application2 extends Login1 {
@@ -39,9 +37,10 @@ public class Application2 extends Login1 {
     Label infoLbl = new Label("Tell us about yourself!");
     Label emailLbl = new Label("Email");
     Label phoneLbl = new Label("Phone");
-    Label usernameLbl = new Label("Enter Username: ");
-    Label passwordLbl = new Label("Enter Password: ");
+    Label specialLbl = new Label("Specializations");
     Label expLbl = new Label("Experience");
+    Label usernameLbl = new Label("Username:");
+    Label passwordLbl = new Label("Password:");
 
     // FX Controls - Textfields, comboboxes, etc.
     TextField fNameTxt = new TextField();
@@ -53,9 +52,13 @@ public class Application2 extends Login1 {
     TextField phoneTxt = new TextField();
     TextField usernameTxt = new TextField();
     TextField passwordTxt = new TextField();
-    ComboBox<String> expCb = new ComboBox();
+    ComboBox<String> special = new ComboBox();
+    TextField experience = new TextField();
     Button submitBtn = new Button("Submit");
     Button deny = new Button("Deny");
+
+    ListView currentList = new ListView();
+    TextField newSpecialTxt = new TextField();
 
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
@@ -63,12 +66,25 @@ public class Application2 extends Login1 {
     GridPane pane1 = new GridPane();
 
     Application2(Login1 login) {
+        ObservableList<String> specialization = FXCollections.observableArrayList();
+        ArrayList<String> defaultList = new ArrayList<>();
+        sendDBCommand("SELECT DISTINCT specializationID, specialization_Name FROM specialization");
+        try {
+            while (rs.next()) {
+                String special = (rs.getString("specialization_Name"));
+                defaultList.add(special);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AssignSpecialization.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        specialization.addAll(defaultList);
+        special = new ComboBox(FXCollections.observableArrayList(specialization));
 
         this.login = login;
         paneSettings(pane1);
         //pane1.add(title, 1,0);
-        pane1.add(description1, 1, 1);
-        pane1.add(description2, 1, 2);
+        pane1.add(description1, 1, 0);
+        pane1.add(description2, 1, 1);
         pane1.add(fNameLbl, 0, 3);
         pane1.add(fNameTxt, 1, 3);
         pane1.add(lNameLbl, 0, 4);
@@ -84,36 +100,28 @@ public class Application2 extends Login1 {
         pane1.add(phoneLbl, 0, 8);
         pane1.add(phoneTxt, 1, 8);
         pane1.add(expLbl, 0, 9);
-        pane1.add(expCb, 1, 9);
-        pane1.add(usernameLbl, 0, 10);
-        pane1.add(usernameTxt, 1, 10);
-        pane1.add(passwordLbl, 0, 11);
-        pane1.add(passwordTxt, 1, 11);
-        pane1.add(infoLbl, 0, 12);
-        pane1.add(infoTxt, 1, 12);
+        pane1.add(experience, 1, 9);
+        pane1.add(specialLbl, 0, 10);
+        pane1.add(special, 1, 10);
 
-        pane1.add(submitBtn, 1, 13);
-        //pane1.add(deny, 0, 10);
+        pane1.add(currentList, 1, 11);
+        pane1.add(newSpecialTxt, 1, 12);
+
+        pane1.add(infoLbl, 0, 13);
+        pane1.add(infoTxt, 1, 13);
+
+//        pane1.add(usernameLbl, 0, 1);
+//        pane1.add(usernameTxt, 1, 1);
+ //       pane1.add(passwordLbl, 0, 2);
+//        pane1.add(passwordTxt, 1, 2);
+
+        pane1.add(submitBtn, 1, 15);
 
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
         viewPaw.setY(150);
-        pane1.add(viewPaw, 3, 11);
-
-        ObservableList<String> specialization = FXCollections.observableArrayList();
-        ArrayList<String> defaultList = new ArrayList<>();
-        sendDBCommand("SELECT DISTINCT specializationID, specialization_Name FROM specialization");
-        try {
-            while (rs.next()) {
-                String special = (rs.getString("specialization_Name"));
-                defaultList.add(special);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(AssignSpecialization.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        specialization.addAll(defaultList);
-        ComboBox<String> specialMenuCb = new ComboBox(FXCollections.observableArrayList(specialization));
+        pane1.add(viewPaw, 0, 0);
 
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(pane1, pane1.getMaxWidth(), pane1.getMaxHeight());
