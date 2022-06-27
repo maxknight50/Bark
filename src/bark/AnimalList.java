@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import java.lang.Object.*;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import oracle.jdbc.pool.OracleDataSource;
 import tables.*;
 
@@ -55,6 +56,7 @@ public class AnimalList extends Login1 {
     Label speciesLbl = new Label("Species");
     Label ageLbl = new Label("Age");
     Label medicalLbl = new Label("Medical History");
+    Label vetHistoryLbl = new Label("Vet History");
     Label feedingLbl = new Label("Feeding Needs");
 
     Label idTxt = new Label();
@@ -62,6 +64,7 @@ public class AnimalList extends Login1 {
     TextField speciesTxt = new TextField();
     TextField ageTxt = new TextField();
     TextField medicalTxt = new TextField();
+    ListView vetHistoryList = new ListView();
     TextField feedingTxt = new TextField();
 
     Label message = new Label();
@@ -76,7 +79,7 @@ public class AnimalList extends Login1 {
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
 
-    ListView vetHistoryCB = new ListView();
+    TextArea medicalHistoryTxt = new TextArea();
 
     GridPane overall = new GridPane();
     GridPane modAnimal = new GridPane();
@@ -95,10 +98,12 @@ public class AnimalList extends Login1 {
         modAnimal.add(ageLbl, 0, 5);
         modAnimal.add(ageTxt, 1, 5);
         modAnimal.add(medicalLbl, 0, 6);
-        modAnimal.add(vetHistoryCB, 1, 6, 1, 2);
+        modAnimal.add(medicalHistoryTxt, 1, 6, 1, 2);
         modAnimal.add(medicalTxt, 1, 8);
-        modAnimal.add(feedingLbl, 0, 9);
-        modAnimal.add(feedingTxt, 1, 9);
+        modAnimal.add(vetHistoryLbl, 0, 9);
+        modAnimal.add(vetHistoryList, 1, 9);
+        modAnimal.add(feedingLbl, 0, 10);
+        modAnimal.add(feedingTxt, 1, 10);
         medicalTxt.setPromptText("Add additional history");
         modAnimal.add(addMedical, 0, 8);
         addMedical.setAlignment(Pos.BASELINE_RIGHT);
@@ -106,15 +111,15 @@ public class AnimalList extends Login1 {
 //        modAnimal.add(eventIdTxt, 1, 8);
 //        modAnimal.add(volIdLbl, 0, 9);
 //        modAnimal.add(volIdTxt, 1, 9);
-        modAnimal.add(add, 0, 10);
-        modAnimal.add(modify, 1, 10);
-        modAnimal.add(delete, 0, 11);
+        modAnimal.add(add, 0, 11);
+        modAnimal.add(modify, 1, 11);
+        modAnimal.add(delete, 0, 12);
 
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
         viewPaw.setY(150);
-        modAnimal.add(viewPaw, 0, 12);
+        modAnimal.add(viewPaw, 0, 13);
 
         volTable.setItems(tableData);
         animalTable.add(message, 0, 0);
@@ -155,7 +160,7 @@ public class AnimalList extends Login1 {
 
         overall.add(modAnimal, 0, 0);
         overall.add(animalTable, 1, 0);
-        Scene primaryScene = new Scene(overall, 1000, 550);
+        Scene primaryScene = new Scene(overall, modAnimal.getWidth(), 550);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("List");
         primaryStage.show();
@@ -167,7 +172,7 @@ public class AnimalList extends Login1 {
             nameTxt.setText(volTable.getSelectionModel().getSelectedItem().getName() + "");
             speciesTxt.setText(volTable.getSelectionModel().getSelectedItem().getSpecies() + "");
             ageTxt.setText(volTable.getSelectionModel().getSelectedItem().getAge() + "");
-            medicalTxt.setText(volTable.getSelectionModel().getSelectedItem().getMedicalHistory() + "");
+            medicalHistoryTxt.setText(volTable.getSelectionModel().getSelectedItem().getMedicalHistory() + "");
             feedingTxt.setText(volTable.getSelectionModel().getSelectedItem().getFeedingNeeds() + "");
 
         });
