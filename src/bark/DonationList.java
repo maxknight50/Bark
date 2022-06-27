@@ -60,6 +60,7 @@ public class DonationList extends Login1 {
     Button modify = new Button("Modify");
     Button populate = new Button("<-- Select and Populate");
     Button report = new Button("Generate Report");
+    Button showAll = new Button("Show All");
 
     ComboBox donationYears = new ComboBox();
 
@@ -75,6 +76,7 @@ public class DonationList extends Login1 {
         table.add(populate, 0, 2);
         table.add(donationYears, 0, 3);
         table.add(report, 0, 4);
+        table.add(showAll, 0, 5); 
 
         buttons.add(backBtn, 0, 0);
         buttons.add(donoID, 0, 1);
@@ -149,7 +151,6 @@ public class DonationList extends Login1 {
                                 rs.getString("donationName"), rs.getString("donationDate"), rs.getInt("volID")));
                         break;
                     }
-                    System.out.println("ID: " + donList.get(i).getDonationID());
                 }
             }
             for (Donation1 x : donList) {
@@ -168,12 +169,10 @@ public class DonationList extends Login1 {
 
         Scene primaryScene = new Scene(overall, 1000, 550);
 
-        donTable.setMinWidth(
-                600);
+        donTable.setMinWidth(600);
         primaryStage.setScene(primaryScene);
 
-        primaryStage.setTitle(
-                "Donation List");
+        primaryStage.setTitle("Donation List");
         primaryStage.show();
 
         delete.setOnAction(e
@@ -190,17 +189,14 @@ public class DonationList extends Login1 {
         }
         );
 
-        populate.setOnAction(e
-                -> {
+        populate.setOnAction(e -> {
             idField.setText(donTable.getSelectionModel().getSelectedItem().getDonationID() + "");
             nameField.setText(donTable.getSelectionModel().getSelectedItem().getDonationName());
             amountField.setText(donTable.getSelectionModel().getSelectedItem().getDonationAmt());
             dateField.setText(donTable.getSelectionModel().getSelectedItem().getDonationDate());
-        }
-        );
+        });
 
-        modify.setOnAction(e
-                -> {
+        modify.setOnAction(e -> {
             int newID = Integer.valueOf(idField.getText());
             String newName = nameField.getText();
             String newAmount = amountField.getText();
@@ -225,8 +221,7 @@ public class DonationList extends Login1 {
         }
         );
 
-        add.setOnAction(e
-                -> {
+        add.setOnAction(e -> {
             int largest = 0;
             try {
                 String q = "SELECT * FROM DONATION";
@@ -234,10 +229,8 @@ public class DonationList extends Login1 {
                 try {
                     while (rs.next()) {
                         largest = rs.getInt("donation_ID");
-                        System.out.println("First: " + largest);
                         while (rs.next()) {
                             int store = rs.getInt("donation_ID");
-                            System.out.println(store);
                             if (store > largest) {
                                 largest = store;
                             }
@@ -268,9 +261,35 @@ public class DonationList extends Login1 {
         }
         );
         report.setOnAction(e -> {
-            System.out.println(donationYears.getValue()); 
-        }); 
+            tableData.clear();                                                  //Clear the table data
+            String[] dates1 = new String[20];                                   //Array to hold the date values    
+            for (int i = 0; i < donList.size(); i++) {                          //Loop through the donationList array 
+                if (donList.get(i) != null) {
+                    dates1[i] = donList.get(i).getDonationDate();               //Insert values from DonationList into new array  
+                    int counter = 1;                                            //Counter to determine which index's represent years 
+                    String[] array1 = dates1[i].split("-");                     //Split each date value into a new array 
+                    for (String a : array1) {                                   //Iterate through each date value   
+                        if (counter % 3 == 0) {                                 //Use counter division to determine which are years 
+                            if (donationYears.getValue().equals("20" + a)) {    //If combobox value = array value, add to table 
+                                tableData.add(donList.get(i));
+                            }
+                        }
+                        counter++;                                              //Increment counter after each date value                                            
+                    }
+                }
+            }
+        });
+
+        backBtn.setOnAction(e -> {
+            primaryStage.close();
+        });
         
+        showAll.setOnAction(e -> {
+           tableData.clear(); 
+           for(Donation1 x : donList){
+               tableData.add(x); 
+           }
+        });
 
     }
 
