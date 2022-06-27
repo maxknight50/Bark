@@ -300,7 +300,7 @@ public class DonationList extends Login1 {
                     stringDonations[i] = stringDonations[i].replace(",", "");
                     amount1 += Double.valueOf(stringDonations[i]);
                 }
-                donationField.setText("$" + String.valueOf(amount1) + ".00"); 
+                donationField.setText("$" + String.valueOf(amount1) + ".00");
             }
         });
 
@@ -313,6 +313,18 @@ public class DonationList extends Login1 {
             for (Donation1 x : donList) {
                 tableData.add(x);
             }
+            int amount2 = 0;
+            for (int i = 0; i < donList.size(); i++) {
+                String[] donationArray = new String[20];
+                donationArray[i] = donList.get(i).getDonationAmt().replace("$", "");
+                donationArray[i] = donationArray[i].replace(",", "");
+                for (int x = 0; x < donationArray.length; x++) {
+                    if (donationArray[x] != null) {
+                        amount2 += Double.valueOf(donationArray[x]);
+                    }
+                }
+            }
+            donationField.setText("$" + String.valueOf(amount2) + ".00");
         });
 
     }
