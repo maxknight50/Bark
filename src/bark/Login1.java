@@ -31,6 +31,7 @@ public class Login1 extends Application {
     static Connection conn;
     ResultSet rs;
 
+    public String user;
     public String name; // Stores the identified user name for use in other classes
     public int id;
 
@@ -109,6 +110,7 @@ public class Login1 extends Application {
             // 1. Username must match username within database, search through and locate
             String userName = userNameTxt.getText();
             String password = passwordTxt.getText();
+            user = userName;
             sendDBCommand("select * from Volunteer");
 
             try {

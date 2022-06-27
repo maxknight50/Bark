@@ -1,6 +1,8 @@
 package bark;
 
 import static java.lang.Math.abs;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -9,11 +11,19 @@ import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import oracle.jdbc.pool.OracleDataSource;
 
 public class VolunteerHome1 extends Home {
 
+    Statement stmt;
+    static Connection conn;
+    ResultSet rs;
+    
     Login1 login; // Create Login1 object
     Label barkTitle;
     Button checkIn = new Button("Check In");
@@ -38,11 +48,14 @@ public class VolunteerHome1 extends Home {
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
 
+    public double timeStored;
+    String user;
     double hour;
     double minute;
+    double timeCheckedIn;
     double hour2;
     double minute2;
-    double totalMinute;
+    double totalCumHours;
     public double cumHours;
     DecimalFormat df = new DecimalFormat("#.##");
 
@@ -82,9 +95,6 @@ public class VolunteerHome1 extends Home {
         viewPaw.setY(150);
         homePane.add(viewPaw, 0, 12);
 
-        hour = login.getHour();
-        minute = login.getMinute();
-
         mainPane.add(homePane, 0, 0);
         socialPane.setAlignment(Pos.TOP_CENTER);
         mainPane.add(socialPane, 1, 0);
@@ -94,16 +104,50 @@ public class VolunteerHome1 extends Home {
         primaryStage.setTitle("BARK Volunteer Home");
         primaryStage.show();
 
+        checkIn.setOnAction(e -> {
+            LocalDateTime now = LocalDateTime.now();
+//            System.out.println(df.format(now));
+            hour = now.getHour();
+            minute = now.getMinute();
+            System.out.println(hour + ":" + minute);
+            timeStored = minute + (hour * 60);
+            String update = "UPDATE Volunteer SET timeCheckedIn = " + timeStored + " WHERE username = '" + login.user + "'";
+            sendDBCommand(update);
+
+        });
         // Check out button
         checkoutBtn.setOnAction(e -> {
             //primaryStage.setScene(Checkout.primaryScene);
             LocalDateTime now = LocalDateTime.now();
-            System.out.println(dtf.format(now));
+//            System.out.println(df.format(now));
             hour2 = now.getHour();
             minute2 = now.getMinute();
-            totalMinute = totalMinute = (abs(minute2 - minute) * (1.66666666667) / 100);
-            cumHours = cumHours + totalMinute;
+            System.out.println(hour2 + ":" + minute2);
+            //sendDBCommand(getTime);
+            String getTime = "select * from Volunteer where username = '" + login.user + "'";
+            sendDBCommand(getTime);
+            try {
+                while (rs.next()) {
+                    timeCheckedIn = rs.getDouble("timeCheckedIn");
+                    totalCumHours = rs.getInt("cumulativeHours");
+                }    
+            } catch (Exception ex) {
+                System.out.println("Error: " + e.toString());
+            }
+            System.out.println("Checked In: " + timeCheckedIn);
+            
+            double checkedOut = (hour2*60) + minute2;
+            System.out.println("Checked Out: " + checkedOut);
+            cumHours = ((hour2*60) + minute2) - (timeCheckedIn);
+            cumHours = cumHours / 60;
             System.out.println("Total time: " + df.format(cumHours));
+
+            totalCumHours += cumHours;
+            System.out.println("total cumulative hours: " + totalCumHours);
+            String updateCumHours = "UPDATE Volunteer SET cumulativeHours = " + df.format(totalCumHours) + " WHERE username = '" + login.user + "'";
+            sendDBCommand(updateCumHours);
+            String delete = "UPDATE Volunteer SET timeCheckedIn = null WHERE username = '" + login.user + "'";
+            sendDBCommand(delete);
             VolunteerCheckout volChkOut = new VolunteerCheckout(this);
         });
 
@@ -144,6 +188,26 @@ public class VolunteerHome1 extends Home {
 
     public void getPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+    }
+    public void sendDBCommand(String sqlQuery) {
+        String URL = "jdbc:oracle:thin:@localhost:1521:XE";
+        String userID = "javauser";
+        String userPASS = "javapass";
+        OracleDataSource ds;
+
+        // You can comment this line out when your program is finished
+        System.out.println(sqlQuery);
+
+        try {
+            ds = new OracleDataSource();
+            ds.setURL(URL);
+            conn = ds.getConnection(userID, userPASS);
+            stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            rs = stmt.executeQuery(sqlQuery); // Sends the Query to the DB
+
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
     }
 
 }
