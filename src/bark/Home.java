@@ -162,6 +162,10 @@ public class Home extends Login1 {
         logoutBtn.setOnAction(e -> {
             Logout lo = new Logout(this);
         });
+
+        checkIn.setOnAction(e -> {
+            CheckIn ci = new CheckIn(this);
+        });
     }
 
     public double getCumHours() {
