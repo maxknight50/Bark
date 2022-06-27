@@ -14,6 +14,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javafx.application.Application.launch;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -99,6 +101,20 @@ public class Application2 extends Login1 {
         viewPaw.setY(150);
         pane1.add(viewPaw, 3, 11);
 
+        ObservableList<String> specialization = FXCollections.observableArrayList();
+        ArrayList<String> defaultList = new ArrayList<>();
+        sendDBCommand("SELECT DISTINCT specializationID, specialization_Name FROM specialization");
+        try {
+            while (rs.next()) {
+                String special = (rs.getString("specialization_Name"));
+                defaultList.add(special);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AssignSpecialization.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        specialization.addAll(defaultList);
+        ComboBox<String> specialMenuCb = new ComboBox(FXCollections.observableArrayList(specialization));
+
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(pane1, pane1.getMaxWidth(), pane1.getMaxHeight());
         primaryStage.setScene(primaryScene);
@@ -143,18 +159,18 @@ public class Application2 extends Login1 {
                     System.out.println("Final largest volID:" + largestVolId);
                     System.out.println("Final largest schedule_ID:" + largestScheduleId);
                 }
-                
+
             } catch (SQLException ex) {
                 Logger.getLogger(Application2.class.getName()).log(Level.SEVERE, null, ex);
             }
             String query = "INSERT INTO VOLUNTEER(volid, vol_FirstName, vol_LastName, vol_Address, vol_dateofbirth, vol_info, vol_Email, vol_Phone, cumulativeHours, status, username, password, schedule_id)"
-                     + "VALUES ('" + largestVolId + "', '" + fNameTxt.getText() + "', '" + lNameTxt.getText() + "', '" + 
-                    addressTxt.getText() + "', '" + dobTxt.getText() + "', '" + infoTxt.getText() + "', '" + 
-                    emailTxt.getText() + "', '" + phoneTxt.getText() + "', " + "0, 'applicant', '" + usernameTxt.getText() +"', '" + 
-                    passwordTxt.getText() + "', '" +largestScheduleId + "')";
+                    + "VALUES ('" + largestVolId + "', '" + fNameTxt.getText() + "', '" + lNameTxt.getText() + "', '"
+                    + addressTxt.getText() + "', '" + dobTxt.getText() + "', '" + infoTxt.getText() + "', '"
+                    + emailTxt.getText() + "', '" + phoneTxt.getText() + "', " + "0, 'applicant', '" + usernameTxt.getText() + "', '"
+                    + passwordTxt.getText() + "', '" + largestScheduleId + "')";
             System.out.println(query);
             sendDBCommand(query);
-            
+
             primaryStage.close();
 
         });
