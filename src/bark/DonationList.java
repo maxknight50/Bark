@@ -47,6 +47,8 @@ public class DonationList extends Login1 {
     Label donorName = new Label("Donor Name");
     Label donoAmount = new Label("Donation Amount");
     Label donoDate = new Label("Donation Date");
+    Label totalDonations = new Label("Total Donated:");
+    Label donationField = new Label();
 
     Label idField = new Label();
     TextField nameField = new TextField();
@@ -76,7 +78,7 @@ public class DonationList extends Login1 {
         table.add(populate, 0, 2);
         table.add(donationYears, 0, 3);
         table.add(report, 0, 4);
-        table.add(showAll, 0, 5); 
+        table.add(showAll, 0, 5);
 
         buttons.add(backBtn, 0, 0);
         buttons.add(donoID, 0, 1);
@@ -87,9 +89,11 @@ public class DonationList extends Login1 {
         buttons.add(amountField, 1, 3);
         buttons.add(donoDate, 0, 4);
         buttons.add(dateField, 1, 4);
-        buttons.add(add, 0, 5);
-        buttons.add(delete, 1, 5);
-        buttons.add(modify, 0, 6);
+        buttons.add(totalDonations, 0, 5);
+        buttons.add(donationField, 1, 5);
+        buttons.add(add, 0, 6);
+        buttons.add(delete, 1, 6);
+        buttons.add(modify, 0, 7);
 
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
@@ -141,8 +145,8 @@ public class DonationList extends Login1 {
             System.out.println("SQL Exception! " + e);
         }
 
-        sendDBCommand(
-                "SELECT donation_ID, donationAmt, donationName, donationDate, volID FROM Donation");
+        sendDBCommand("SELECT donation_ID, donationAmt, donationName, donationDate, volID FROM Donation");
+
         try {
             for (int i = 0; i < 100; i++) {
                 while (rs.next()) {
@@ -164,6 +168,18 @@ public class DonationList extends Login1 {
         //menuBar.getMenus().addAll(menuDonations);
         //tPane1.add(menuBar, 0, 0);
 
+        int amount = 0;
+        for (int i = 0; i < donList.size(); i++) {
+            String[] donationArray = new String[20];
+            donationArray[i] = donList.get(i).getDonationAmt().replace("$", "");
+            donationArray[i] = donationArray[i].replace(",", "");
+            for (int x = 0; x < donationArray.length; x++) {
+                if (donationArray[x] != null) {
+                    amount += Double.valueOf(donationArray[x]);
+                }
+            }
+        }
+        donationField.setText("$" + String.valueOf(amount) + ".00");
         overall.add(buttons, 0, 0);
         overall.add(table, 1, 0);
 
@@ -175,19 +191,17 @@ public class DonationList extends Login1 {
         primaryStage.setTitle("Donation List");
         primaryStage.show();
 
-        delete.setOnAction(e
-                -> {
+        delete.setOnAction(e -> {
             String query = "DELETE FROM DONATION WHERE donation_ID =  " + donTable.getSelectionModel().getSelectedItem().getDonationID();
             sendDBCommand(query);
-            //message.setText("Entry removed successfully."); 
+            message.setText("Entry removed successfully.");
             int x = donTable.getSelectionModel().getSelectedIndex();
             donList.remove(x);
             tableData.clear();
             for (Donation1 a : donList) {
                 tableData.add(a);
             }
-        }
-        );
+        });
 
         populate.setOnAction(e -> {
             idField.setText(donTable.getSelectionModel().getSelectedItem().getDonationID() + "");
@@ -218,8 +232,7 @@ public class DonationList extends Login1 {
             for (Donation1 don : donList) {
                 tableData.add(don);
             }
-        }
-        );
+        });
 
         add.setOnAction(e -> {
             int largest = 0;
@@ -258,10 +271,13 @@ public class DonationList extends Login1 {
             } catch (Exception ex) {
                 System.out.println("Error! " + ex);
             }
-        }
-        );
+        });
+
         report.setOnAction(e -> {
             tableData.clear();                                                  //Clear the table data
+            donationField.setText("");
+            Donation1[] applicableDonations = new Donation1[20];
+            int amount1 = 0;
             String[] dates1 = new String[20];                                   //Array to hold the date values    
             for (int i = 0; i < donList.size(); i++) {                          //Loop through the donationList array 
                 if (donList.get(i) != null) {
@@ -272,23 +288,31 @@ public class DonationList extends Login1 {
                         if (counter % 3 == 0) {                                 //Use counter division to determine which are years 
                             if (donationYears.getValue().equals("20" + a)) {    //If combobox value = array value, add to table 
                                 tableData.add(donList.get(i));
+                                applicableDonations[i] = donList.get(i);
                             }
                         }
                         counter++;                                              //Increment counter after each date value                                            
                     }
                 }
+                String[] stringDonations = new String[20];
+                if (applicableDonations[i] != null) {
+                    stringDonations[i] = applicableDonations[i].getDonationAmt().replace("$", "");
+                    stringDonations[i] = stringDonations[i].replace(",", "");
+                    amount1 += Double.valueOf(stringDonations[i]);
+                }
+                donationField.setText("$" + String.valueOf(amount1) + ".00"); 
             }
         });
 
         backBtn.setOnAction(e -> {
             primaryStage.close();
         });
-        
+
         showAll.setOnAction(e -> {
-           tableData.clear(); 
-           for(Donation1 x : donList){
-               tableData.add(x); 
-           }
+            tableData.clear();
+            for (Donation1 x : donList) {
+                tableData.add(x);
+            }
         });
 
     }
