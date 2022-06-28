@@ -49,6 +49,7 @@ public class AnimalList extends Login1 {
     TableColumn history_col = new TableColumn("medicalHistory");
     TableColumn feeding_col = new TableColumn("feedingNeeds");
     TableColumn vethist_col = new TableColumn("vetHistory");
+    TableColumn adoptID_col = new TableColumn("adopt_ID");
     
     Label topLbl = new Label("Animal Information");
     Label idLbl = new Label("Animal ID");
@@ -133,18 +134,19 @@ public class AnimalList extends Login1 {
         history_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Date>("medicalHistory"));
         feeding_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("feedingNeeds"));
         vethist_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("vetHistory"));
+        adoptID_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("adopt_ID"));
 
-        volTable.getColumns().addAll(id_col, name_col, species_col, age_col, history_col, feeding_col, vethist_col);
+        volTable.getColumns().addAll(id_col, name_col, species_col, age_col, history_col, feeding_col, vethist_col,adoptID_col);
         //Animal[] animalList = new Animal[25];
         ArrayList<Animal> animalList = new ArrayList<>();
 
-        sendDBCommand("SELECT animal_ID, name, species, age, medicalHistory, feedingNeeds, vetHistory FROM Animal");
+        sendDBCommand("SELECT animal_ID, name, species, age, medicalHistory, feedingNeeds, vetHistory, adopt_ID FROM Animal");
         try {
             for (int i = 0; i < 100; i++) {
                 while (rs.next()) {
                     if (rs != null) {
                         //animalList[i] = new Animal(rs.getInt("animal_ID"), rs.getString("name"), rs.getString("species"), rs.getInt("age"), rs.getString("medicalHistory"), rs.getString("feedingNeeds"), rs.getString("vetHistory"), rs.getInt("eventID"), rs.getInt("volID"));
-                        animalList.add(new Animal(rs.getInt("animal_ID"), rs.getString("name"), rs.getString("species"), rs.getInt("age"), rs.getString("medicalHistory"), rs.getString("feedingNeeds"), rs.getString("vetHistory")));
+                        animalList.add(new Animal(rs.getInt("animal_ID"), rs.getString("name"), rs.getString("species"), rs.getInt("age"), rs.getString("medicalHistory"), rs.getString("feedingNeeds"), rs.getString("vetHistory"), rs.getInt("adopt_ID")));
 
                         break;
                     }
@@ -222,10 +224,11 @@ public class AnimalList extends Login1 {
 
                 //String newVetHistory = MISSINGFIELDFORTHIS.getText(); 
                 String newVetHistory = "";
+                int newAdoptID = largest +1;
 
                 //Create new animal in the animalList array
                 Animal newAnimal = new Animal(newID, newName, newSpecies, newAge,
-                        newHistory, newFeeding, newVetHistory);
+                        newHistory, newFeeding, newVetHistory, newAdoptID);
                 System.out.println("NEW ANIMAL: " + newAnimal.toString());
                 String query = "INSERT INTO ANIMAL(animal_ID, name,"
                         + "species, age, medicalHistory, feedingNeeds, eventID, volID)"
