@@ -56,6 +56,8 @@ public class Application2 extends Login1 {
     TextField experience = new TextField();
     Button submitBtn = new Button("Submit");
     Button deny = new Button("Deny");
+    Button add = new Button("Add");
+    Button create = new Button("Create New Specialization");
 
     ListView currentList = new ListView();
     TextField newSpecialTxt = new TextField();
@@ -105,16 +107,14 @@ public class Application2 extends Login1 {
         pane1.add(special, 1, 10);
 
         pane1.add(currentList, 1, 11);
+        pane1.add(add, 0, 11);
+        pane1.add(create, 0, 12);
         pane1.add(newSpecialTxt, 1, 12);
 
-        pane1.add(infoLbl, 0, 13);
-        pane1.add(infoTxt, 1, 13);
-
-//        pane1.add(usernameLbl, 0, 1);
-//        pane1.add(usernameTxt, 1, 1);
- //       pane1.add(passwordLbl, 0, 2);
-//        pane1.add(passwordTxt, 1, 2);
-
+        pane1.add(infoLbl, 0, 14);
+        pane1.add(infoTxt, 1, 14);
+        
+        currentList.setPrefHeight(200);
         pane1.add(submitBtn, 1, 15);
 
         viewPaw.setFitHeight(50);
@@ -140,6 +140,7 @@ public class Application2 extends Login1 {
             infoTxt.getText();
             emailTxt.getText();
             phoneTxt.getText();
+            CreateAccount ca = new CreateAccount(this);
 
             String q = "SELECT * FROM VOLUNTEER";
             sendDBCommand(q);
@@ -179,10 +180,18 @@ public class Application2 extends Login1 {
             System.out.println(query);
             sendDBCommand(query);
             
-            CreateAccount ca = new CreateAccount(this);
+            //CreateAccount ca = new CreateAccount(this);
 
         });
 
+        add.setOnAction(e-> {
+            currentList.getItems().add(special.getSelectionModel().getSelectedItem());
+        });
+        create.setOnAction(e ->{
+            currentList.getItems().add(newSpecialTxt.getText());
+            newSpecialTxt.clear();
+        });
+        
         deny.setOnAction(e -> {
             String query = "DELETE FROM ANIMAL WHERE animal_ID = ";
             sendDBCommand(query);
