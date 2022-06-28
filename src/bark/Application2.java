@@ -117,12 +117,12 @@ public class Application2 extends Login1 {
         pane1.add(expLbl, 0, 11);
         pane1.add(experience, 1, 11);
         pane2.add(specialDescLbl, 1, 0);
-        pane2.add(specialLbl, 0, 1);
+        //pane2.add(specialLbl, 0, 1);
         pane2.add(special, 1, 1);
-        pane2.add(currentList, 1, 2);
-        pane2.add(add, 0, 2);
-        pane2.add(create, 0, 3);
-        pane2.add(newSpecialTxt, 1, 3);
+        pane2.add(currentList, 1, 3);
+        pane2.add(add, 1, 2);
+        pane2.add(create, 1, 5);
+        pane2.add(newSpecialTxt, 1, 4);
 
         pane1.add(infoLbl, 0, 15);
         pane1.add(infoTxt, 1, 15);
@@ -143,7 +143,7 @@ public class Application2 extends Login1 {
         overallPane.add(pane1, 0, 0);
         infoTxt.setMaxSize(300, 150);
         infoTxt.setWrapText(true);
-        
+        newSpecialTxt.setPromptText("Enter a unique specialization here");
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(overallPane, pane1.getMaxWidth(), pane1.getMaxHeight());
         primaryStage.setScene(primaryScene);
@@ -161,7 +161,7 @@ public class Application2 extends Login1 {
             infoTxt.getText();
             emailTxt.getText();
             phoneTxt.getText();
-            CreateAccount ca  = new CreateAccount(login);
+            
 
             String q = "SELECT * FROM VOLUNTEER";
             sendDBCommand(q);
