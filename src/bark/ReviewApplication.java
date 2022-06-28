@@ -43,7 +43,7 @@ public class ReviewApplication extends Login1 {
     TextArea infoTxt = new TextArea();
     TextField emailTxt = new TextField();
     TextField phoneTxt = new TextField();
-    ComboBox<String> expCb = new ComboBox();
+    TextField expTxt = new TextField();
     Button approveBtn = new Button("Approve");
     Button denyBtn = new Button("Deny");
     ComboBox<String> selectIDCb = new ComboBox();
@@ -77,7 +77,7 @@ public class ReviewApplication extends Login1 {
         pane1.add(phoneLbl, 0, 6);
         pane1.add(phoneTxt, 1, 6);
         pane1.add(expLbl, 0, 7);
-        pane1.add(expCb, 1, 7);
+        pane1.add(expTxt, 1, 7);
         pane1.add(infoLbl, 0, 8);
         pane1.add(infoTxt, 1, 8);
 
@@ -89,6 +89,13 @@ public class ReviewApplication extends Login1 {
         viewPaw.setX(100);
         viewPaw.setY(150);
         pane1.add(viewPaw, 3, 10);
+        
+        fNameTxt.setEditable(false);
+        lNameTxt.setEditable(false);
+        addressTxt.setEditable(false);
+        emailTxt.setEditable(false);
+        phoneTxt.setEditable(false);
+        infoTxt.setEditable(false);
 
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(pane1, pane1.getMaxWidth(), pane1.getMaxHeight());
