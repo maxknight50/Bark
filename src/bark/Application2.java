@@ -178,8 +178,8 @@ public class Application2 extends Login1 {
                     + passwordTxt.getText() + "', '" + largestScheduleId + "')";
             System.out.println(query);
             sendDBCommand(query);
-
-            primaryStage.close();
+            
+            CreateAccount ca = new CreateAccount(this);
 
         });
 
