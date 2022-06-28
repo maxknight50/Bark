@@ -86,7 +86,7 @@ public class EventsRetry extends Login1 {
 
         System.out.print("Hello. I am in volunteer home");
         setTables();
-        
+
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(eventsPane, 1000, 550);
         tabPane.setMaxWidth(eventsPane.getWidth());
@@ -210,7 +210,7 @@ public class EventsRetry extends Login1 {
                 dailyData.add(new Event(rs.getInt("eventID"), rs.getString("eventType"), rs.getString("eventName"), rs.getString("eventDescription"),
                         rs.getInt("maxVolunteers"), rs.getDate("eventDate"), rs.getString("eventTime"), rs.getString("eventLocation"), rs.getString("eventCategory"),
                         rs.getString("eventStatus")));
-               // System.out.println("FOR TABLE 1: " + rs.getString("eventName") + " " + rs.getString("eventDate") + " " + rs.getString("eventTime"));
+                // System.out.println("FOR TABLE 1: " + rs.getString("eventName") + " " + rs.getString("eventDate") + " " + rs.getString("eventTime"));
             }
 
             // Display completed events
@@ -237,6 +237,7 @@ public class EventsRetry extends Login1 {
     }
 
     private void addButtons() {
+        // Your table
         Label nameLbl = new Label("Event:");
         TextField nameTxt = new TextField();
         Label dateLbl = new Label("Date:");
@@ -247,7 +248,11 @@ public class EventsRetry extends Login1 {
         TextField distanceTxt = new TextField();
         Label catLbl = new Label("Category:");
         TextField catTxt = new TextField();
+        Button yourAdd = new Button("Add");
+        Button yourDelete = new Button("Delete");
+        Button yourModify = new Button("Modify");
 
+        // Daily table
         Label nameLbl2 = new Label("Event:");
         TextField nameTxt2 = new TextField();
         Label dateLbl2 = new Label("Date:");
@@ -258,7 +263,14 @@ public class EventsRetry extends Login1 {
         TextField distanceTxt2 = new TextField();
         Label catLbl2 = new Label("Category:");
         TextField catTxt2 = new TextField();
+        Button add2 = new Button("Add");
+        Button delete2 = new Button("Delete");
+        Button modify2 = new Button("Modify");
+        Button dailyAdd = new Button("Add");
+        Button dailyDelete = new Button("Delete");
+        Button dailyModify = new Button("Modify");
 
+        // Past table
         Label nameLbl3 = new Label("Event:");
         TextField nameTxt3 = new TextField();
         Label dateLbl3 = new Label("Date:");
@@ -269,7 +281,11 @@ public class EventsRetry extends Login1 {
         TextField distanceTxt3 = new TextField();
         Label catLbl3 = new Label("Category:");
         TextField catTxt3 = new TextField();
+        Button pastAdd = new Button("Add");
+        Button pastDelete = new Button("Delete");
+        Button pastModify = new Button("Modify");
 
+        // Hosted table
         Label nameLbl4 = new Label("Event:");
         TextField nameTxt4 = new TextField();
         Label dateLbl4 = new Label("Date:");
@@ -280,6 +296,9 @@ public class EventsRetry extends Login1 {
         TextField distanceTxt4 = new TextField();
         Label catLbl4 = new Label("Category:");
         TextField catTxt4 = new TextField();
+        Button hostedAdd = new Button("Add");
+        Button hostedDelete = new Button("Delete");
+        Button hostedModify = new Button("Modify");
 
         yourButtons.add(nameLbl, 0, 1);
         yourButtons.add(nameTxt, 1, 1);
@@ -289,6 +308,9 @@ public class EventsRetry extends Login1 {
         yourButtons.add(timeTxt, 1, 3);
         yourButtons.add(distanceLbl, 0, 4);
         yourButtons.add(distanceTxt, 1, 4);
+        yourButtons.add(yourAdd, 0, 5);
+        yourButtons.add(yourDelete, 1, 6);
+        yourButtons.add(yourModify, 1, 5);
 
         yourOverall.add(yourButtons, 0, 0);
         yourOverall.add(yourTablePane, 1, 0);
@@ -301,6 +323,9 @@ public class EventsRetry extends Login1 {
         pastButtons.add(timeTxt3, 1, 3);
         pastButtons.add(distanceLbl3, 0, 4);
         pastButtons.add(distanceTxt3, 1, 4);
+        pastButtons.add(pastAdd, 0, 5);
+        pastButtons.add(pastDelete, 1, 6);
+        pastButtons.add(pastModify, 1, 5);
 
         pastOverall.add(pastButtons, 0, 0);
         pastOverall.add(pastTablePane, 1, 0);
@@ -313,6 +338,9 @@ public class EventsRetry extends Login1 {
         dailyButtons.add(timeTxt2, 1, 3);
         dailyButtons.add(distanceLbl2, 0, 4);
         dailyButtons.add(distanceTxt2, 1, 4);
+        dailyButtons.add(dailyAdd, 0, 5);
+        dailyButtons.add(dailyDelete, 1, 6);
+        dailyButtons.add(dailyModify, 1, 5);
 
         dailyOverall.add(dailyButtons, 0, 0);
         dailyOverall.add(dailyTablePane, 1, 0);
@@ -325,6 +353,9 @@ public class EventsRetry extends Login1 {
         hostedButtons.add(timeTxt4, 1, 3);
         hostedButtons.add(distanceLbl4, 0, 4);
         hostedButtons.add(distanceTxt4, 1, 4);
+        hostedButtons.add(hostedAdd, 0, 5);
+        hostedButtons.add(hostedDelete, 1, 6);
+        hostedButtons.add(hostedModify, 1, 5);
 
         hostedOverall.add(hostedButtons, 0, 0);
         hostedOverall.add(hostedTablePane, 1, 0);
@@ -339,7 +370,7 @@ public class EventsRetry extends Login1 {
 //        yourTablePane.setMinWidth(300);
 //        pastTablePane.setMinWidth(300);
     }
-    
+
     public void sendDBCommand(String sqlQuery) {
         String URL = "jdbc:oracle:thin:@localhost:1521:XE";
         String userID = "javauser";
@@ -355,7 +386,7 @@ public class EventsRetry extends Login1 {
             conn = ds.getConnection(userID, userPASS);
             stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             rs = stmt.executeQuery(sqlQuery); // Sends the Query to the DB
-     //       System.out.println("RESULT SET: " + rs);
+            //       System.out.println("RESULT SET: " + rs);
 
         } catch (SQLException e) {
             System.out.println(e.toString());
