@@ -140,7 +140,7 @@ public class Application2 extends Login1 {
             infoTxt.getText();
             emailTxt.getText();
             phoneTxt.getText();
-            CreateAccount ca = new CreateAccount(this);
+            CreateAccount ca  = new CreateAccount(login);
 
             String q = "SELECT * FROM VOLUNTEER";
             sendDBCommand(q);
