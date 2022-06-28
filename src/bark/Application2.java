@@ -14,6 +14,7 @@ import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -38,9 +39,10 @@ public class Application2 extends Login1 {
     Label emailLbl = new Label("Email");
     Label phoneLbl = new Label("Phone");
     Label specialLbl = new Label("Specializations");
+    Label specialDescLbl = new Label("Do you have any areas of specialty? Let us know!");
     Label expLbl = new Label("Experience");
-    Label usernameLbl = new Label("Username:");
-    Label passwordLbl = new Label("Password:");
+    Label usernameLbl = new Label("Create Username: ");
+    Label passwordLbl = new Label("Create Password: ");
 
     // FX Controls - Textfields, comboboxes, etc.
     TextField fNameTxt = new TextField();
@@ -51,7 +53,7 @@ public class Application2 extends Login1 {
     TextField emailTxt = new TextField();
     TextField phoneTxt = new TextField();
     TextField usernameTxt = new TextField();
-    TextField passwordTxt = new TextField();
+    PasswordField passwordTxt = new PasswordField();
     ComboBox<String> special = new ComboBox();
     TextField experience = new TextField();
     Button submitBtn = new Button("Submit");
@@ -66,6 +68,8 @@ public class Application2 extends Login1 {
     ImageView viewPaw = new ImageView(paw);
 
     GridPane pane1 = new GridPane();
+    GridPane pane2 = new GridPane();
+    GridPane overallPane = new GridPane();
 
     Application2(Login1 login) {
         ObservableList<String> specialization = FXCollections.observableArrayList();
@@ -83,7 +87,11 @@ public class Application2 extends Login1 {
         special = new ComboBox(FXCollections.observableArrayList(specialization));
 
         this.login = login;
+        paneSettings(overallPane);
         paneSettings(pane1);
+        paneSettings(pane2);
+        pane1.setAlignment(Pos.CENTER);
+        pane2.setAlignment(Pos.CENTER);
         //pane1.add(title, 1,0);
         pane1.add(description1, 1, 0);
         pane1.add(description2, 1, 1);
@@ -101,30 +109,43 @@ public class Application2 extends Login1 {
 
         pane1.add(phoneLbl, 0, 8);
         pane1.add(phoneTxt, 1, 8);
-        pane1.add(expLbl, 0, 9);
-        pane1.add(experience, 1, 9);
-        pane1.add(specialLbl, 0, 10);
-        pane1.add(special, 1, 10);
+        pane1.add(usernameLbl, 0, 9);
+        pane1.add(usernameTxt, 1, 9);
+        pane1.add(passwordLbl, 0, 10);
+        pane1.add(passwordTxt, 1, 10);
+        
+        pane1.add(expLbl, 0, 11);
+        pane1.add(experience, 1, 11);
+        pane2.add(specialDescLbl, 1, 0);
+        pane2.add(specialLbl, 0, 1);
+        pane2.add(special, 1, 1);
+        pane2.add(currentList, 1, 2);
+        pane2.add(add, 0, 2);
+        pane2.add(create, 0, 3);
+        pane2.add(newSpecialTxt, 1, 3);
 
-        pane1.add(currentList, 1, 11);
-        pane1.add(add, 0, 11);
-        pane1.add(create, 0, 12);
-        pane1.add(newSpecialTxt, 1, 12);
-
-        pane1.add(infoLbl, 0, 14);
-        pane1.add(infoTxt, 1, 14);
+        pane1.add(infoLbl, 0, 15);
+        pane1.add(infoTxt, 1, 15);
+        
+        
         
         currentList.setPrefHeight(200);
-        pane1.add(submitBtn, 1, 15);
+        pane1.add(submitBtn, 1, 16);
 
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
         viewPaw.setY(150);
         pane1.add(viewPaw, 0, 0);
-
+        
+        
+        overallPane.add(pane2, 1, 0);
+        overallPane.add(pane1, 0, 0);
+        infoTxt.setMaxSize(300, 150);
+        infoTxt.setWrapText(true);
+        
         Stage primaryStage = new Stage();
-        Scene primaryScene = new Scene(pane1, pane1.getMaxWidth(), pane1.getMaxHeight());
+        Scene primaryScene = new Scene(overallPane, pane1.getMaxWidth(), pane1.getMaxHeight());
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Application");
         primaryStage.show();
