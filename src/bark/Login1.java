@@ -48,9 +48,6 @@ public class Login1 extends Application {
     TextField userNameTxt = new TextField();
     PasswordField passwordTxt = new PasswordField();
 
-    public double hour;
-    public double minute;
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
     //FX GridPane
     GridPane loginPane = new GridPane();
 
@@ -129,11 +126,6 @@ public class Login1 extends Application {
                                 name = rs.getString("vol_firstname") + " " + rs.getString("vol_lastname");
                                 id = rs.getInt("volID");
                                 System.out.println(id);
-
-                                LocalDateTime now = LocalDateTime.now();
-                                System.out.println(dtf.format(now));
-                                hour = now.getHour();
-                                minute = now.getMinute();
                                 ////////////////////////////////////////////////////////////////////
                                 if (rs.getString("status").equalsIgnoreCase("admin")) {
                                     Home home = new Home(this); // Display the admin home screen
@@ -174,14 +166,7 @@ public class Login1 extends Application {
             //passwordTxt.clear();
         });
     }
-    public double getHour() {
-        return hour;
-    }
     
-    public double getMinute() {
-        return minute;
-    }
-
     public boolean loginAttempt(String username) {
         return true;
     }

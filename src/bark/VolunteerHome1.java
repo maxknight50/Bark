@@ -129,7 +129,7 @@ public class VolunteerHome1 extends Home {
             try {
                 while (rs.next()) {
                     timeCheckedIn = rs.getDouble("timeCheckedIn");
-                    totalCumHours = rs.getInt("cumulativeHours");
+                    totalCumHours = rs.getDouble("cumulativeHours");
                 }    
             } catch (Exception ex) {
                 System.out.println("Error: " + e.toString());
