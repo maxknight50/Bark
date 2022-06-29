@@ -17,9 +17,10 @@ public class Volunteer {
     String status;
     String username;
     String password;
+    String hasAccess;
     int schedID;
 
-    public Volunteer(int volunteerID, String volFirst, String volLast, String volAddress, Date dateOfBirth, String volInfo, String volEmail, String volPhone, Double totalHours, String status, String username, String password, int schedID) {
+    public Volunteer(int volunteerID, String volFirst, String volLast, String volAddress, Date dateOfBirth, String volInfo, String volEmail, String volPhone, Double totalHours, String status, String username, String password, String hasAccess, int schedID) {
         this.volunteerID = volunteerID;
         this.volFirst = volFirst;
         this.volLast = volLast;
@@ -33,6 +34,7 @@ public class Volunteer {
         this.username = username;
         this.password = password;
         this.schedID = schedID;
+        this.hasAccess = hasAccess;
     }
     
 
@@ -140,5 +142,12 @@ public class Volunteer {
     public void setSchedID(int schedID) {
         this.schedID = schedID;
     }
+    
+    public String getAccess() {
+        return hasAccess;
+    }
 
+    public void setAccess(String access) {
+        this.hasAccess = access;
+    }
 }

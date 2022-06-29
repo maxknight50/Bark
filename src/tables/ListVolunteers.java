@@ -12,9 +12,10 @@ public class ListVolunteers {
    String volPhone;
    Double totalHours;
    String status;
+   String hasAccess;
    public static int volunteerCount = 0; 
    
-   public ListVolunteers(int id, String first, String last, String address, String date, String email, String phone, Double totalHours, String status){
+   public ListVolunteers(int id, String first, String last, String address, String date, String email, String phone, Double totalHours, String status, String hasAccess){
        this.volunteerID = id; 
        this.volFirst = first; 
        this.volLast = last; 
@@ -24,6 +25,7 @@ public class ListVolunteers {
        this.volPhone = phone; 
        this.totalHours = totalHours; 
        this.status = status; 
+       this.hasAccess = hasAccess;
        volunteerCount++; 
    }
    public ListVolunteers(int id, String first, String last, String address, String email, String phone, Double hours){
@@ -107,5 +109,13 @@ public class ListVolunteers {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    
+    public String getAccess() {
+        return hasAccess;
+    }
+    
+    public void setAccess(String access) {
+        this.hasAccess = access;
     }
 }
