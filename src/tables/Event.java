@@ -1,4 +1,3 @@
-//Mark
 package tables;
 
 import java.util.Date; 
@@ -9,7 +8,7 @@ public class Event {
     public String eventName; 
     public String eventDescription; 
     public int maxVolunteers;
-    public Date eventDate; 
+    public String eventDate; 
     public String eventTime; 
     public String eventLocation; 
     public String eventCategory;
@@ -17,7 +16,7 @@ public class Event {
     
     //public static int eventCount = 0; 
 
-    public Event(int eventID, String eventType, String eventName, String eventDescription, int maxVolunteers, Date eventDate, String eventTime, String eventLocation, String eventCategory, String eventStatus) {
+    public Event(int eventID, String eventType, String eventName, String eventDescription, int maxVolunteers, String eventDate, String eventTime, String eventLocation, String eventCategory, String eventStatus) {
         this.eventID = eventID;
         this.eventType = eventType;
         this.eventName = eventName;
@@ -28,6 +27,17 @@ public class Event {
         this.eventLocation = eventLocation;
         this.eventCategory = eventCategory;
         this.eventStatus = eventStatus;
+    }
+    
+    public Event(int id, String name, String category, String description, String date, String time, String location, String status){
+        this.eventID = id; 
+        this.eventName = name; 
+        this.eventType = category; 
+        this.eventDescription = description; 
+        this.eventDate = date; 
+        this.eventTime = time; 
+        this.eventLocation = location; 
+        this.eventStatus = status; 
     }
 
     public int getEventID() {
@@ -70,11 +80,11 @@ public class Event {
         this.maxVolunteers = maxVolunteers;
     }
 
-    public Date getEventDate() {
+    public String getEventDate() {
         return eventDate;
     }
 
-    public void setEventDate(Date eventDate) {
+    public void setEventDate(String eventDate) {
         this.eventDate = eventDate;
     }
 
