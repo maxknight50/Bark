@@ -80,6 +80,8 @@ public class EventsRetry extends Login1 {
     Button hostedAdd = new Button("Add");
     Button hostedModify = new Button("Modify");
     Button hostedPopulate = new Button("<-- Select and Populate");
+    Button dailyComplete = new Button("Event Completed");
+    Button hostedComplete = new Button("Event Completed");
 
     // GridPane associated for each tab
     GridPane dailyOverall = new GridPane();
@@ -391,6 +393,7 @@ public class EventsRetry extends Login1 {
         dailyButtons.add(dailyAdd, 0, 8);
         dailyButtons.add(dailyModify, 1, 8);
         dailyButtons.add(dailyPopulate, 0, 9); 
+        dailyButtons.add(dailyComplete, 0, 10); 
 
         dailyOverall.add(dailyButtons, 0, 0);
         dailyOverall.add(dailyTablePane, 1, 0);
@@ -412,6 +415,7 @@ public class EventsRetry extends Login1 {
         hostedButtons.add(hostedAdd, 0, 8);
         hostedButtons.add(hostedModify, 1, 8);
         hostedButtons.add(hostedPopulate, 0, 9); 
+        hostedButtons.add(hostedComplete, 0, 10); 
 
         hostedOverall.add(hostedButtons, 0, 0);
         hostedOverall.add(hostedTablePane, 1, 0);
@@ -618,6 +622,42 @@ public class EventsRetry extends Login1 {
             hostedData.clear();
             for (Event a : hostedList) {
                 hostedData.add(a);
+            }
+        });
+        
+        dailyComplete.setOnAction(e -> {
+           int id = dailyTable.getSelectionModel().getSelectedItem().getEventID(); 
+           String query = "UPDATE EVENT SET eventStatus = 'completed' WHERE eventID = " + id; 
+           int index = dailyTable.getSelectionModel().getSelectedIndex(); 
+           dailyList.get(index).setEventStatus("complete");
+           sendDBCommand(query); 
+           pastList.add(dailyList.get(index));
+           dailyList.remove(index); 
+           dailyData.clear();
+                for (Event x : dailyList) {
+                    dailyData.add(x);
+                }
+            pastData.clear(); 
+            for(Event x : pastList){
+                pastData.add(x); 
+            }
+        });
+        
+        hostedComplete.setOnAction(e -> {
+           int id = hostedTable.getSelectionModel().getSelectedItem().getEventID(); 
+           String query = "UPDATE EVENT SET eventStatus = 'completed' WHERE eventID = " + id; 
+           int index = hostedTable.getSelectionModel().getSelectedIndex(); 
+           hostedList.get(index).setEventStatus("complete");
+           sendDBCommand(query); 
+           pastList.add(hostedList.get(index));
+           hostedList.remove(index); 
+           hostedData.clear();
+                for (Event x : hostedList) {
+                    hostedData.add(x);
+                }
+            pastData.clear(); 
+            for(Event x : pastList){
+                pastData.add(x); 
             }
         });
     }
