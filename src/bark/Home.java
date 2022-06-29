@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import oracle.jdbc.pool.OracleDataSource;
 
 public class Home extends Login1 {
+    
     Statement stmt;
     static Connection conn;
     ResultSet rs;
@@ -88,11 +89,11 @@ public class Home extends Login1 {
         paneSettings(socialPane);
         socialPane.add(scrnTitleLbl, 0, 1);
         socialPane.add(dateLbl, 0, 2);
-        //socialPane.add(takeOut, 0, 3);
+        socialPane.add(takeOut, 0, 3);
         socialPane.add(descLbl, 2, 2);
-        //socialPane.add(takeOut2, 2, 3);
-        //socialPane.add(takeOut3, 0, 5);
-        //socialPane.add(takeOut4, 2, 5);
+        socialPane.add(takeOut2, 2, 3);
+        socialPane.add(takeOut3, 0, 5);
+        socialPane.add(takeOut4, 2, 5);
 
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
@@ -103,17 +104,12 @@ public class Home extends Login1 {
         mainPane.add(homePane, 0, 0);
         socialPane.setAlignment(Pos.TOP_CENTER);
         mainPane.add(socialPane, 1, 0);
-        
-        populateSocial();
-        
         Stage primaryStage1 = login.primaryStage;
         Scene primaryScene = new Scene(mainPane, 900, 550);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Home");
         primaryStage.show();
 
-        
-        
         checkIn.setOnAction(e -> {
             LocalDateTime now = LocalDateTime.now();
 //            System.out.println(df.format(now));
@@ -211,23 +207,6 @@ public class Home extends Login1 {
         checkIn.setOnAction(e -> {
             CheckIn ci = new CheckIn(this);
         });
-    }
-
-    public void populateSocial() {
-        String join = "SELECT volunteer.volID, volunteer.vol_firstName, volunteer.vol_lastName, event.eventName, event.eventDate, event.eventType FROM Volunteer " +
-                "INNER JOIN EVENTHISTORY ON volunteer.volID = eventhistory.volID INNER JOIN event ON eventhistory.eventID = event.eventID";
-        sendDBCommand(join);
-        int iter = 3;
-        try {
-            while (rs.next()) {
-                Label temp1 = new Label(rs.getString("vol_firstname") + " " + rs.getString("vol_lastname") + " completed " + rs.getString("eventname") + "on " + rs.getString("eventdate"));
-                socialPane.add(temp1, 2, iter);
-                iter++;
-            }
-        } catch (SQLException ex) {
-            
-        }
-        
     }
 
     public double getCumHours() {
