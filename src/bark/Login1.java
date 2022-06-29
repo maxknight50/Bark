@@ -130,9 +130,13 @@ public class Login1 extends Application {
                                 if (rs.getString("status").equalsIgnoreCase("admin")) {
                                     Home home = new Home(this); // Display the admin home screen
                                     primaryStage.close();
-                                } else {
+                                } else if (!rs.getString("status").equalsIgnoreCase("admin") && rs.getString("hasAccess").equalsIgnoreCase("active")){
                                     Home home = new VolunteerHome1(this); // Display the regular volunteer home screen
                                     primaryStage.close();
+                                } else if (rs.getString("hasAccess").equalsIgnoreCase("inactive")){
+                                    login = new Label("Your account has been deactivated.");
+                                    loginPane.add(login, 0, 0);
+                                    primaryStage.show();
                                 }
                                 test = 0; // Both username and password were correct, so stop while loop 
 

@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -47,6 +48,7 @@ public class VolunteerList extends Login1 {
     TableColumn phone_col = new TableColumn("Phone");
     TableColumn hours_col = new TableColumn("Hours");
     TableColumn status_col = new TableColumn("Status");
+    TableColumn active_col = new TableColumn("Active Status");
 
     // Left side
     Label volID = new Label("Volunteer ID");
@@ -59,6 +61,7 @@ public class VolunteerList extends Login1 {
     Label phoneLbl = new Label("Phone");
     Label cumHrsLbl = new Label("Cumulative Hours");
     Label statusLbl = new Label("Status");
+    Label activeLbl = new Label("Active Status");
 
     TextField idField = new TextField();
     TextField fNameTxt = new TextField();
@@ -68,7 +71,8 @@ public class VolunteerList extends Login1 {
     TextField emailTxt = new TextField();
     TextField phoneTxt = new TextField();
     TextField cumHrsTxt = new TextField();
-    TextField statusBox = new TextField();
+    TextField statusTxt = new TextField();
+    TextField activeTxt = new TextField();
 
     Label message = new Label();
 
@@ -106,11 +110,13 @@ public class VolunteerList extends Login1 {
         modVolunteer.add(cumHrsLbl, 0, 9);
         modVolunteer.add(cumHrsTxt, 1, 9);
         modVolunteer.add(statusLbl, 0, 10);
-        modVolunteer.add(statusBox, 1, 10);
+        modVolunteer.add(statusTxt, 1, 10);
+        modVolunteer.add(activeLbl, 0, 11);
+        modVolunteer.add(activeTxt, 1, 11);
 
-        modVolunteer.add(add, 0, 11);
-        modVolunteer.add(modify, 0, 12);
-        modVolunteer.add(delete, 0, 13);
+        modVolunteer.add(add, 0, 12);
+        modVolunteer.add(modify, 0, 13);
+        modVolunteer.add(delete, 0, 14);
 
         volTable.setItems(tableData);
         volunteerTable.add(message, 0, 0);
@@ -132,16 +138,21 @@ public class VolunteerList extends Login1 {
         phone_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("volPhone"));
         hours_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("totalHours"));
         status_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("status"));
+        active_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("hasAccess"));
 
-        volTable.getColumns().addAll(id_col, fname_col, lname_col, add_col, dob_col, email_col, phone_col, hours_col, status_col);
+        volTable.getColumns().addAll(id_col, fname_col, lname_col, add_col, dob_col, email_col, phone_col, hours_col, status_col, active_col);
         ArrayList<ListVolunteers> volunteerList = new ArrayList<>();
 
-        sendDBCommand("SELECT volID, vol_FirstName, vol_LastName, vol_Address, vol_DateOfBirth, vol_Email, vol_Phone, cumulativeHours, status FROM Volunteer");
+        sendDBCommand("SELECT volID, vol_FirstName, vol_LastName, vol_Address, vol_DateOfBirth, vol_Email, vol_Phone, cumulativeHours, "
+                + "status, hasAccess FROM Volunteer");
         try {
             for (int i = 0; i < 100; i++) {
                 while (rs.next()) {
+                    System.out.println("Test " + rs.getString("hasAccess"));
                     if (rs != null) {
-                        volunteerList.add(new ListVolunteers(rs.getInt("volID"), rs.getString("vol_FirstName"), rs.getString("vol_LastName"), rs.getString("vol_Address"), rs.getString("vol_DateOfBirth"), rs.getString("vol_Email"), rs.getString("vol_Phone"), rs.getDouble("cumulativeHours"), rs.getString("status")));
+                        volunteerList.add(new ListVolunteers(rs.getInt("volID"), rs.getString("vol_FirstName"), rs.getString("vol_LastName"),
+                                rs.getString("vol_Address"), rs.getString("vol_DateOfBirth"), rs.getString("vol_Email"),
+                                rs.getString("vol_Phone"), rs.getDouble("cumulativeHours"), rs.getString("status"), rs.getString("hasAccess")));
                         break;
                     }
                 }
@@ -170,7 +181,8 @@ public class VolunteerList extends Login1 {
             emailTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolEmail() + "");
             phoneTxt.setText(volTable.getSelectionModel().getSelectedItem().getVolPhone() + "");
             cumHrsTxt.setText(volTable.getSelectionModel().getSelectedItem().getTotalHours() + "");
-            statusBox.setText(volTable.getSelectionModel().getSelectedItem().getStatus() + "");
+            statusTxt.setText(volTable.getSelectionModel().getSelectedItem().getStatus() + "");
+            activeTxt.setText(volTable.getSelectionModel().getSelectedItem().getAccess() + "");
         });
 
         add.setOnAction(e -> {
@@ -203,11 +215,12 @@ public class VolunteerList extends Login1 {
                 String newEmail = emailTxt.getText();
                 String newPhone = phoneTxt.getText();
                 double newCumulative = Integer.valueOf(cumHrsTxt.getText());
-                String newStatus = statusBox.getText(); 
+                String newStatus = statusTxt.getText(); 
+                String newAccess = activeTxt.getText();
 
-                ListVolunteers newVolunteer = new ListVolunteers(newID, newFirst, newLast, newAddress, dateOfBirth, newEmail, newPhone, newCumulative, newStatus);
+                ListVolunteers newVolunteer = new ListVolunteers(newID, newFirst, newLast, newAddress, dateOfBirth, newEmail, newPhone, newCumulative, newStatus, newAccess);
 
-                String query = "INSERT INTO VOLUNTEER(volID, vol_FirstName, vol_LastName, vol_Address, vol_Email, vol_Phone, cumulativeHours, status) VALUES (" + newID + ",'" + newFirst + "', '" + newLast + "', '" + newAddress + "', '" + newEmail + "', '" + newPhone + "', " + newCumulative + ", '" + newStatus + "')";
+                String query = "INSERT INTO VOLUNTEER(volID, vol_FirstName, vol_LastName, vol_Address, vol_Email, vol_Phone, cumulativeHours, status, hasAccess) VALUES (" + newID + ",'" + newFirst + "', '" + newLast + "', '" + newAddress + "', '" + newEmail + "', '" + newPhone + "', " + newCumulative + ", '" + newStatus + ", '" + newAccess +"')";
 
                 sendDBCommand(query);
                 tableData.clear();
@@ -232,10 +245,11 @@ public class VolunteerList extends Login1 {
             String newEmail = emailTxt.getText();
             String newPhone = phoneTxt.getText();
             double newCumulative = Double.valueOf(cumHrsTxt.getText());
-            String newStatus = statusBox.getText(); 
+            String newStatus = statusTxt.getText(); 
+            String newAccess = activeTxt.getText();
 
             String query = "UPDATE VOLUNTEER SET vol_FirstName = '" + newFirst + "', vol_LastName = '" + newLast + "', vol_Address = '" + newAddress + "', vol_DateOfBirth = '" + dateOfBirth + "', vol_Email = '" + newEmail
-                    + "', vol_Phone = '" + newPhone + "', cumulativeHours = " + newCumulative + ", status = '" + newStatus + "' WHERE volID = " + newID + "";
+                    + "', vol_Phone = '" + newPhone + "', cumulativeHours = " + newCumulative + ", status = '" + newStatus + ", hasAccess = '" + newAccess + "' WHERE volID = " + newID + "";
             sendDBCommand(query);
             for (int i = 0; i < volunteerList.size(); i++) {
                 if (volunteerList.get(i).getVolunteerID() == newID) {
@@ -247,7 +261,8 @@ public class VolunteerList extends Login1 {
                     volunteerList.get(i).setVolEmail(newEmail);
                     volunteerList.get(i).setVolPhone(newPhone);
                     volunteerList.get(i).setTotalHours(newCumulative);
-                    volunteerList.get(i).setStatus(newStatus); 
+                    volunteerList.get(i).setStatus(newStatus);
+                    volunteerList.get(i).setAccess(newAccess);
                     break;
                 }
             }
