@@ -75,7 +75,6 @@ public class EventsRetry extends Login1 {
     Button dailyAdd = new Button("Add");
     Button dailyModify = new Button("Modify");
     Button dailyPopulate = new Button("<-- Select and Populate");
-    Button pastAdd = new Button("Add");
     Button pastModify = new Button("Modify");
     Button pastPopulate = new Button("<-- Select and Populate");
     Button hostedAdd = new Button("Add");
@@ -279,7 +278,7 @@ public class EventsRetry extends Login1 {
         Label yourDate = new Label("Date");
         Label yourTime = new Label("Time");
         Label yourLocation = new Label("Location");
-        TextField yourIdField = new TextField();
+        Label yourIdField = new Label("");
         TextField yourNameField = new TextField();
         TextField yourCatField = new TextField();
         TextField yourDescField = new TextField();
@@ -369,7 +368,6 @@ public class EventsRetry extends Login1 {
         pastButtons.add(pastTimeField, 1, 6); 
         pastButtons.add(pastLocation, 0, 7);
         pastButtons.add(pastLocationField, 1, 7);
-        pastButtons.add(pastAdd, 0, 8);
         pastButtons.add(pastModify, 1, 8);
         pastButtons.add(pastPopulate, 0, 9); 
 
@@ -422,49 +420,6 @@ public class EventsRetry extends Login1 {
         dailyButtons.setMinWidth(300);
         yourButtons.setMinWidth(300);
         pastButtons.setMinWidth(300);
-
-
-        pastAdd.setOnAction(e -> {
-            int largest = 0;
-            try {
-                String q = "SELECT * FROM EVENT";
-                sendDBCommand(q);
-                try {
-                    while (rs.next()) {
-                        largest = rs.getInt("eventID");
-                        while (rs.next()) {
-                            int store = rs.getInt("eventID");
-                            if (store > largest) {
-                                largest = store;
-                            }
-                        }
-                    }
-                } catch (Exception m) {
-                    System.out.println("Exception finding the largest! " + m);
-                }
-                int newID = largest + 1;
-                String newName = pastNameField.getText();
-                String newCategory = pastCatField.getText();
-                String newDescription = pastDescField.getText();
-                String newDate = pastDateField.getText();
-                String newTime = pastTimeField.getText(); 
-                String newLocation = pastLocationField.getText(); 
-                String newStatus = "completed";
-
-                Event newEvent = new Event(newID, newName, newCategory, newDescription, newDate, newTime, newLocation, newStatus);
-                pastList.add(newEvent);
-
-                String query = "INSERT INTO EVENT(eventID, eventName, eventType, eventDescription, eventDate, eventTime, eventLocation, eventStatus) VALUES (" + newID + ", '" + newName + "', '" + newCategory + "', '" + newDescription + "', '" + newDate + "', '" + newTime + "', '" + newLocation + "', '" + newStatus + "')";
-                sendDBCommand(query);
-
-                pastData.clear();
-                for (Event x : pastList) {
-                    pastData.add(x);
-                }
-            } catch (Exception ex) {
-                System.out.println("Error! " + ex);
-            }
-        });
 
         pastModify.setOnAction(e -> {
             int newID = Integer.valueOf(pastIdField.getText());
