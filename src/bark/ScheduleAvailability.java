@@ -96,17 +96,21 @@ public class ScheduleAvailability extends Login1 {
                         + "full outer join volunteer on schedule.volID = volunteer.volID "
                         + "where dayofweek = '" + daysCombo.getValue() + "' "
                         + "AND volunteer.volID = " + volHome.loginid);
+
                 if (rs.next()) {
                     schedID = rs.getInt("schedule_ID");
-                }
-                if (rs.next()) {
+                    
                     System.out.println(rs.getInt("shift_id"));
-                    if (rs.getInt("shift_id") == 1) {
-                        available1.setValue("Available");
-                    } else if (rs.getInt("shift_id") == 2) {
-                        available2.setValue("Available");
-                    } else if (rs.getInt("shift_id") == 3) {
-                        available3.setValue("Available");
+                    switch (rs.getInt("shift_id")) {
+                        case 1:
+                            available1.setValue("Available");
+                            break;
+                        case 2:
+                            available2.setValue("Available");
+                            break;
+                        case 3:
+                            available3.setValue("Available");
+                            break;
                     }
                 }
 
@@ -119,7 +123,7 @@ public class ScheduleAvailability extends Login1 {
         available1.setOnAction(e -> {
             if (available1.getValue().equals("Available")) {
                 sendDBCommand("INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) "
-                        + "VALUES('" + daysCombo.getValue() + "', " + schedid + ", 1, '8 AM to 4 PM', 'no'");
+                        + "VALUES('" + daysCombo.getValue() + "', " + schedID + ", 1, '8 AM to 4 PM', 'no'");
             }
         });
         available2.setOnAction(e -> {
