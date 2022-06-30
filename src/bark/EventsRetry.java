@@ -110,12 +110,11 @@ public class EventsRetry extends Login1 {
 
     GridPane eventsPane = new GridPane();
     TabPane tabPane = new TabPane();
-    int x = 0;
+    int id = 0;
 
     EventsRetry(VolunteerHome1 vol) throws SQLException {
         this.volHome = vol;
-        x = vol.loginid;
-        System.out.println("LOOK HERE FOR X: " + x);
+        id = vol.loginid;
         setTables();
 
         Stage primaryStage = new Stage();
@@ -144,9 +143,7 @@ public class EventsRetry extends Login1 {
 
     EventsRetry(Home home) throws SQLException {
         this.home = home;
-        x = home.loginid;
-        System.out.println(x);
-        System.out.print("Hello. I am in admin home");
+        id = home.loginid;
         setTables();
 
         Stage primaryStage = new Stage();
@@ -215,7 +212,7 @@ public class EventsRetry extends Login1 {
         pastTime.setCellValueFactory(new PropertyValueFactory<Event, String>("eventTime"));
         pastLocation.setCellValueFactory(new PropertyValueFactory<Event, String>("eventLocation"));
 
-        dailyID.setCellValueFactory(new PropertyValueFactory<Event, Integer>("eventID"));
+        yourID.setCellValueFactory(new PropertyValueFactory<Event, Integer>("eventID"));
         yourName.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
         yourDescription.setCellValueFactory(new PropertyValueFactory<Event, String>("eventDescription"));
         yourDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
@@ -269,6 +266,19 @@ public class EventsRetry extends Login1 {
             }
             for (Event x : hostedList) {
                 hostedData.add(x);
+            }
+            String query1 = "SELECT e.eventID, eventName, eventType, eventDescription, eventDate, eventTime, eventLocation, eh.volID, eventStatus FROM eventHistory eh INNER JOIN event e ON  e.eventID = eh.eventID WHERE volID = " + id;
+            sendDBCommand(query1);
+            yourList.clear();
+            try {
+                while (rs.next()) {
+                    yourList.add(new Event(rs.getInt("eventID"), rs.getString("eventName"), rs.getString("eventType"), rs.getString("eventDescription"), rs.getString("eventDate"), rs.getString("eventTime"), rs.getString("eventLocation"), rs.getString("eventStatus")));
+                }
+            } catch (Exception ex) {
+                System.out.println("Exception! " + ex);
+            }
+            for(Event ex : yourList){
+                yourData.add(ex); 
             }
 
         } catch (Exception e) {
@@ -667,12 +677,39 @@ public class EventsRetry extends Login1 {
             }
         });
         dailySignup.setOnAction(e -> {
-            System.out.println("LOGIN ID " + volHome.loginid);
+            int eventid = dailyTable.getSelectionModel().getSelectedItem().getEventID();
+            String eventName = dailyTable.getSelectionModel().getSelectedItem().getEventName();
+            String eventType = dailyTable.getSelectionModel().getSelectedItem().getEventType();
+            String eventDescription = dailyTable.getSelectionModel().getSelectedItem().getEventDescription();
+            String eventDate = dailyTable.getSelectionModel().getSelectedItem().getEventDate();
+            String eventTime = dailyTable.getSelectionModel().getSelectedItem().getEventTime();
+            String eventLocation = dailyTable.getSelectionModel().getSelectedItem().getEventLocation();
+            String eventStatus = dailyTable.getSelectionModel().getSelectedItem().getEventStatus();
+            yourList.add(new Event(eventid, eventName, eventType, eventDescription, eventDate, eventTime, eventLocation, eventStatus)); 
+            String query = "INSERT INTO EVENTHISTORY(volID, eventID) VALUES (" + id + ", " + eventid + ")";
+            sendDBCommand(query);
+            yourData.clear(); 
+            for (Event x : yourList) {
+                yourData.add(x);
+            }
         });
 
         hostedSignup.setOnAction(e -> {
-            int x = volHome.loginid;
-            System.out.println("LOGIN ID " + volHome.loginid);
+            int eventid = hostedTable.getSelectionModel().getSelectedItem().getEventID();
+            String eventName = hostedTable.getSelectionModel().getSelectedItem().getEventName();
+            String eventType = hostedTable.getSelectionModel().getSelectedItem().getEventType();
+            String eventDescription = hostedTable.getSelectionModel().getSelectedItem().getEventDescription();
+            String eventDate = hostedTable.getSelectionModel().getSelectedItem().getEventDate();
+            String eventTime = hostedTable.getSelectionModel().getSelectedItem().getEventTime();
+            String eventLocation = hostedTable.getSelectionModel().getSelectedItem().getEventLocation();
+            String eventStatus = hostedTable.getSelectionModel().getSelectedItem().getEventStatus();
+            yourList.add(new Event(eventid, eventName, eventType, eventDescription, eventDate, eventTime, eventLocation, eventStatus)); 
+            String query = "INSERT INTO EVENTHISTORY(volID, eventID) VALUES (" + id + ", " + eventid + ")";
+            sendDBCommand(query);
+            yourData.clear(); 
+            for (Event x : yourList) {
+                yourData.add(x);
+            }
         });
     }
 
