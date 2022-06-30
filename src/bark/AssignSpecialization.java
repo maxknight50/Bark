@@ -38,6 +38,7 @@ public class AssignSpecialization extends Login1 {
     Button add = new Button("Add");
     Button delete = new Button("Delete");
     Button create = new Button("Create New Specialization");
+    Button save = new Button("Save");
 
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
@@ -45,12 +46,12 @@ public class AssignSpecialization extends Login1 {
     GridPane specialPane = new GridPane();
 
     ObservableList<String> specialization = FXCollections.observableArrayList();
-
+    int largest = 0;
     AssignSpecialization(VolunteerHome1 volHome) {
         this.volHome = volHome;
 
         ArrayList<String> defaultList = new ArrayList<>();
-        sendDBCommand("SELECT DISTINCT specializationID, specialization_Name FROM specialization");
+        sendDBCommand("select vol_firstname, vol_lastname, specialization.specialization_name from volunteer right join specialization on volunteer.volid = specialization.volid");
         try {
             while (rs.next()) {
                 String special = (rs.getString("specialization_Name"));
@@ -83,16 +84,47 @@ public class AssignSpecialization extends Login1 {
         specialPane.add(viewPaw, 2, 8);
 
         paneSettings(specialPane);
-
+        
+        sendDBCommand("select * from specialization where volid = " + home.loginid);
+        try {
+            while (rs.next()) {
+                currentList.getItems().add(rs.getString("specializationid"));
+            }
+            
+        } catch (SQLException ec) {
+            
+        }
+        
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(specialPane, 700, 600);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Specialization Assignment");
         primaryStage.show();
 
+        
+        
+        
         // Lambda add
         add.setOnAction(e -> {
             currentList.getItems().add(specialMenuCb.getSelectionModel().getSelectedItem());
+            sendDBCommand("Select * from specialization");
+            try {
+                while (rs.next()) {
+                    largest = rs.getInt("specializationID");
+                            while (rs.next()) {
+                                int store = rs.getInt("specializationID");
+                                if (store > largest) {
+                                    largest = store;
+                                }
+                            }
+                }
+            } catch (SQLException elo) {
+                
+            }
+            
+            int newID = largest + 1;
+            sendDBCommand("Insert into specialization values(" + newID + ", "+ home.loginid + ", " + specialMenuCb.getSelectionModel().getSelectedItem());
+            
         });
 
         // Lambda delete
@@ -106,6 +138,7 @@ public class AssignSpecialization extends Login1 {
             
             newSpecialTxt.clear();
         });
+        
     }
 
     AssignSpecialization(Home home) {
