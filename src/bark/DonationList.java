@@ -24,7 +24,6 @@ import tables.*;
  *
  */
 public class DonationList extends Login1 {
-
     Home home;
 
     Statement stmt;
@@ -39,9 +38,6 @@ public class DonationList extends Login1 {
     TableColumn nameColumn = new TableColumn("Donor Name");
     TableColumn dateColumn = new TableColumn("Date");
     TableColumn volIdColumn = new TableColumn("VolunteerID");
-    //MenuBar menuBar = new MenuBar();
-    //Menu menuDonations = new Menu("Donations");
-    //MenuItem enterDonations = new MenuItem("Enter Donations...");
 
     Label donoID = new Label("Donation ID");
     Label donorName = new Label("Donor Name");
@@ -135,6 +131,7 @@ public class DonationList extends Login1 {
                     }
                 }
             }
+            //Add only unique years to the combobox 
             String[] unique = Arrays.stream(years).distinct().toArray(String[]::new);
             for (String a : unique) {
                 if (a != null) {
@@ -160,13 +157,9 @@ public class DonationList extends Login1 {
             for (Donation1 x : donList) {
                 tableData.add(x);
             }
-
         } catch (SQLException e) {
             System.out.println("SQL Exception! " + e);
         }
-        //menuDonations.getItems().add(enterDonations);
-        //menuBar.getMenus().addAll(menuDonations);
-        //tPane1.add(menuBar, 0, 0);
 
         int amount = 0;
         for (int i = 0; i < donList.size(); i++) {
@@ -190,7 +183,7 @@ public class DonationList extends Login1 {
 
         primaryStage.setTitle("Donation List");
         primaryStage.show();
-
+        //Action handler to delete a donation record from the database and arraylist
         delete.setOnAction(e -> {
             String query = "DELETE FROM DONATION WHERE donation_ID =  " + donTable.getSelectionModel().getSelectedItem().getDonationID();
             sendDBCommand(query);
@@ -202,14 +195,14 @@ public class DonationList extends Login1 {
                 tableData.add(a);
             }
         });
-
+        //Action handler to populate textfields from donation information
         populate.setOnAction(e -> {
             idField.setText(donTable.getSelectionModel().getSelectedItem().getDonationID() + "");
             nameField.setText(donTable.getSelectionModel().getSelectedItem().getDonationName());
             amountField.setText(donTable.getSelectionModel().getSelectedItem().getDonationAmt());
             dateField.setText(donTable.getSelectionModel().getSelectedItem().getDonationDate());
         });
-
+        //Action handler to modify a donation record 
         modify.setOnAction(e -> {
             int newID = Integer.valueOf(idField.getText());
             String newName = nameField.getText();
@@ -233,7 +226,7 @@ public class DonationList extends Login1 {
                 tableData.add(don);
             }
         });
-
+        //Action handler to add a donation
         add.setOnAction(e -> {
             int largest = 0;
             try {
@@ -272,7 +265,7 @@ public class DonationList extends Login1 {
                 System.out.println("Error! " + ex);
             }
         });
-
+        //Event handler to generate a report based on the year
         report.setOnAction(e -> {
             tableData.clear();                                                  //Clear the table data
             donationField.setText("");
@@ -303,11 +296,11 @@ public class DonationList extends Login1 {
                 donationField.setText("$" + String.valueOf(amount1) + ".00");
             }
         });
-
+        //Event handler to close the stage
         backBtn.setOnAction(e -> {
             primaryStage.close();
         });
-
+        //Event handler to show all records again
         showAll.setOnAction(e -> {
             tableData.clear();
             for (Donation1 x : donList) {
@@ -335,16 +328,12 @@ public class DonationList extends Login1 {
         String userPASS = "javapass";
         OracleDataSource ds;
 
-        // You can comment this line out when your program is finished
-        System.out.println(sqlQuery);
-
         try {
             ds = new OracleDataSource();
             ds.setURL(URL);
             conn = ds.getConnection(userID, userPASS);
             stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             rs = stmt.executeQuery(sqlQuery); // Sends the Query to the DB
-            System.out.println("RESULT SET: " + rs);
 
         } catch (SQLException e) {
             System.out.println(e.toString());
