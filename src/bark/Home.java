@@ -76,6 +76,22 @@ public class Home extends Login1 {
         barkTitle = new Label("Welcome to BARK, " + login.name + "!"); // Get name identified in login
         this.login = login;
         paneSettings(homePane);
+        
+        String join = "SELECT volunteer.volID, volunteer.vol_firstName, volunteer.vol_lastName, event.eventName, event.eventDate, event.eventType FROM Volunteer " +
+                "INNER JOIN EVENTHISTORY ON volunteer.volID = eventhistory.volID INNER JOIN event ON eventhistory.eventID = event.eventID";
+        sendDBCommand(join);
+        int iter = 3;
+        try {
+            while (rs.next()) {
+                rs.getString("vol_firstname");
+                //Label temp1 = new Label(rs.getString("vol_firstname") + " " + rs.getString("vol_lastname") + " completed " + rs.getString("eventname") + " on " + rs.getString("eventdate"));
+                //socialPane.add(temp1, 2, iter);
+                iter++;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ScheduleAvailability.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
 
         homePane.add(barkTitle, 0, 0);
         homePane.add(checkIn, 0, 1);
@@ -108,7 +124,7 @@ public class Home extends Login1 {
         socialPane.setAlignment(Pos.TOP_CENTER);
         mainPane.add(socialPane, 1, 0);
         
-        //populateSocial();
+        populateSocial();
         
         Stage primaryStage1 = login.primaryStage;
         Scene primaryScene = new Scene(mainPane, 900, 550);
@@ -217,14 +233,14 @@ public class Home extends Login1 {
         });
     }
 
-    public void populateSocial() {
+    private void populateSocial() {
 //        String join = "SELECT volunteer.volID, volunteer.vol_firstName, volunteer.vol_lastName, event.eventName, event.eventDate, event.eventType FROM Volunteer " +
 //                "INNER JOIN EVENTHISTORY ON volunteer.volID = eventhistory.volID INNER JOIN event ON eventhistory.eventID = event.eventID";
 //        sendDBCommand(join);
 //        int iter = 3;
 //        try {
 //            while (rs.next()) {
-//                Label temp1 = new Label(rs.getString("vol_firstname") + " " + rs.getString("vol_lastname") + " completed " + rs.getString("eventname") + "on " + rs.getString("eventdate"));
+//                Label temp1 = new Label(rs.getString("vol_firstname") + " " + rs.getString("vol_lastname") + " completed " + rs.getString("eventname") + " on " + rs.getString("eventdate"));
 //                socialPane.add(temp1, 2, iter);
 //                iter++;
 //            }
