@@ -132,7 +132,7 @@ public class Login1 extends Application {
                                     loginPane.add(login, 0, 0);
                                     primaryStage.show();
                                 } else if (!rs.getString("status").equalsIgnoreCase("admin")){
-                                    Home home = new VolunteerHome1(this); // Display the regular volunteer home screen
+                                    VolunteerHome1 home = new VolunteerHome1(this); // Display the regular volunteer home screen
                                     primaryStage.close();
                                 } else if (rs.getString("status").equalsIgnoreCase("admin")) {
                                     Home home = new Home(this); // Display the admin home screen
