@@ -59,7 +59,7 @@ public class VolunteerHome1 extends Home {
     double totalCumHours;
     public double cumHours;
     DecimalFormat df = new DecimalFormat("#.##");
-    int loginid = 0;
+    public int loginid = 0;
     int schedid = 0;
 
     GridPane homePane = new GridPane();

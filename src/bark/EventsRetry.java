@@ -82,6 +82,9 @@ public class EventsRetry extends Login1 {
     Button hostedPopulate = new Button("<-- Select and Populate");
     Button dailyComplete = new Button("Event Completed");
     Button hostedComplete = new Button("Event Completed");
+    Button dailySignup = new Button("Sign Up");
+    Button hostedSignup = new Button("Sign up");
+    
 
     // GridPane associated for each tab
     GridPane dailyOverall = new GridPane();
@@ -108,10 +111,11 @@ public class EventsRetry extends Login1 {
 
     GridPane eventsPane = new GridPane();
     TabPane tabPane = new TabPane();
-
+    int x = 0; 
     EventsRetry(VolunteerHome1 vol) throws SQLException {
         this.volHome = vol;
-
+        x = vol.loginid; 
+        System.out.println("LOOK HERE FOR X: " + x); 
         setTables();
 
         Stage primaryStage = new Stage();
@@ -394,7 +398,8 @@ public class EventsRetry extends Login1 {
         dailyButtons.add(dailyModify, 1, 8);
         dailyButtons.add(dailyPopulate, 0, 9); 
         dailyButtons.add(dailyComplete, 0, 10); 
-
+        dailyButtons.add(dailySignup, 1, 10);
+        
         dailyOverall.add(dailyButtons, 0, 0);
         dailyOverall.add(dailyTablePane, 1, 0);
 
@@ -416,7 +421,7 @@ public class EventsRetry extends Login1 {
         hostedButtons.add(hostedModify, 1, 8);
         hostedButtons.add(hostedPopulate, 0, 9); 
         hostedButtons.add(hostedComplete, 0, 10); 
-
+        hostedButtons.add(hostedSignup, 1, 10); 
         hostedOverall.add(hostedButtons, 0, 0);
         hostedOverall.add(hostedTablePane, 1, 0);
 
@@ -440,7 +445,7 @@ public class EventsRetry extends Login1 {
             for (int i = 0; i < pastList.size(); i++) {
                 if (pastList.get(i).getEventID() == newID) {
                     pastList.get(i).setEventName(newName);
-                    pastList.get(i).setEventCategory(newCategory);
+                    pastList.get(i).setEventType(newCategory);
                     pastList.get(i).setEventDescription(newDescription);
                     pastList.get(i).setEventDate(newDate); 
                     pastList.get(i).setEventTime(newTime); 
@@ -659,6 +664,14 @@ public class EventsRetry extends Login1 {
             for(Event x : pastList){
                 pastData.add(x); 
             }
+        });
+        dailySignup.setOnAction(e -> {
+           System.out.println("LOGIN ID " + volHome.loginid);  
+        });
+        
+        hostedSignup.setOnAction(e -> {
+            int x = volHome.loginid; 
+            System.out.println("LOGIN ID " + volHome.loginid);  
         });
     }
 
