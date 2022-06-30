@@ -63,7 +63,7 @@ public class VolunteerList extends Login1 {
     Label statusLbl = new Label("Status");
     Label activeLbl = new Label("Active Status");
 
-    TextField idField = new TextField();
+    Label idField = new Label();
     TextField fNameTxt = new TextField();
     TextField lNameTxt = new TextField();
     TextField addressTxt = new TextField();
@@ -148,7 +148,6 @@ public class VolunteerList extends Login1 {
         try {
             for (int i = 0; i < 100; i++) {
                 while (rs.next()) {
-                    System.out.println("Test " + rs.getString("hasAccess"));
                     if (rs != null) {
                         volunteerList.add(new ListVolunteers(rs.getInt("volID"), rs.getString("vol_FirstName"), rs.getString("vol_LastName"),
                                 rs.getString("vol_Address"), rs.getString("vol_DateOfBirth"), rs.getString("vol_Email"),
@@ -160,7 +159,6 @@ public class VolunteerList extends Login1 {
             for (ListVolunteers x : volunteerList) {
                 tableData.add(x);
             }
-
         } catch (SQLException e) {
             System.out.println("SQL Exception! " + e);
         }
@@ -184,8 +182,9 @@ public class VolunteerList extends Login1 {
             statusTxt.setText(volTable.getSelectionModel().getSelectedItem().getStatus() + "");
             activeTxt.setText(volTable.getSelectionModel().getSelectedItem().getAccess() + "");
         });
-
+        //Action Handler to create a volunteer
         add.setOnAction(e -> {
+            //Auto Volunteer ID assignment
             int largest = 0;
             try {
                 String q = "SELECT * FROM VOLUNTEER";
@@ -193,16 +192,12 @@ public class VolunteerList extends Login1 {
                 try {
                     while (rs.next()) {
                         largest = rs.getInt("volID");
-                        System.out.println("First: " + largest);
                         while (rs.next()) {
                             int store = rs.getInt("volID");
-                            System.out.println(store);
                             if (store > largest) {
                                 largest = store;
                             }
                         }
-
-                        System.out.println("Final largest: " + largest);
                     }
                 } catch (Exception m) {
                     System.out.println("Exception finding the largest! " + m);
@@ -217,14 +212,11 @@ public class VolunteerList extends Login1 {
                 double newCumulative = Integer.valueOf(cumHrsTxt.getText());
                 String newStatus = statusTxt.getText(); 
                 String newAccess = activeTxt.getText();
-
+                //Add new volunteer into the arraylist 
                 ListVolunteers newVolunteer = new ListVolunteers(newID, newFirst, newLast, newAddress, dateOfBirth, newEmail, newPhone, newCumulative, newStatus, newAccess);
-
                 String query = "INSERT INTO VOLUNTEER(volID, vol_FirstName, vol_LastName, vol_Address, vol_Email, vol_Phone, cumulativeHours, status, hasAccess) VALUES (" + newID + ",'" + newFirst + "', '" + newLast + "', '" + newAddress + "', '" + newEmail + "', '" + newPhone + "', " + newCumulative + ", '" + newStatus + ", '" + newAccess +"')";
-
                 sendDBCommand(query);
                 tableData.clear();
-
                 volunteerList.add(newVolunteer);
                 for (ListVolunteers x : volunteerList) {
                     tableData.add(x);
@@ -234,9 +226,8 @@ public class VolunteerList extends Login1 {
                 System.out.println("Error! " + ex);
             }
         });
-
+        //Event handler to modify a volunteer's information 
         modify.setOnAction(e -> {
-            System.out.println("Modify button clicked");
             int newID = Integer.valueOf(idField.getText());
             String newFirst = fNameTxt.getText();
             String newLast = lNameTxt.getText();
@@ -272,9 +263,8 @@ public class VolunteerList extends Login1 {
                 tableData.add(x);
             }
         });
-
+        //Action handler to delete a volunteer from the database and the table 
         delete.setOnAction(e -> {
-            System.out.println(volTable.getSelectionModel().getSelectedItem().getVolunteerID());
             String query = "DELETE FROM VOLUNTEER WHERE volID = " + volTable.getSelectionModel().getSelectedItem().getVolunteerID();
             sendDBCommand(query);
             message.setText("Entry removed successfully.");
@@ -285,7 +275,7 @@ public class VolunteerList extends Login1 {
                 tableData.add(z);
             }
         });
-
+        //Event handler to close the pane
         backBtn.setOnAction(e -> {
             primaryStage.close();
         });
@@ -297,16 +287,12 @@ public class VolunteerList extends Login1 {
         String userPASS = "javapass";
         OracleDataSource ds;
 
-        // You can comment this line out when your program is finished
-        System.out.println(sqlQuery);
-
         try {
             ds = new OracleDataSource();
             ds.setURL(URL);
             conn = ds.getConnection(userID, userPASS);
             stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             rs = stmt.executeQuery(sqlQuery); // Sends the Query to the DB
-            System.out.println("RESULT SET: " + rs);
 
         } catch (SQLException e) {
             System.out.println(e.toString());
