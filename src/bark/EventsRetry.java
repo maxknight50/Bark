@@ -84,7 +84,6 @@ public class EventsRetry extends Login1 {
     Button hostedComplete = new Button("Event Completed");
     Button dailySignup = new Button("Sign Up");
     Button hostedSignup = new Button("Sign up");
-    
 
     // GridPane associated for each tab
     GridPane dailyOverall = new GridPane();
@@ -111,11 +110,12 @@ public class EventsRetry extends Login1 {
 
     GridPane eventsPane = new GridPane();
     TabPane tabPane = new TabPane();
-    int x = 0; 
+    int x = 0;
+
     EventsRetry(VolunteerHome1 vol) throws SQLException {
         this.volHome = vol;
-        x = vol.loginid; 
-        System.out.println("LOOK HERE FOR X: " + x); 
+        x = vol.loginid;
+        System.out.println("LOOK HERE FOR X: " + x);
         setTables();
 
         Stage primaryStage = new Stage();
@@ -144,7 +144,8 @@ public class EventsRetry extends Login1 {
 
     EventsRetry(Home home) throws SQLException {
         this.home = home;
-
+        x = home.loginid;
+        System.out.println(x);
         System.out.print("Hello. I am in admin home");
         setTables();
 
@@ -266,8 +267,8 @@ public class EventsRetry extends Login1 {
                         rs.getInt("maxVolunteers"), rs.getString("eventDate"), rs.getString("eventTime"), rs.getString("eventLocation"), rs.getString("eventCategory"),
                         rs.getString("eventStatus")));
             }
-            for(Event x : hostedList){
-                hostedData.add(x); 
+            for (Event x : hostedList) {
+                hostedData.add(x);
             }
 
         } catch (Exception e) {
@@ -289,7 +290,7 @@ public class EventsRetry extends Login1 {
         TextField yourCatField = new TextField();
         TextField yourDescField = new TextField();
         TextField yourDateField = new TextField();
-        TextField yourTimeField = new TextField(); 
+        TextField yourTimeField = new TextField();
         TextField yourLocationField = new TextField();
 
         // Daily table
@@ -305,7 +306,7 @@ public class EventsRetry extends Login1 {
         TextField dailyCatField = new TextField();
         TextField dailyDescField = new TextField();
         TextField dailyDateField = new TextField();
-        TextField dailyTimeField = new TextField(); 
+        TextField dailyTimeField = new TextField();
         TextField dailyLocationField = new TextField();
 
         // Past table
@@ -321,7 +322,7 @@ public class EventsRetry extends Login1 {
         TextField pastCatField = new TextField();
         TextField pastDescField = new TextField();
         TextField pastDateField = new TextField();
-        TextField pastTimeField = new TextField(); 
+        TextField pastTimeField = new TextField();
         TextField pastLocationField = new TextField();
 
         // Hosted table
@@ -337,7 +338,7 @@ public class EventsRetry extends Login1 {
         TextField hostedCatField = new TextField();
         TextField hostedDescField = new TextField();
         TextField hostedDateField = new TextField();
-        TextField hostedTimeField = new TextField(); 
+        TextField hostedTimeField = new TextField();
         TextField hostedLocationField = new TextField();
 
         yourButtons.add(yourID, 0, 1);
@@ -350,8 +351,8 @@ public class EventsRetry extends Login1 {
         yourButtons.add(yourDescField, 1, 4);
         yourButtons.add(yourDate, 0, 5);
         yourButtons.add(yourDateField, 1, 5);
-        yourButtons.add(yourTime, 0, 6); 
-        yourButtons.add(yourTimeField, 1, 6); 
+        yourButtons.add(yourTime, 0, 6);
+        yourButtons.add(yourTimeField, 1, 6);
         yourButtons.add(yourLocation, 0, 7);
         yourButtons.add(yourLocationField, 1, 7);
         yourButtons.add(yourAdd, 0, 8);
@@ -370,12 +371,12 @@ public class EventsRetry extends Login1 {
         pastButtons.add(pastDescField, 1, 4);
         pastButtons.add(pastDate, 0, 5);
         pastButtons.add(pastDateField, 1, 5);
-        pastButtons.add(pastTime, 0, 6); 
-        pastButtons.add(pastTimeField, 1, 6); 
+        pastButtons.add(pastTime, 0, 6);
+        pastButtons.add(pastTimeField, 1, 6);
         pastButtons.add(pastLocation, 0, 7);
         pastButtons.add(pastLocationField, 1, 7);
         pastButtons.add(pastModify, 1, 8);
-        pastButtons.add(pastPopulate, 0, 9); 
+        pastButtons.add(pastPopulate, 0, 9);
 
         pastOverall.add(pastButtons, 0, 0);
         pastOverall.add(pastTablePane, 1, 0);
@@ -390,16 +391,16 @@ public class EventsRetry extends Login1 {
         dailyButtons.add(dailyDescField, 1, 4);
         dailyButtons.add(dailyDate, 0, 5);
         dailyButtons.add(dailyDateField, 1, 5);
-        dailyButtons.add(dailyTime, 0, 6); 
-        dailyButtons.add(dailyTimeField, 1, 6); 
+        dailyButtons.add(dailyTime, 0, 6);
+        dailyButtons.add(dailyTimeField, 1, 6);
         dailyButtons.add(dailyLocation, 0, 7);
         dailyButtons.add(dailyLocationField, 1, 7);
         dailyButtons.add(dailyAdd, 0, 8);
         dailyButtons.add(dailyModify, 1, 8);
-        dailyButtons.add(dailyPopulate, 0, 9); 
-        dailyButtons.add(dailyComplete, 0, 10); 
+        dailyButtons.add(dailyPopulate, 0, 9);
+        dailyButtons.add(dailyComplete, 0, 10);
         dailyButtons.add(dailySignup, 1, 10);
-        
+
         dailyOverall.add(dailyButtons, 0, 0);
         dailyOverall.add(dailyTablePane, 1, 0);
 
@@ -413,15 +414,15 @@ public class EventsRetry extends Login1 {
         hostedButtons.add(hostedDescField, 1, 4);
         hostedButtons.add(hostedDate, 0, 5);
         hostedButtons.add(hostedDateField, 1, 5);
-        hostedButtons.add(hostedTime, 0, 6); 
-        hostedButtons.add(hostedTimeField, 1, 6); 
+        hostedButtons.add(hostedTime, 0, 6);
+        hostedButtons.add(hostedTimeField, 1, 6);
         hostedButtons.add(hostedLocation, 0, 7);
         hostedButtons.add(hostedLocationField, 1, 7);
         hostedButtons.add(hostedAdd, 0, 8);
         hostedButtons.add(hostedModify, 1, 8);
-        hostedButtons.add(hostedPopulate, 0, 9); 
-        hostedButtons.add(hostedComplete, 0, 10); 
-        hostedButtons.add(hostedSignup, 1, 10); 
+        hostedButtons.add(hostedPopulate, 0, 9);
+        hostedButtons.add(hostedComplete, 0, 10);
+        hostedButtons.add(hostedSignup, 1, 10);
         hostedOverall.add(hostedButtons, 0, 0);
         hostedOverall.add(hostedTablePane, 1, 0);
 
@@ -436,7 +437,7 @@ public class EventsRetry extends Login1 {
             String newCategory = pastCatField.getText();
             String newDescription = pastDescField.getText();
             String newDate = pastDateField.getText();
-            String newTime = pastTimeField.getText(); 
+            String newTime = pastTimeField.getText();
             String newLocation = pastLocationField.getText();
 
             String query = "UPDATE EVENT SET eventID = " + newID + ", eventName = '" + newName + "', eventCategory = '" + newCategory + "', eventDescription = '" + newDescription + "', eventDate = '" + newDate + "', eventTime = '" + newTime + "', eventLocation = '" + newLocation + "' WHERE eventID = " + newID + "";
@@ -447,8 +448,8 @@ public class EventsRetry extends Login1 {
                     pastList.get(i).setEventName(newName);
                     pastList.get(i).setEventType(newCategory);
                     pastList.get(i).setEventDescription(newDescription);
-                    pastList.get(i).setEventDate(newDate); 
-                    pastList.get(i).setEventTime(newTime); 
+                    pastList.get(i).setEventDate(newDate);
+                    pastList.get(i).setEventTime(newTime);
                     pastList.get(i).setEventLocation(newLocation);
                 }
             }
@@ -457,17 +458,17 @@ public class EventsRetry extends Login1 {
                 pastData.add(a);
             }
         });
-        
+
         pastPopulate.setOnAction(e -> {
             pastIdField.setText(pastTable.getSelectionModel().getSelectedItem().getEventID() + "");
-            pastNameField.setText(pastTable.getSelectionModel().getSelectedItem().getEventName()); 
-            pastCatField.setText(pastTable.getSelectionModel().getSelectedItem().getEventType()); 
-            pastDescField.setText(pastTable.getSelectionModel().getSelectedItem().getEventDescription()); 
-            pastDateField.setText(pastTable.getSelectionModel().getSelectedItem().getEventDate()); 
-            pastTimeField.setText(pastTable.getSelectionModel().getSelectedItem().getEventTime()); 
-            pastLocationField.setText(pastTable.getSelectionModel().getSelectedItem().getEventLocation()); 
+            pastNameField.setText(pastTable.getSelectionModel().getSelectedItem().getEventName());
+            pastCatField.setText(pastTable.getSelectionModel().getSelectedItem().getEventType());
+            pastDescField.setText(pastTable.getSelectionModel().getSelectedItem().getEventDescription());
+            pastDateField.setText(pastTable.getSelectionModel().getSelectedItem().getEventDate());
+            pastTimeField.setText(pastTable.getSelectionModel().getSelectedItem().getEventTime());
+            pastLocationField.setText(pastTable.getSelectionModel().getSelectedItem().getEventLocation());
         });
-        
+
         dailyAdd.setOnAction(e -> {
             int largest = 0;
             try {
@@ -491,7 +492,7 @@ public class EventsRetry extends Login1 {
                 String newCategory = dailyCatField.getText();
                 String newDescription = dailyDescField.getText();
                 String newDate = dailyDateField.getText();
-                String newTime = dailyTimeField.getText(); 
+                String newTime = dailyTimeField.getText();
                 String newLocation = dailyLocationField.getText();
                 String category = "Daily event";
                 String newStatus = "upcoming";
@@ -517,7 +518,7 @@ public class EventsRetry extends Login1 {
             String newCategory = dailyCatField.getText();
             String newDescription = dailyDescField.getText();
             String newDate = dailyDateField.getText();
-            String newTime = dailyTimeField.getText(); 
+            String newTime = dailyTimeField.getText();
             String newLocation = dailyLocationField.getText();
 
             String query = "UPDATE EVENT SET eventID = " + newID + ", eventName = '" + newName + "', eventCategory = '" + newCategory + "', eventDescription = '" + newDescription + "', eventDate = '" + newDate + "', eventTime = '" + newTime + "', eventLocation = '" + newLocation + "' WHERE eventID = " + newID + "";
@@ -528,8 +529,8 @@ public class EventsRetry extends Login1 {
                     dailyList.get(i).setEventName(newName);
                     dailyList.get(i).setEventCategory(newCategory);
                     dailyList.get(i).setEventDescription(newDescription);
-                    dailyList.get(i).setEventDate(newDate); 
-                    dailyList.get(i).setEventTime(newTime); 
+                    dailyList.get(i).setEventDate(newDate);
+                    dailyList.get(i).setEventTime(newTime);
                     dailyList.get(i).setEventLocation(newLocation);
                 }
             }
@@ -538,27 +539,27 @@ public class EventsRetry extends Login1 {
                 dailyData.add(a);
             }
         });
-        
+
         dailyPopulate.setOnAction(e -> {
             dailyIdField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventID() + "");
-            dailyNameField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventName()); 
-            dailyCatField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventCategory()); 
-            dailyDescField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventDescription()); 
-            dailyDateField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventDate()); 
-            dailyTimeField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventTime()); 
-            dailyLocationField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventLocation()); 
+            dailyNameField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventName());
+            dailyCatField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventCategory());
+            dailyDescField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventDescription());
+            dailyDateField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventDate());
+            dailyTimeField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventTime());
+            dailyLocationField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventLocation());
         });
-        
+
         hostedPopulate.setOnAction(e -> {
             hostedIdField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventID() + "");
-            hostedNameField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventName()); 
-            hostedCatField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventType()); 
-            hostedDescField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventDescription()); 
-            hostedDateField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventDate()); 
-            hostedTimeField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventTime()); 
-            hostedLocationField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventLocation()); 
+            hostedNameField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventName());
+            hostedCatField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventType());
+            hostedDescField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventDescription());
+            hostedDateField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventDate());
+            hostedTimeField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventTime());
+            hostedLocationField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventLocation());
         });
-        
+
         hostedAdd.setOnAction(e -> {
             int largest = 0;
             try {
@@ -582,7 +583,7 @@ public class EventsRetry extends Login1 {
                 String newCategory = hostedCatField.getText();
                 String newDescription = hostedDescField.getText();
                 String newDate = hostedDateField.getText();
-                String newTime = hostedTimeField.getText(); 
+                String newTime = hostedTimeField.getText();
                 String newLocation = hostedLocationField.getText();
                 String category = "BARK hosted";
                 String newStatus = "upcoming";
@@ -601,14 +602,14 @@ public class EventsRetry extends Login1 {
                 System.out.println("Error! " + ex);
             }
         });
-        
+
         hostedModify.setOnAction(e -> {
             int newID = Integer.valueOf(hostedIdField.getText());
             String newName = hostedNameField.getText();
             String newCategory = hostedCatField.getText();
             String newDescription = hostedDescField.getText();
             String newDate = hostedDateField.getText();
-            String newTime = hostedTimeField.getText(); 
+            String newTime = hostedTimeField.getText();
             String newLocation = hostedLocationField.getText();
 
             String query = "UPDATE EVENT SET eventID = " + newID + ", eventName = '" + newName + "', eventCategory = '" + newCategory + "', eventDescription = '" + newDescription + "', eventDate = '" + newDate + "', eventTime = '" + newTime + "', eventLocation = '" + newLocation + "' WHERE eventID = " + newID + "";
@@ -619,8 +620,8 @@ public class EventsRetry extends Login1 {
                     hostedList.get(i).setEventName(newName);
                     hostedList.get(i).setEventCategory(newCategory);
                     hostedList.get(i).setEventDescription(newDescription);
-                    hostedList.get(i).setEventDate(newDate); 
-                    hostedList.get(i).setEventTime(newTime); 
+                    hostedList.get(i).setEventDate(newDate);
+                    hostedList.get(i).setEventTime(newTime);
                     hostedList.get(i).setEventLocation(newLocation);
                 }
             }
@@ -629,49 +630,49 @@ public class EventsRetry extends Login1 {
                 hostedData.add(a);
             }
         });
-        
+
         dailyComplete.setOnAction(e -> {
-           int id = dailyTable.getSelectionModel().getSelectedItem().getEventID(); 
-           String query = "UPDATE EVENT SET eventStatus = 'completed' WHERE eventID = " + id; 
-           int index = dailyTable.getSelectionModel().getSelectedIndex(); 
-           dailyList.get(index).setEventStatus("complete");
-           sendDBCommand(query); 
-           pastList.add(dailyList.get(index));
-           dailyList.remove(index); 
-           dailyData.clear();
-                for (Event x : dailyList) {
-                    dailyData.add(x);
-                }
-            pastData.clear(); 
-            for(Event x : pastList){
-                pastData.add(x); 
+            int id = dailyTable.getSelectionModel().getSelectedItem().getEventID();
+            String query = "UPDATE EVENT SET eventStatus = 'completed' WHERE eventID = " + id;
+            int index = dailyTable.getSelectionModel().getSelectedIndex();
+            dailyList.get(index).setEventStatus("complete");
+            sendDBCommand(query);
+            pastList.add(dailyList.get(index));
+            dailyList.remove(index);
+            dailyData.clear();
+            for (Event x : dailyList) {
+                dailyData.add(x);
+            }
+            pastData.clear();
+            for (Event x : pastList) {
+                pastData.add(x);
             }
         });
-        
+
         hostedComplete.setOnAction(e -> {
-           int id = hostedTable.getSelectionModel().getSelectedItem().getEventID(); 
-           String query = "UPDATE EVENT SET eventStatus = 'completed' WHERE eventID = " + id; 
-           int index = hostedTable.getSelectionModel().getSelectedIndex(); 
-           hostedList.get(index).setEventStatus("complete");
-           sendDBCommand(query); 
-           pastList.add(hostedList.get(index));
-           hostedList.remove(index); 
-           hostedData.clear();
-                for (Event x : hostedList) {
-                    hostedData.add(x);
-                }
-            pastData.clear(); 
-            for(Event x : pastList){
-                pastData.add(x); 
+            int id = hostedTable.getSelectionModel().getSelectedItem().getEventID();
+            String query = "UPDATE EVENT SET eventStatus = 'completed' WHERE eventID = " + id;
+            int index = hostedTable.getSelectionModel().getSelectedIndex();
+            hostedList.get(index).setEventStatus("complete");
+            sendDBCommand(query);
+            pastList.add(hostedList.get(index));
+            hostedList.remove(index);
+            hostedData.clear();
+            for (Event x : hostedList) {
+                hostedData.add(x);
+            }
+            pastData.clear();
+            for (Event x : pastList) {
+                pastData.add(x);
             }
         });
         dailySignup.setOnAction(e -> {
-           System.out.println("LOGIN ID " + volHome.loginid);  
+            System.out.println("LOGIN ID " + volHome.loginid);
         });
-        
+
         hostedSignup.setOnAction(e -> {
-            int x = volHome.loginid; 
-            System.out.println("LOGIN ID " + volHome.loginid);  
+            int x = volHome.loginid;
+            System.out.println("LOGIN ID " + volHome.loginid);
         });
     }
 
