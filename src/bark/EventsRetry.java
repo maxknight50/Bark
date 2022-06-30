@@ -715,16 +715,12 @@ public class EventsRetry extends Login1 {
         String userPASS = "javapass";
         OracleDataSource ds;
 
-        // You can comment this line out when your program is finished
-        System.out.println(sqlQuery);
-
         try {
             ds = new OracleDataSource();
             ds.setURL(URL);
             conn = ds.getConnection(userID, userPASS);
             stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             rs = stmt.executeQuery(sqlQuery); // Sends the Query to the DB
-            //       System.out.println("RESULT SET: " + rs);
 
         } catch (SQLException e) {
             System.out.println(e.toString());
