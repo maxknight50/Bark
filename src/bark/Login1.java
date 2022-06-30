@@ -44,6 +44,7 @@ public class Login1 extends Application {
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
     Label login;
+    boolean isAdmin = false;
 
     TextField userNameTxt = new TextField();
     PasswordField passwordTxt = new PasswordField();
@@ -135,6 +136,7 @@ public class Login1 extends Application {
                                     VolunteerHome1 home = new VolunteerHome1(this); // Display the regular volunteer home screen
                                     primaryStage.close();
                                 } else if (rs.getString("status").equalsIgnoreCase("admin")) {
+                                    isAdmin = true;
                                     Home home = new Home(this); // Display the admin home screen
                                     primaryStage.close();
                                 }

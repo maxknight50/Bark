@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import oracle.jdbc.pool.OracleDataSource;
 
 public class Home extends Login1 {
+
     Statement stmt;
     static Connection conn;
     ResultSet rs;
@@ -26,27 +27,20 @@ public class Home extends Login1 {
     Login1 login; // Create Login1 object
     Label barkTitle;
     Button eventsBtn = new Button("View Events");
-    Button reviewApplication = new Button("Review Applications"); // Admin only
+    Button reviewApplication = new Button("Review Applications");
     Button volunteerInfoBtn = new Button("View Your Information");
     Button assignSpecialBtn = new Button("Assign Specialization");
-    Button volunteerReportBtn = new Button("View Volunteer Report"); // Admin only
+    Button volunteerReportBtn = new Button("View Volunteer Report");
     Button checkoutBtn = new Button("Check Out");
     Button donationBtn = new Button("Donations");
-    Button animalInfoBtn = new Button("Animal Information"); // Admin only?
+    Button animalInfoBtn = new Button("Animal Information");
     Button scheduleBtn = new Button("Schedule Availability");
     Button logoutBtn = new Button("Logout");
     Button checkIn = new Button("Check In");
 
     Label scrnTitleLbl = new Label("Social Home");
     Label dateLbl = new Label("Date");
-
-    Label takeOut = new Label("06/01/22");
-    Label takeOut3 = new Label("05/28/22");
-
     Label descLbl = new Label("Description");
-
-    Label takeOut2 = new Label("John Smith completed 20 hours of training. Congratulations!");
-    Label takeOut4 = new Label("Elizabeth Ley joined BARK!");
 
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
@@ -76,22 +70,6 @@ public class Home extends Login1 {
         barkTitle = new Label("Welcome to BARK, " + login.name + "!"); // Get name identified in login
         this.login = login;
         paneSettings(homePane);
-        
-        String join = "SELECT volunteer.volID, volunteer.vol_firstName, volunteer.vol_lastName, event.eventName, event.eventDate, event.eventType FROM Volunteer " +
-                "INNER JOIN EVENTHISTORY ON volunteer.volID = eventhistory.volID INNER JOIN event ON eventhistory.eventID = event.eventID";
-        sendDBCommand(join);
-        int iter = 3;
-        try {
-            while (rs.next()) {
-                rs.getString("vol_firstname");
-                //Label temp1 = new Label(rs.getString("vol_firstname") + " " + rs.getString("vol_lastname") + " completed " + rs.getString("eventname") + " on " + rs.getString("eventdate"));
-                //socialPane.add(temp1, 2, iter);
-                iter++;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ScheduleAvailability.class.getName()).log(Level.SEVERE, null, ex);
-            
-        }
 
         homePane.add(barkTitle, 0, 0);
         homePane.add(checkIn, 0, 1);
@@ -123,17 +101,17 @@ public class Home extends Login1 {
         mainPane.add(homePane, 0, 0);
         socialPane.setAlignment(Pos.TOP_CENTER);
         mainPane.add(socialPane, 1, 0);
-        
-        populateSocial();
-        
+
+        if (login.isAdmin == true) {
+            populateSocial();
+        }
+
         Stage primaryStage1 = login.primaryStage;
         Scene primaryScene = new Scene(mainPane, 900, 550);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Home");
         primaryStage.show();
 
-        
-        
         checkIn.setOnAction(e -> {
             LocalDateTime now = LocalDateTime.now();
 //            System.out.println(df.format(now));
@@ -145,7 +123,7 @@ public class Home extends Login1 {
             sendDBCommand(update);
 
         });
-        
+
         checkoutBtn.setOnAction(e -> {
             LocalDateTime now = LocalDateTime.now();
 //            System.out.println(df.format(now));
@@ -159,15 +137,15 @@ public class Home extends Login1 {
                 while (rs.next()) {
                     timeCheckedIn = rs.getDouble("timeCheckedIn");
                     totalCumHours = rs.getInt("cumulativeHours");
-                }    
+                }
             } catch (Exception ex) {
                 System.out.println("Error: " + e.toString());
             }
             System.out.println("Checked In: " + timeCheckedIn);
-            
-            double checkedOut = (hour2*60) + minute2;
+
+            double checkedOut = (hour2 * 60) + minute2;
             System.out.println("Checked Out: " + checkedOut);
-            cumHours = ((hour2*60) + minute2) - (timeCheckedIn);
+            cumHours = ((hour2 * 60) + minute2) - (timeCheckedIn);
             cumHours = cumHours / 60;
             System.out.println("Total time: " + df.format(cumHours));
 
@@ -233,29 +211,31 @@ public class Home extends Login1 {
         });
     }
 
-    private void populateSocial() {
-//        String join = "SELECT volunteer.volID, volunteer.vol_firstName, volunteer.vol_lastName, event.eventName, event.eventDate, event.eventType FROM Volunteer " +
-//                "INNER JOIN EVENTHISTORY ON volunteer.volID = eventhistory.volID INNER JOIN event ON eventhistory.eventID = event.eventID";
-//        sendDBCommand(join);
-//        int iter = 3;
-//        try {
-//            while (rs.next()) {
-//                Label temp1 = new Label(rs.getString("vol_firstname") + " " + rs.getString("vol_lastname") + " completed " + rs.getString("eventname") + " on " + rs.getString("eventdate"));
-//                socialPane.add(temp1, 2, iter);
-//                iter++;
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ScheduleAvailability.class.getName()).log(Level.SEVERE, null, ex);
-//            
-//        }
-        
+    public void populateSocial() {
+        String join = "SELECT volunteer.volID, volunteer.vol_firstName, volunteer.vol_lastName, event.eventName, event.eventDate, event.eventType FROM Volunteer "
+                + "INNER JOIN EVENTHISTORY ON volunteer.volID = eventhistory.volID INNER JOIN event ON eventhistory.eventID = event.eventID";
+        sendDBCommand(join);
+        int iter = 4;
+        Label lbl = new Label("hello");
+        //socialPane.add(lbl, 2, 3);
+        try {
+            while (rs.next()) {
+                rs.getString("vol_firstName");
+                Label temp1 = new Label(rs.getString("vol_firstname") + " " + rs.getString("vol_lastname") + " completed " + rs.getString("eventname") + " on " + rs.getString("eventdate"));
+                socialPane.add(temp1, 2, iter);
+                iter++;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ScheduleAvailability.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
     }
 
     public double getCumHours() {
         return cumHours;
     }
-    
-     public void sendDBCommand(String sqlQuery) {
+
+    public void sendDBCommand(String sqlQuery) {
         String URL = "jdbc:oracle:thin:@localhost:1521:XE";
         String userID = "javauser";
         String userPASS = "javapass";

@@ -59,9 +59,9 @@ public class VolunteerHome1 extends Home {
     public int loginid = 0;
     int schedid = 0;
 
-    GridPane homePane = new GridPane();
-    GridPane socialPane = new GridPane();
-    GridPane mainPane = new GridPane();
+    GridPane volHomePane = new GridPane();
+    GridPane volSocialPane = new GridPane();
+    GridPane volMainPane = new GridPane();
 
     VolunteerHome1(Login1 login) {
         super(login);
@@ -70,22 +70,22 @@ public class VolunteerHome1 extends Home {
         loginid = login.id;
         this.login = login;
   //      schedid = login.schedid;
-        paneSettings(homePane);
+        paneSettings(volHomePane);
 
-        homePane.add(barkTitle, 0, 0);
-        homePane.add(checkIn, 0, 1);
-        homePane.add(volunteerInfoBtn, 0, 2);
-        homePane.add(viewAvailability, 0, 3);
-        homePane.add(eventsBtn, 0, 4);
-        homePane.add(assignSpecialBtn, 0, 5);
-        homePane.add(animalInfoBtn, 0, 6);
-        homePane.add(checkoutBtn, 0, 7);
-        homePane.add(logoutBtn, 0, 8);
+        volHomePane.add(barkTitle, 0, 0);
+        volHomePane.add(checkIn, 0, 1);
+        volHomePane.add(volunteerInfoBtn, 0, 2);
+        volHomePane.add(viewAvailability, 0, 3);
+        volHomePane.add(eventsBtn, 0, 4);
+        volHomePane.add(assignSpecialBtn, 0, 5);
+        volHomePane.add(animalInfoBtn, 0, 6);
+        volHomePane.add(checkoutBtn, 0, 7);
+        volHomePane.add(logoutBtn, 0, 8);
 
-        paneSettings(socialPane);
-        //socialPane.add(scrnTitleLbl, 0, 1);
-        //socialPane.add(dateLbl, 0, 2);
-        //socialPane.add(descLbl, 2, 2);
+        paneSettings(volSocialPane);
+        volSocialPane.add(scrnTitleLbl, 0, 1);
+        volSocialPane.add(dateLbl, 0, 2);
+        volSocialPane.add(descLbl, 2, 2);
         //socialPane.add(Lbl, 5, 6);
 
         viewPaw.setFitHeight(50);
@@ -94,17 +94,17 @@ public class VolunteerHome1 extends Home {
         viewPaw.setY(150);
         //socialPane.add(viewPaw, 0, 0);
 
-        mainPane.add(homePane, 0, 0);
-        socialPane.setAlignment(Pos.TOP_CENTER);
+        volMainPane.add(volHomePane, 0, 0);
+        volSocialPane.setAlignment(Pos.TOP_CENTER);
         
         
-        mainPane.add(socialPane, 1, 0);
+        volMainPane.add(volSocialPane, 1, 0);
         
         
-        //populateSocial1();
+        populateSocial1();
         
         Stage primaryStage1 = login.primaryStage;
-        Scene primaryScene = new Scene(mainPane, 900, 550);
+        Scene primaryScene = new Scene(volMainPane, 900, 550);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Volunteer Home");
         primaryStage.show();
@@ -200,8 +200,9 @@ public class VolunteerHome1 extends Home {
         //socialPane.add(lbl, 2, 3);
         try {
             while (rs.next()) {
+                rs.getString("vol_firstName");
                 Label temp1 = new Label(rs.getString("vol_firstname") + " " + rs.getString("vol_lastname") + " completed " + rs.getString("eventname") + " on " + rs.getString("eventdate"));
-                socialPane.add(temp1, 2, iter);
+                volSocialPane.add(temp1, 2, iter);
                 iter++;
             }
         } catch (SQLException ex) {
