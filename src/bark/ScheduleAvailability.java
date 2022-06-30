@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -18,6 +19,7 @@ public class ScheduleAvailability extends Login1 {
 
     Home home;
     VolunteerHome1 volHome;
+    Login1 login;
 
     ComboBox<String> daysCombo = new ComboBox();
     ComboBox<String> scheduleCombo = new ComboBox();
@@ -52,6 +54,7 @@ public class ScheduleAvailability extends Login1 {
     String selectedTime = "";
     int scheduleNum = 0;
     int schedID = 0;
+    int volID = 0;
 
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
@@ -59,19 +62,84 @@ public class ScheduleAvailability extends Login1 {
     ArrayList<Integer> sIDScheduled = new ArrayList<>();
     ArrayList<Integer> sIDAvailable = new ArrayList<>();
 
+    
     public ScheduleAvailability(VolunteerHome1 volHome) {
         this.volHome = volHome;
         paneSettings(schedulePane);
 
+        Label titleLbl = new Label("Set Your Availability:");
+        Label shift1 = new Label("8 AM to 4 PM");
+        Label shift2 = new Label("4 PM to 12 AM");
+        Label shift3 = new Label("12 AM to 8 AM");
+        String availablilty[] = {"Available", ""};
+        ComboBox available1 = new ComboBox(FXCollections.observableArrayList(availablilty));
+        ComboBox available2 = new ComboBox(FXCollections.observableArrayList(availablilty));
+        ComboBox available3 = new ComboBox(FXCollections.observableArrayList(availablilty));
+
+        daysCombo.getItems().add("Monday");
+        daysCombo.getItems().add("Tuesday");
+        daysCombo.getItems().add("Wednesday");
+        daysCombo.getItems().add("Thursday");
+        daysCombo.getItems().add("Friday");
+        daysCombo.getItems().add("Saturday");
+        daysCombo.getItems().add("Sunday");
+
+        daysCombo.setOnAction(e -> {
+            available1.setValue("");
+            available2.setValue("");
+            available3.setValue("");
+            System.out.println(volHome.loginid);
+
+            try {
+                sendDBCommand("select volunteer.volID, vol_firstName, vol_lastName, shift_time.schedule_id, shift_time.dayofweek, shift_time.shift_id "
+                        + "from shift_time full outer join schedule on shift_time.schedule_ID = schedule.schedule_ID "
+                        + "full outer join volunteer on schedule.volID = volunteer.volID "
+                        + "where dayofweek = '" + daysCombo.getValue() + "' "
+                        + "AND volunteer.volID = " + volHome.loginid);
+                if (rs.next()) {
+                    schedID = rs.getInt("schedule_ID");
+                }
+                if (rs.next()) {
+                    System.out.println(rs.getInt("shift_id"));
+                    if (rs.getInt("shift_id") == 1) {
+                        available1.setValue("Available");
+                    } else if (rs.getInt("shift_id") == 2) {
+                        available2.setValue("Available");
+                    } else if (rs.getInt("shift_id") == 3) {
+                        available3.setValue("Available");
+                    }
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ScheduleAvailability.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        });
+
+        available1.setOnAction(e -> {
+            if (available1.getValue().equals("Available")) {
+                sendDBCommand("INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) "
+                        + "VALUES('" + daysCombo.getValue() + "', " + schedid + ", 1, '8 AM to 4 PM', 'no'");
+            }
+        });
+        available2.setOnAction(e -> {
+            //4 PM to 12 AM
+        });
+        available3.setOnAction(e -> {
+            //12 AM to 8 AM
+        });
+
         schedulePane.add(backBtn, 0, 0);
-        schedulePane.add(ScheduleTitleLbl, 1, 0);
+        schedulePane.add(titleLbl, 1, 0);
         schedulePane.add(dayofWeek, 1, 1);
         schedulePane.add(time, 2, 1);
         schedulePane.add(daysCombo, 1, 2);
-
-        currentlyScheduled.setMinWidth(available.getWidth());
-        schedulePane.add(schedule, 1, 5);
-        schedulePane.add(remove, 3, 5);
+        schedulePane.add(shift1, 2, 2);
+        schedulePane.add(shift2, 2, 3);
+        schedulePane.add(shift3, 2, 4);
+        schedulePane.add(available1, 3, 2);
+        schedulePane.add(available2, 3, 3);
+        schedulePane.add(available3, 3, 4);
 
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
@@ -85,13 +153,6 @@ public class ScheduleAvailability extends Login1 {
         primaryStage.setTitle("Schedule Availability");
         primaryStage.show();
 
-        daysCombo.getItems().add("Monday");
-        daysCombo.getItems().add("Tuesday");
-        daysCombo.getItems().add("Wednesday");
-        daysCombo.getItems().add("Thursday");
-        daysCombo.getItems().add("Friday");
-        daysCombo.getItems().add("Saturday");
-        daysCombo.getItems().add("Sunday");
     }
 
     public ScheduleAvailability(Home home) {
@@ -140,12 +201,12 @@ public class ScheduleAvailability extends Login1 {
         check.setOnAction(e -> {
             selectedDay = daysCombo.getSelectionModel().getSelectedItem();
             selectedTime = scheduleCombo.getSelectionModel().getSelectedItem();
-            if (selectedTime.equals("12 AM to 8 AM")) {
-                scheduleNum = 3;
-            } else if (selectedTime.equals("8 AM to 4 PM")) {
+            if (selectedTime.equals("8 AM to 4 PM")) {
                 scheduleNum = 1;
             } else if (selectedTime.equals("4 PM to 12 AM")) {
                 scheduleNum = 2;
+            } else if (selectedTime.equals("12 AM to 8 AM")) {
+                scheduleNum = 3;
             }
 
             // Place all available but not scheduled volunteers into left list

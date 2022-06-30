@@ -23,7 +23,7 @@ public class VolunteerHome1 extends Home {
     Statement stmt;
     static Connection conn;
     ResultSet rs;
-    
+
     Login1 login; // Create Login1 object
     Label barkTitle;
     Button checkIn = new Button("Check In");
@@ -34,6 +34,7 @@ public class VolunteerHome1 extends Home {
     //Button scheduleBtn = new Button("Schedule Availability");  
     Button checkoutBtn = new Button("Check Out");
     Button logoutBtn = new Button("Logout");
+    Button viewAvailability = new Button("View Your Schedule");
 
     Label scrnTitleLbl = new Label("Social Home");
 
@@ -58,6 +59,8 @@ public class VolunteerHome1 extends Home {
     double totalCumHours;
     public double cumHours;
     DecimalFormat df = new DecimalFormat("#.##");
+    int loginid = 0;
+    int schedid = 0;
 
     GridPane homePane = new GridPane();
     GridPane socialPane = new GridPane();
@@ -67,18 +70,19 @@ public class VolunteerHome1 extends Home {
         super(login);
 
         barkTitle = new Label("Welcome to BARK, " + login.name + "!"); // Get name identified in login
-
+        loginid = login.id;
+  //      schedid = login.schedid;
         paneSettings(homePane);
 
         homePane.add(barkTitle, 0, 0);
         homePane.add(checkIn, 0, 1);
         homePane.add(volunteerInfoBtn, 0, 2);
-        homePane.add(eventsBtn, 0, 3);
-        homePane.add(assignSpecialBtn, 0, 4);
-        homePane.add(animalInfoBtn, 0, 5);
-        //homePane.add(scheduleBtn, 0, 8);
-        homePane.add(checkoutBtn, 0, 6);
-        homePane.add(logoutBtn, 0, 7);
+        homePane.add(viewAvailability, 0, 3);
+        homePane.add(eventsBtn, 0, 4);
+        homePane.add(assignSpecialBtn, 0, 5);
+        homePane.add(animalInfoBtn, 0, 6);
+        homePane.add(checkoutBtn, 0, 7);
+        homePane.add(logoutBtn, 0, 8);
 
         paneSettings(socialPane);
         socialPane.add(scrnTitleLbl, 0, 0);
@@ -130,15 +134,15 @@ public class VolunteerHome1 extends Home {
                 while (rs.next()) {
                     timeCheckedIn = rs.getDouble("timeCheckedIn");
                     totalCumHours = rs.getDouble("cumulativeHours");
-                }    
+                }
             } catch (Exception ex) {
                 System.out.println("Error: " + e.toString());
             }
             System.out.println("Checked In: " + timeCheckedIn);
-            
-            double checkedOut = (hour2*60) + minute2;
+
+            double checkedOut = (hour2 * 60) + minute2;
             System.out.println("Checked Out: " + checkedOut);
-            cumHours = ((hour2*60) + minute2) - (timeCheckedIn);
+            cumHours = ((hour2 * 60) + minute2) - (timeCheckedIn);
             cumHours = cumHours / 60;
             System.out.println("Total time: " + df.format(cumHours));
 
@@ -154,6 +158,10 @@ public class VolunteerHome1 extends Home {
         // Volunteer summary button
         volunteerInfoBtn.setOnAction(e -> {
             VolunteerStatus myInfo = new VolunteerStatus(this);
+        });
+
+        viewAvailability.setOnAction(e -> {
+            ScheduleAvailability myInfo = new ScheduleAvailability(this);
         });
 
         // Assign Specialization btn
@@ -189,6 +197,7 @@ public class VolunteerHome1 extends Home {
     public void getPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
+
     public void sendDBCommand(String sqlQuery) {
         String URL = "jdbc:oracle:thin:@localhost:1521:XE";
         String userID = "javauser";

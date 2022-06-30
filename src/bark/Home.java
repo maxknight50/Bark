@@ -61,6 +61,8 @@ public class Home extends Login1 {
     double totalCumHours;
     public static double cumHours;
     DecimalFormat df = new DecimalFormat("#.##");
+    int loginid = 0;
+    int schedid = 0;
 
     GridPane homePane = new GridPane();
     GridPane socialPane = new GridPane();
@@ -69,6 +71,8 @@ public class Home extends Login1 {
     Home(Login1 login) {
 
         System.out.println(login.name);
+        loginid = login.id;
+        //schedid = login.schedid;
         barkTitle = new Label("Welcome to BARK, " + login.name + "!"); // Get name identified in login
         this.login = login;
         paneSettings(homePane);
@@ -104,7 +108,7 @@ public class Home extends Login1 {
         socialPane.setAlignment(Pos.TOP_CENTER);
         mainPane.add(socialPane, 1, 0);
         
-        populateSocial();
+        //populateSocial();
         
         Stage primaryStage1 = login.primaryStage;
         Scene primaryScene = new Scene(mainPane, 900, 550);
@@ -214,20 +218,20 @@ public class Home extends Login1 {
     }
 
     public void populateSocial() {
-        String join = "SELECT volunteer.volID, volunteer.vol_firstName, volunteer.vol_lastName, event.eventName, event.eventDate, event.eventType FROM Volunteer " +
-                "INNER JOIN EVENTHISTORY ON volunteer.volID = eventhistory.volID INNER JOIN event ON eventhistory.eventID = event.eventID";
-        sendDBCommand(join);
-        int iter = 3;
-        try {
-            while (rs.next()) {
-                Label temp1 = new Label(rs.getString("vol_firstname") + " " + rs.getString("vol_lastname") + " completed " + rs.getString("eventname") + "on " + rs.getString("eventdate"));
-                socialPane.add(temp1, 2, iter);
-                iter++;
-            }
-        } catch (SQLException ex) {
-            
-            
-        }
+//        String join = "SELECT volunteer.volID, volunteer.vol_firstName, volunteer.vol_lastName, event.eventName, event.eventDate, event.eventType FROM Volunteer " +
+//                "INNER JOIN EVENTHISTORY ON volunteer.volID = eventhistory.volID INNER JOIN event ON eventhistory.eventID = event.eventID";
+//        sendDBCommand(join);
+//        int iter = 3;
+//        try {
+//            while (rs.next()) {
+//                Label temp1 = new Label(rs.getString("vol_firstname") + " " + rs.getString("vol_lastname") + " completed " + rs.getString("eventname") + "on " + rs.getString("eventdate"));
+//                socialPane.add(temp1, 2, iter);
+//                iter++;
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(ScheduleAvailability.class.getName()).log(Level.SEVERE, null, ex);
+//            
+//        }
         
     }
 
