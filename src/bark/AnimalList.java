@@ -24,7 +24,12 @@ import javafx.stage.Stage;
 import java.lang.Object.*;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import oracle.jdbc.pool.OracleDataSource;
 import tables.*;
 
@@ -39,8 +44,10 @@ public class AnimalList extends Login1 {
     static Connection conn;
     ResultSet rs;
 
-    TableView<Animal> volTable = new TableView<>();
-    ObservableList<Animal> tableData = FXCollections.observableArrayList();
+    TableView<Animal> currentAnimal = new TableView<>();
+    TableView<Animal> pastAnimal = new TableView<>();
+    ObservableList<Animal> currentTableData = FXCollections.observableArrayList();
+    ObservableList<Animal> pastTableData = FXCollections.observableArrayList();
 
     TableColumn id_col = new TableColumn("animalID");
     TableColumn name_col = new TableColumn("name");
@@ -50,7 +57,16 @@ public class AnimalList extends Login1 {
     TableColumn feeding_col = new TableColumn("feedingNeeds");
     TableColumn vethist_col = new TableColumn("vetHistory");
     TableColumn adoptID_col = new TableColumn("adopt_ID");
-    
+
+    TableColumn id_col2 = new TableColumn("animalID");
+    TableColumn name_col2 = new TableColumn("name");
+    TableColumn species_col2 = new TableColumn("species");
+    TableColumn age_col2 = new TableColumn("age");
+    TableColumn history_col2 = new TableColumn("medicalHistory");
+    TableColumn feeding_col2 = new TableColumn("feedingNeeds");
+    TableColumn vethist_col2 = new TableColumn("vetHistory");
+    TableColumn adoptID_col2 = new TableColumn("adopt_ID");
+
     Label topLbl = new Label("Animal Information");
     Label idLbl = new Label("Animal ID");
     Label nameLbl = new Label("Name");
@@ -68,13 +84,15 @@ public class AnimalList extends Login1 {
     ListView vetHistoryList = new ListView();
     TextField feedingTxt = new TextField();
 
-    Label message = new Label();
+    Label currentMessage = new Label();
+    Label pastMessage = new Label();
 
     Button backBtn = new Button("Back");
     Button add = new Button("Add");
     Button delete = new Button("Delete");
     Button modify = new Button("Modify");
-    Button populate = new Button("<-- Select and Populate");
+    Button currentPopulate = new Button("<-- Select and Populate");
+    Button pastPopulate = new Button("<-- Select and Populate");
     Button addMedical = new Button("Add");
 
     Image paw = new Image("file:paw.jpg");
@@ -84,10 +102,20 @@ public class AnimalList extends Login1 {
 
     GridPane overall = new GridPane();
     GridPane modAnimal = new GridPane();
-    GridPane animalTable = new GridPane();
+    GridPane curAnimalTable = new GridPane();
+    GridPane pastAnimalTable = new GridPane();
+
+    Tab current = new Tab("Within BARK");
+    Tab past = new Tab("Past Animals");
+    TabPane tabPane = new TabPane();
 
     public AnimalList(Home home) {
         paneSettings(modAnimal);
+        HBox.setHgrow(curAnimalTable, Priority.ALWAYS);
+        VBox.setVgrow(curAnimalTable, Priority.ALWAYS);
+
+        curAnimalTable.add(tabPane, 0, 0);
+
         modAnimal.add(backBtn, 0, 0);
         modAnimal.add(topLbl, 1, 1);
         modAnimal.add(idLbl, 0, 2);
@@ -100,18 +128,14 @@ public class AnimalList extends Login1 {
         modAnimal.add(ageTxt, 1, 5);
         modAnimal.add(medicalLbl, 0, 6);
         modAnimal.add(medicalHistoryTxt, 1, 6, 1, 2);
-        modAnimal.add(medicalTxt, 1, 8);
-        modAnimal.add(vetHistoryLbl, 0, 9);
-        modAnimal.add(vetHistoryList, 1, 9);
+        modAnimal.add(medicalTxt, 1, 9);
+        modAnimal.add(vetHistoryLbl, 0, 8);
+        modAnimal.add(vetHistoryList, 1, 8);
         modAnimal.add(feedingLbl, 0, 10);
         modAnimal.add(feedingTxt, 1, 10);
         medicalTxt.setPromptText("Add additional history");
-        modAnimal.add(addMedical, 0, 8);
+        modAnimal.add(addMedical, 0, 9);
         addMedical.setAlignment(Pos.BASELINE_RIGHT);
-//        modAnimal.add(eventIdLbl, 0, 8);
-//        modAnimal.add(eventIdTxt, 1, 8);
-//        modAnimal.add(volIdLbl, 0, 9);
-//        modAnimal.add(volIdTxt, 1, 9);
         modAnimal.add(add, 0, 11);
         modAnimal.add(modify, 1, 11);
         modAnimal.add(delete, 0, 12);
@@ -122,10 +146,19 @@ public class AnimalList extends Login1 {
         viewPaw.setY(150);
         modAnimal.add(viewPaw, 0, 13);
 
-        volTable.setItems(tableData);
-        animalTable.add(message, 0, 0);
-        animalTable.add(volTable, 0, 1);
-        animalTable.add(populate, 0, 2);
+        currentAnimal.setItems(currentTableData);
+        pastAnimal.setItems(pastTableData); //
+
+        curAnimalTable.add(currentMessage, 0, 0);
+        curAnimalTable.add(currentAnimal, 0, 1);
+        curAnimalTable.add(currentPopulate, 0, 2);
+        pastAnimalTable.add(pastMessage, 0, 0);
+        pastAnimalTable.add(pastAnimal, 0, 1);
+        pastAnimalTable.add(pastPopulate, 0, 2);
+
+        past.setContent(pastAnimalTable);
+        current.setContent(curAnimalTable);
+        tabPane.getTabs().addAll(current, past);
 
         id_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Integer>("animalID"));
         name_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("name"));
@@ -136,60 +169,85 @@ public class AnimalList extends Login1 {
         vethist_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("vetHistory"));
         adoptID_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("adopt_ID"));
 
-        volTable.getColumns().addAll(id_col, name_col, species_col, age_col, history_col, feeding_col, vethist_col,adoptID_col);
-        //Animal[] animalList = new Animal[25];
-        ArrayList<Animal> animalList = new ArrayList<>();
+        id_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, Integer>("animalID"));
+        name_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("name"));
+        species_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("species"));
+        age_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("age"));
+        history_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, Date>("medicalHistory"));
+        feeding_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("feedingNeeds"));
+        vethist_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("vetHistory"));
+        adoptID_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("adopt_ID"));
 
-        sendDBCommand("SELECT animal_ID, name, species, age, medicalHistory, feedingNeeds, vetHistory, adopt_ID FROM Animal");
+        currentAnimal.getColumns().addAll(id_col, name_col, species_col, age_col, history_col, feeding_col, vethist_col, adoptID_col);
+        pastAnimal.getColumns().addAll(id_col2, name_col2, species_col2, age_col2, history_col2, feeding_col2, vethist_col2, adoptID_col2);
+
+        ArrayList<Animal> curAnimalList = new ArrayList<>();
+        ArrayList<Animal> pastAnimalList = new ArrayList<>();
+
+        // Populate current animals table
+        sendDBCommand("SELECT animal_ID, name, species, age, medicalHistory, feedingNeeds, vetHistory, adopt_ID FROM Animal WHERE adopt_ID IS NULL");
         try {
-            for (int i = 0; i < 100; i++) {
-                while (rs.next()) {
-                    if (rs != null) {
-                        //animalList[i] = new Animal(rs.getInt("animal_ID"), rs.getString("name"), rs.getString("species"), rs.getInt("age"), rs.getString("medicalHistory"), rs.getString("feedingNeeds"), rs.getString("vetHistory"), rs.getInt("eventID"), rs.getInt("volID"));
-                        animalList.add(new Animal(rs.getInt("animal_ID"), rs.getString("name"), rs.getString("species"), rs.getInt("age"), rs.getString("medicalHistory"), rs.getString("feedingNeeds"), rs.getString("vetHistory"), rs.getInt("adopt_ID")));
-
-                        break;
-                    }
-                }
+            while (rs.next()) {
+                curAnimalList.add(new Animal(rs.getInt("animal_ID"), rs.getString("name"), rs.getString("species"), rs.getInt("age"), rs.getString("medicalHistory"), rs.getString("feedingNeeds"), rs.getString("vetHistory"), rs.getInt("adopt_ID")));
             }
-            for (Animal x : animalList) {
-                tableData.add(x);
+            for (Animal x : curAnimalList) {
+                currentTableData.add(x);
             }
+        } catch (SQLException e) {
+            System.out.println("SQL Exception! " + e);
+        }
 
+        // Populate past animals table
+        sendDBCommand("SELECT animal_ID, name, species, age, medicalHistory, feedingNeeds, vetHistory, adopt_ID FROM Animal WHERE adopt_ID IS NOT NULL");
+        try {
+            while (rs.next()) {
+                pastAnimalList.add(new Animal(rs.getInt("animal_ID"), rs.getString("name"), rs.getString("species"), rs.getInt("age"), rs.getString("medicalHistory"), rs.getString("feedingNeeds"), rs.getString("vetHistory"), rs.getInt("adopt_ID")));
+            }
+            for (Animal x : pastAnimalList) {
+                pastTableData.add(x);
+            }
         } catch (SQLException e) {
             System.out.println("SQL Exception! " + e);
         }
 
         overall.add(modAnimal, 0, 0);
-        overall.add(animalTable, 1, 0);
+        overall.add(tabPane, 1, 0);
         Scene primaryScene = new Scene(overall, modAnimal.getWidth(), 550);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("List");
         primaryStage.show();
 
-        populate.setOnAction(e -> {
-//            System.out.println(volTable.getSelectionModel().getSelectedIndex());
-//            System.out.println(volTable.getSelectionModel().getSelectedItem().getAge());
-            idTxt.setText(volTable.getSelectionModel().getSelectedItem().getAnimalID() + "");
-            nameTxt.setText(volTable.getSelectionModel().getSelectedItem().getName() + "");
-            speciesTxt.setText(volTable.getSelectionModel().getSelectedItem().getSpecies() + "");
-            ageTxt.setText(volTable.getSelectionModel().getSelectedItem().getAge() + "");
-            medicalHistoryTxt.setText(volTable.getSelectionModel().getSelectedItem().getMedicalHistory() + "");
-            feedingTxt.setText(volTable.getSelectionModel().getSelectedItem().getFeedingNeeds() + "");
+        currentPopulate.setOnAction(e -> {
+            idTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getAnimalID() + "");
+            nameTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getName() + "");
+            speciesTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getSpecies() + "");
+            ageTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getAge() + "");
+            medicalHistoryTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getMedicalHistory() + "");
+            feedingTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getFeedingNeeds() + "");
+
+        });
+
+        pastPopulate.setOnAction(e -> {
+            idTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getAnimalID() + "");
+            nameTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getName() + "");
+            speciesTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getSpecies() + "");
+            ageTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getAge() + "");
+            medicalHistoryTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getMedicalHistory() + "");
+            feedingTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getFeedingNeeds() + "");
 
         });
 
         delete.setOnAction(e -> {
-            System.out.println(volTable.getSelectionModel().getSelectedItem().getAnimalID());
-            String query = "DELETE FROM ANIMAL WHERE animal_ID = " + volTable.getSelectionModel().getSelectedItem().getAnimalID();
+            System.out.println(currentAnimal.getSelectionModel().getSelectedItem().getAnimalID());
+            String query = "DELETE FROM ANIMAL WHERE animal_ID = " + currentAnimal.getSelectionModel().getSelectedItem().getAnimalID();
             sendDBCommand(query);
-            System.out.println(volTable.getSelectionModel().getSelectedIndex());
-            message.setText("Entry removed successfully.");
-            int x = volTable.getSelectionModel().getSelectedIndex();
-            animalList.remove(x);
-            tableData.clear();
-            for (Animal y : animalList) {
-                tableData.add(y);
+            System.out.println(currentAnimal.getSelectionModel().getSelectedIndex());
+            currentMessage.setText("Entry removed successfully.");
+            int x = currentAnimal.getSelectionModel().getSelectedIndex();
+            curAnimalList.remove(x);
+            currentTableData.clear();
+            for (Animal y : curAnimalList) {
+                currentTableData.add(y);
             }
         });
 
@@ -224,7 +282,7 @@ public class AnimalList extends Login1 {
 
                 //String newVetHistory = MISSINGFIELDFORTHIS.getText(); 
                 String newVetHistory = "";
-                int newAdoptID = largest +1;
+                int newAdoptID = largest + 1;
 
                 //Create new animal in the animalList array
                 Animal newAnimal = new Animal(newID, newName, newSpecies, newAge,
@@ -235,22 +293,22 @@ public class AnimalList extends Login1 {
                         + "VALUES (" + newID + ", '" + newName + "', '" + newSpecies + "', " + newAge + ", '" + newHistory + "', '" + newFeeding + ")";
 
                 sendDBCommand(query);
-                message.setText("Entry added successfully.");
-                tableData.clear();
+                currentMessage.setText("Entry added successfully.");
+                currentTableData.clear();
 //                for (int i = 0; i < animalList.size() + 1; i++) {
 //                    if (animalList.get(i) == null) {
 //                        animalList.add(newAnimal);
 //                        break;
 //                    }
 //                } 
-                animalList.add(newAnimal);
-                System.out.println("ANIMAL LIST: " + animalList);
-                for (Animal x : animalList) {
-                    tableData.add(x);
+                curAnimalList.add(newAnimal);
+                System.out.println("ANIMAL LIST: " + curAnimalList);
+                for (Animal x : curAnimalList) {
+                    currentTableData.add(x);
                 }
             } catch (Exception ex) {
                 System.out.println("Error! " + ex);
-                message.setText("Error while adding entry. Please check your input and try again.");
+                currentMessage.setText("Error while adding entry. Please check your input and try again.");
             }
         });
 
@@ -266,22 +324,22 @@ public class AnimalList extends Login1 {
             String query = "UPDATE ANIMAL SET name = '" + newName + "', species = '" + newSpecies + "', age = " + newAge + ", medicalHistory = '" + newHistory
                     + "', feedingNeeds = '" + newFeeding + " WHERE animal_ID = " + newID + "";
             sendDBCommand(query);
-            for (int i = 0; i < animalList.size(); i++) {
-                if (animalList.get(i).getAnimalID() == Integer.valueOf(idTxt.getText())) {
-                    animalList.get(i).setAnimalID(newID);
-                    animalList.get(i).setName(newName);
-                    animalList.get(i).setSpecies(newSpecies);
-                    animalList.get(i).setAge(newAge);
-                    animalList.get(i).setMedicalHistory(newHistory);
-                    animalList.get(i).setFeedingNeeds(newFeeding);
-                    animalList.get(i).setVetHistory(newVetHistory);
+            for (int i = 0; i < curAnimalList.size(); i++) {
+                if (curAnimalList.get(i).getAnimalID() == Integer.valueOf(idTxt.getText())) {
+                    curAnimalList.get(i).setAnimalID(newID);
+                    curAnimalList.get(i).setName(newName);
+                    curAnimalList.get(i).setSpecies(newSpecies);
+                    curAnimalList.get(i).setAge(newAge);
+                    curAnimalList.get(i).setMedicalHistory(newHistory);
+                    curAnimalList.get(i).setFeedingNeeds(newFeeding);
+                    curAnimalList.get(i).setVetHistory(newVetHistory);
                     break;
                 }
             }
-            message.setText("Modify entry successful!");
-            tableData.clear();
-            for (Animal x : animalList) {
-                tableData.add(x);
+            currentMessage.setText("Modify entry successful!");
+            currentTableData.clear();
+            for (Animal x : curAnimalList) {
+                currentTableData.add(x);
             }
 
         });
