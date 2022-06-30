@@ -143,6 +143,7 @@ public class EventsRetry extends Login1 {
 
     EventsRetry(Home home) throws SQLException {
         this.home = home;
+        //Retrieve the ID of the user who is logged in
         id = home.loginid;
         setTables();
 
@@ -177,7 +178,6 @@ public class EventsRetry extends Login1 {
         hostedTable.setItems(hostedData);
 
         eventsPane.add(tabPane, 0, 1);
-
         addButtons();
 
         tab1.setContent(yourOverall);
@@ -204,28 +204,24 @@ public class EventsRetry extends Login1 {
         dailyDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
         dailyTime.setCellValueFactory(new PropertyValueFactory<Event, String>("eventTime"));
         dailyLocation.setCellValueFactory(new PropertyValueFactory<Event, String>("eventLocation"));
-
         pastID.setCellValueFactory(new PropertyValueFactory<Event, Integer>("eventID"));
         pastName.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
         pastDescription.setCellValueFactory(new PropertyValueFactory<Event, String>("eventDescription"));
         pastDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
         pastTime.setCellValueFactory(new PropertyValueFactory<Event, String>("eventTime"));
         pastLocation.setCellValueFactory(new PropertyValueFactory<Event, String>("eventLocation"));
-
         yourID.setCellValueFactory(new PropertyValueFactory<Event, Integer>("eventID"));
         yourName.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
         yourDescription.setCellValueFactory(new PropertyValueFactory<Event, String>("eventDescription"));
         yourDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
         yourTime.setCellValueFactory(new PropertyValueFactory<Event, String>("eventTime"));
         yourLocation.setCellValueFactory(new PropertyValueFactory<Event, String>("eventLocation"));
-
         hostedID.setCellValueFactory(new PropertyValueFactory<Event, Integer>("eventID"));
         hostedName.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
         hostedDescription.setCellValueFactory(new PropertyValueFactory<Event, String>("eventDescription"));
         hostedDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
         hostedTime.setCellValueFactory(new PropertyValueFactory<Event, String>("eventTime"));
         hostedLocation.setCellValueFactory(new PropertyValueFactory<Event, String>("eventLocation"));
-
         dailyTable.getColumns().addAll(dailyID, dailyName, dailyDescription, dailyDate, dailyTime, dailyLocation);
         pastTable.getColumns().addAll(pastID, pastName, pastDescription, pastDate, pastTime, pastLocation);
         yourTable.getColumns().addAll(yourID, yourName, yourDescription, yourDate, yourTime, yourLocation);
@@ -269,6 +265,7 @@ public class EventsRetry extends Login1 {
             }
             String query1 = "SELECT e.eventID, eventName, eventType, eventDescription, eventDate, eventTime, eventLocation, eh.volID, eventStatus FROM eventHistory eh INNER JOIN event e ON  e.eventID = eh.eventID WHERE volID = " + id;
             sendDBCommand(query1);
+            //Add events to the user's event list where their id is matched to an event in the database
             yourList.clear();
             try {
                 while (rs.next()) {
@@ -302,7 +299,6 @@ public class EventsRetry extends Login1 {
         TextField yourDateField = new TextField();
         TextField yourTimeField = new TextField();
         TextField yourLocationField = new TextField();
-
         // Daily table
         Label dailyID = new Label("ID: ");
         Label dailyName = new Label("Name:");
@@ -318,7 +314,6 @@ public class EventsRetry extends Login1 {
         TextField dailyDateField = new TextField();
         TextField dailyTimeField = new TextField();
         TextField dailyLocationField = new TextField();
-
         // Past table
         Label pastID = new Label("ID: ");
         Label pastName = new Label("Name:");
@@ -334,7 +329,6 @@ public class EventsRetry extends Login1 {
         TextField pastDateField = new TextField();
         TextField pastTimeField = new TextField();
         TextField pastLocationField = new TextField();
-
         // Hosted table
         Label hostedID = new Label("ID: ");
         Label hostedName = new Label("Name:");
@@ -441,6 +435,7 @@ public class EventsRetry extends Login1 {
         yourButtons.setMinWidth(300);
         pastButtons.setMinWidth(300);
 
+        //Action handler to modify past events
         pastModify.setOnAction(e -> {
             int newID = Integer.valueOf(pastIdField.getText());
             String newName = pastNameField.getText();
@@ -468,7 +463,7 @@ public class EventsRetry extends Login1 {
                 pastData.add(a);
             }
         });
-
+        //Action handler to populate the textfields from a past event
         pastPopulate.setOnAction(e -> {
             pastIdField.setText(pastTable.getSelectionModel().getSelectedItem().getEventID() + "");
             pastNameField.setText(pastTable.getSelectionModel().getSelectedItem().getEventName());
@@ -478,7 +473,7 @@ public class EventsRetry extends Login1 {
             pastTimeField.setText(pastTable.getSelectionModel().getSelectedItem().getEventTime());
             pastLocationField.setText(pastTable.getSelectionModel().getSelectedItem().getEventLocation());
         });
-
+        //Action handler to add an event to daily events
         dailyAdd.setOnAction(e -> {
             int largest = 0;
             try {
@@ -521,7 +516,7 @@ public class EventsRetry extends Login1 {
                 System.out.println("Error! " + ex);
             }
         });
-
+        //Action handler to modify a daily event
         dailyModify.setOnAction(e -> {
             int newID = Integer.valueOf(dailyIdField.getText());
             String newName = dailyNameField.getText();
@@ -549,7 +544,7 @@ public class EventsRetry extends Login1 {
                 dailyData.add(a);
             }
         });
-
+        //Action handler to populate textfields from the information of a daily event 
         dailyPopulate.setOnAction(e -> {
             dailyIdField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventID() + "");
             dailyNameField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventName());
@@ -559,7 +554,7 @@ public class EventsRetry extends Login1 {
             dailyTimeField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventTime());
             dailyLocationField.setText(dailyTable.getSelectionModel().getSelectedItem().getEventLocation());
         });
-
+        //Action handler to populate textfields from the information of a bark hosted event 
         hostedPopulate.setOnAction(e -> {
             hostedIdField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventID() + "");
             hostedNameField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventName());
@@ -569,7 +564,7 @@ public class EventsRetry extends Login1 {
             hostedTimeField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventTime());
             hostedLocationField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventLocation());
         });
-
+        //Action handler to add a bark hosted event
         hostedAdd.setOnAction(e -> {
             int largest = 0;
             try {
@@ -612,7 +607,7 @@ public class EventsRetry extends Login1 {
                 System.out.println("Error! " + ex);
             }
         });
-
+        //Action handler to modify a bark hosted event
         hostedModify.setOnAction(e -> {
             int newID = Integer.valueOf(hostedIdField.getText());
             String newName = hostedNameField.getText();
@@ -640,7 +635,7 @@ public class EventsRetry extends Login1 {
                 hostedData.add(a);
             }
         });
-
+        //Action handler to mark a daily event as having been completed 
         dailyComplete.setOnAction(e -> {
             int id = dailyTable.getSelectionModel().getSelectedItem().getEventID();
             String query = "UPDATE EVENT SET eventStatus = 'completed' WHERE eventID = " + id;
@@ -658,7 +653,7 @@ public class EventsRetry extends Login1 {
                 pastData.add(x);
             }
         });
-
+        //Action handler to mark a bark hosted event as having been completed 
         hostedComplete.setOnAction(e -> {
             int id = hostedTable.getSelectionModel().getSelectedItem().getEventID();
             String query = "UPDATE EVENT SET eventStatus = 'completed' WHERE eventID = " + id;
@@ -676,6 +671,7 @@ public class EventsRetry extends Login1 {
                 pastData.add(x);
             }
         });
+        //Action handler for sign up of daily events
         dailySignup.setOnAction(e -> {
             int eventid = dailyTable.getSelectionModel().getSelectedItem().getEventID();
             String eventName = dailyTable.getSelectionModel().getSelectedItem().getEventName();
@@ -693,7 +689,7 @@ public class EventsRetry extends Login1 {
                 yourData.add(x);
             }
         });
-
+        //Action handler for sign up of bark hosted events
         hostedSignup.setOnAction(e -> {
             int eventid = hostedTable.getSelectionModel().getSelectedItem().getEventID();
             String eventName = hostedTable.getSelectionModel().getSelectedItem().getEventName();
