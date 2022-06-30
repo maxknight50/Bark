@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 import oracle.jdbc.pool.OracleDataSource;
 
 public class VolunteerHome1 extends Home {
-
+    Home home;
     Statement stmt;
     static Connection conn;
     ResultSet rs;
@@ -39,13 +39,10 @@ public class VolunteerHome1 extends Home {
     Label scrnTitleLbl = new Label("Social Home");
 
     Label dateLbl = new Label("Date");
-    Label takeOut = new Label("06/01/22");
-    Label takeOut3 = new Label("05/28/22");
 
     Label descLbl = new Label("Description");
-    Label takeOut2 = new Label("John Smith completed 20 hours of training. Congratulations!");
-    Label takeOut4 = new Label("Elizabeth Ley joined BARK!");
-
+    Label Lbl = new Label("Description");
+    
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
 
@@ -68,9 +65,10 @@ public class VolunteerHome1 extends Home {
 
     VolunteerHome1(Login1 login) {
         super(login);
-
+        this.home = home;
         barkTitle = new Label("Welcome to BARK, " + login.name + "!"); // Get name identified in login
         loginid = login.id;
+        this.login = login;
   //      schedid = login.schedid;
         paneSettings(homePane);
 
@@ -85,25 +83,28 @@ public class VolunteerHome1 extends Home {
         homePane.add(logoutBtn, 0, 8);
 
         paneSettings(socialPane);
-        socialPane.add(scrnTitleLbl, 0, 0);
-        socialPane.add(dateLbl, 0, 1);
-        socialPane.add(takeOut, 0, 3);
-        socialPane.add(descLbl, 2, 1);
-        socialPane.add(takeOut2, 2, 3);
-        socialPane.add(takeOut3, 0, 5);
-        socialPane.add(takeOut4, 2, 5);
+        //socialPane.add(scrnTitleLbl, 0, 1);
+        //socialPane.add(dateLbl, 0, 2);
+        //socialPane.add(descLbl, 2, 2);
+        //socialPane.add(Lbl, 5, 6);
 
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
         viewPaw.setY(150);
-        homePane.add(viewPaw, 0, 12);
+        //socialPane.add(viewPaw, 0, 0);
 
         mainPane.add(homePane, 0, 0);
         socialPane.setAlignment(Pos.TOP_CENTER);
+        
+        
         mainPane.add(socialPane, 1, 0);
+        
+        
+        //populateSocial1();
+        
         Stage primaryStage1 = login.primaryStage;
-        Scene primaryScene = new Scene(mainPane, 900, 450);
+        Scene primaryScene = new Scene(mainPane, 900, 550);
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("BARK Volunteer Home");
         primaryStage.show();
@@ -189,6 +190,26 @@ public class VolunteerHome1 extends Home {
         });
 
     }
+    
+    public void populateSocial1() {
+        String join = "SELECT volunteer.volID, volunteer.vol_firstName, volunteer.vol_lastName, event.eventName, event.eventDate, event.eventType FROM Volunteer " +
+                "INNER JOIN EVENTHISTORY ON volunteer.volID = eventhistory.volID INNER JOIN event ON eventhistory.eventID = event.eventID";
+        sendDBCommand(join);
+        int iter = 4;
+        Label lbl = new Label("hello");
+        //socialPane.add(lbl, 2, 3);
+        try {
+            while (rs.next()) {
+                Label temp1 = new Label(rs.getString("vol_firstname") + " " + rs.getString("vol_lastname") + " completed " + rs.getString("eventname") + " on " + rs.getString("eventdate"));
+                socialPane.add(temp1, 2, iter);
+                iter++;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ScheduleAvailability.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
+        
+    }    
 
     public double getCumHours() {
         return cumHours;
