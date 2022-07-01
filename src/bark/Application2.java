@@ -71,10 +71,13 @@ public class Application2 extends Login1 {
     GridPane pane2 = new GridPane();
     GridPane overallPane = new GridPane();
 
+    int largestVolId = 0;
+    int largestScheduleId = 0;
+
     Application2(Login1 login) {
         ObservableList<String> specialization = FXCollections.observableArrayList();
         ArrayList<String> defaultList = new ArrayList<>();
-        sendDBCommand("SELECT DISTINCT specializationID, specialization_Name FROM specialization");
+        sendDBCommand("SELECT DISTINCT specialization_Name FROM specialization");
         try {
             while (rs.next()) {
                 String special = (rs.getString("specialization_Name"));
@@ -113,7 +116,7 @@ public class Application2 extends Login1 {
         pane1.add(usernameTxt, 1, 9);
         pane1.add(passwordLbl, 0, 10);
         pane1.add(passwordTxt, 1, 10);
-        
+
         pane1.add(expLbl, 0, 11);
         pane1.add(experience, 1, 11);
         pane2.add(specialDescLbl, 1, 0);
@@ -126,9 +129,7 @@ public class Application2 extends Login1 {
 
         pane1.add(infoLbl, 0, 15);
         pane1.add(infoTxt, 1, 15);
-        
-        
-        
+
         currentList.setPrefHeight(200);
         pane1.add(submitBtn, 1, 16);
 
@@ -137,8 +138,7 @@ public class Application2 extends Login1 {
         viewPaw.setX(100);
         viewPaw.setY(150);
         pane1.add(viewPaw, 0, 0);
-        
-        
+
         overallPane.add(pane2, 1, 0);
         overallPane.add(pane1, 0, 0);
         infoTxt.setMaxSize(300, 150);
@@ -161,12 +161,9 @@ public class Application2 extends Login1 {
             infoTxt.getText();
             emailTxt.getText();
             phoneTxt.getText();
-            
 
-            String q = "SELECT * FROM VOLUNTEER";
+            String q = "SELECT * FROM VOLUNTEER FULL OUTER JOIN SCHEDULE ON volunteer.volid = schedule.schedule_id";
             sendDBCommand(q);
-            int largestVolId = 0;
-            int largestScheduleId = 0;
             try {
                 while (rs.next()) {
                     largestVolId = rs.getInt("volID"); // Look at first number, set it as largest
@@ -185,6 +182,7 @@ public class Application2 extends Login1 {
                         }
                     }
                     largestVolId += 1;
+                    largestScheduleId += 1;
 
                     System.out.println("Final largest volID:" + largestVolId);
                     System.out.println("Final largest schedule_ID:" + largestScheduleId);
@@ -193,30 +191,34 @@ public class Application2 extends Login1 {
             } catch (SQLException ex) {
                 Logger.getLogger(Application2.class.getName()).log(Level.SEVERE, null, ex);
             }
-            String query = "INSERT INTO VOLUNTEER(volid, vol_FirstName, vol_LastName, vol_Address, vol_dateofbirth, vol_info, vol_Email, vol_Phone, cumulativeHours, status, username, password, schedule_id)"
-                    + "VALUES ('" + largestVolId + "', '" + fNameTxt.getText() + "', '" + lNameTxt.getText() + "', '"
+            String query = "INSERT INTO VOLUNTEER(volid, vol_FirstName, vol_LastName, vol_Address, vol_dateofbirth, vol_info, vol_Email, vol_Phone, cumulativeHours, status, experience, username, password)"
+                    + "VALUES (" + largestVolId + ", '" + fNameTxt.getText() + "', '" + lNameTxt.getText() + "', '"
                     + addressTxt.getText() + "', '" + dobTxt.getText() + "', '" + infoTxt.getText() + "', '"
-                    + emailTxt.getText() + "', '" + phoneTxt.getText() + "', " + "0, 'applicant', '" + usernameTxt.getText() + "', '"
-                    + passwordTxt.getText() + "', '" + largestScheduleId + "')";
+                    + emailTxt.getText() + "', '" + phoneTxt.getText() + "', " + "0, 'applicant', '" + experience.getText() + "', '" + usernameTxt.getText() + "', '"
+                    + passwordTxt.getText() + "')";
             System.out.println(query);
             sendDBCommand(query);
-            
+            sendDBCommand("INSERT INTO Schedule(schedule_id, volid) VALUES (" + largestScheduleId + ", " + largestVolId + ")");
+
             //CreateAccount ca = new CreateAccount(this);
+            primaryStage.close();
 
         });
 
-        add.setOnAction(e-> {
+        add.setOnAction(e -> {
+//            sendDBCommand("INSERT INTO SPECIALIZATION(specializationID, volID, specialization_Name) VALUES(" + largestVolId + ", " + largestScheduleId
+//                    + ", '" + special.getSelectionModel().getSelectedItem() + "')");
             currentList.getItems().add(special.getSelectionModel().getSelectedItem());
         });
-        create.setOnAction(e ->{
+        create.setOnAction(e -> {
             currentList.getItems().add(newSpecialTxt.getText());
             newSpecialTxt.clear();
         });
-        
-        deny.setOnAction(e -> {
-            String query = "DELETE FROM ANIMAL WHERE animal_ID = ";
-            sendDBCommand(query);
-        });
+//        
+//        deny.setOnAction(e -> {
+//            String query = "DELETE FROM ANIMAL WHERE animal_ID = ";
+//            sendDBCommand(query);
+//        });
     }
 
     public void sendDBCommand(String sqlQuery) {

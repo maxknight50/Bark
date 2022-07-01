@@ -55,6 +55,7 @@ public class Home extends Login1 {
     double totalCumHours;
     public static double cumHours;
     DecimalFormat df = new DecimalFormat("#.##");
+    
     int loginid = 0;
     int schedid = 0;
 
@@ -81,7 +82,7 @@ public class Home extends Login1 {
         homePane.add(donationBtn, 0, 7);
         homePane.add(animalInfoBtn, 0, 8);
         homePane.add(scheduleBtn, 0, 9);
-        homePane.add(checkoutBtn, 0, 10);
+        
         homePane.add(logoutBtn, 0, 11);
         paneSettings(socialPane);
         socialPane.add(scrnTitleLbl, 0, 1);
@@ -119,8 +120,16 @@ public class Home extends Login1 {
             minute = now.getMinute();
             System.out.println(hour + ":" + minute);
             timeStored = minute + (hour * 60);
-            String update = "UPDATE Volunteer SET timeCheckedIn = " + timeStored + " WHERE username = '" + login.user + "'";
-            sendDBCommand(update);
+            try {
+                String update = "UPDATE Volunteer SET timeCheckedIn = " + timeStored + " WHERE username = '" + login.user + "'";
+                sendDBCommand(update);
+                Label replace = new Label("You are checked in!");
+                checkIn.setVisible(false);
+                homePane.add(replace, 0, 1);
+                homePane.add(checkoutBtn, 0, 10);
+            } catch (Exception E) {
+                System.out.println(E);
+            }
 
         });
 
@@ -206,9 +215,9 @@ public class Home extends Login1 {
             Logout lo = new Logout(this);
         });
 
-        checkIn.setOnAction(e -> {
-            CheckIn ci = new CheckIn(this);
-        });
+//        checkIn.setOnAction(e -> {
+//            CheckIn ci = new CheckIn(this);
+//        });
     }
 
     public void populateSocial() {

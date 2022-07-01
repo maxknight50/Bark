@@ -70,7 +70,10 @@ public class Login1 extends Application {
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
         viewPaw.setY(150);
-        loginPane.add(viewPaw, 0, 8);
+        HBox hbox = new HBox();
+        hbox.setAlignment(Pos.CENTER);
+        hbox.getChildren().add(viewPaw);
+        loginPane.add(hbox, 0, 0, 2, 1);
 
         Scene primaryScene = new Scene(loginPane, 600, 450);
         primaryStage.setScene(primaryScene);
@@ -80,6 +83,8 @@ public class Login1 extends Application {
         // Begin application button
         applicationButton.setOnAction(e -> {
             Application2 app = new Application2(this);
+            applicationButton.setVisible(false);
+            interestLbl.setText("Thank you for your application!");
         });
 
         sendDBCommand("select * from Volunteer");
@@ -128,11 +133,11 @@ public class Login1 extends Application {
                                 id = rs.getInt("volID");
                                 System.out.println(id);
                                 ////////////////////////////////////////////////////////////////////
-                                if (rs.getString("hasAccess").equalsIgnoreCase("inactive")){
+                                if (rs.getString("hasAccess").equalsIgnoreCase("inactive")) {
                                     login = new Label("Your account is deactivated.");
                                     loginPane.add(login, 0, 0);
                                     primaryStage.show();
-                                } else if (!rs.getString("status").equalsIgnoreCase("admin")){
+                                } else if (!rs.getString("status").equalsIgnoreCase("admin")) {
                                     VolunteerHome1 home = new VolunteerHome1(this); // Display the regular volunteer home screen
                                     primaryStage.close();
                                 } else if (rs.getString("status").equalsIgnoreCase("admin")) {
@@ -172,7 +177,7 @@ public class Login1 extends Application {
             //passwordTxt.clear();
         });
     }
-    
+
     public boolean loginAttempt(String username) {
         return true;
     }

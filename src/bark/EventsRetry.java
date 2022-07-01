@@ -26,28 +26,38 @@ public class EventsRetry extends Login1 {
     Home home;
     VolunteerHome1 volHome;
 
-    TableView<Event> yourTable = new TableView<>();
+    TableView<Event> yourDailyTable = new TableView<>();
+    TableView<Event> yourHostedTable = new TableView<>();
     TableView<Event> dailyTable = new TableView<>();
     TableView<Event> pastTable = new TableView<>();
     TableView<Event> hostedTable = new TableView<>();
 
+    ObservableList<Event> yourDailyData = FXCollections.observableArrayList();
+    ObservableList<Event> yourHostedData = FXCollections.observableArrayList();
     ObservableList<Event> dailyData = FXCollections.observableArrayList();
     ObservableList<Event> pastData = FXCollections.observableArrayList();
-    ObservableList<Event> yourData = FXCollections.observableArrayList();
     ObservableList<Event> hostedData = FXCollections.observableArrayList();
 
+    ArrayList<Event> yourDailyList = new ArrayList<>();
+    ArrayList<Event> yourHostedList = new ArrayList<>();
     ArrayList<Event> dailyList = new ArrayList<>();
     ArrayList<Event> pastList = new ArrayList<>();
-    ArrayList<Event> yourList = new ArrayList<>();
     ArrayList<Event> hostedList = new ArrayList<>();
 
     //Create the columns for each table
-    TableColumn yourID = new TableColumn("ID");
-    TableColumn yourName = new TableColumn("Event");
-    TableColumn yourDescription = new TableColumn("Description");
-    TableColumn yourDate = new TableColumn("Event Date");
-    TableColumn yourTime = new TableColumn("Time");
-    TableColumn yourLocation = new TableColumn("Location");
+    TableColumn yourDailyID = new TableColumn("ID");
+    TableColumn yourDailyName = new TableColumn("Event");
+    TableColumn yourDailyDescription = new TableColumn("Description");
+    TableColumn yourDailyDate = new TableColumn("Event Date");
+    TableColumn yourDailyTime = new TableColumn("Time");
+    TableColumn yourDailyLocation = new TableColumn("Location");
+
+    TableColumn yourHostedID = new TableColumn("ID");
+    TableColumn yourHostedName = new TableColumn("Event");
+    TableColumn yourHostedDescription = new TableColumn("Description");
+    TableColumn yourHostedDate = new TableColumn("Event Date");
+    TableColumn yourHostedTime = new TableColumn("Time");
+    TableColumn yourHostedLocation = new TableColumn("Location");
 
     TableColumn dailyID = new TableColumn("ID");
     TableColumn dailyName = new TableColumn("Event");
@@ -70,8 +80,9 @@ public class EventsRetry extends Login1 {
     TableColumn hostedTime = new TableColumn("Time");
     TableColumn hostedLocation = new TableColumn("Location");
 
-    Button yourAdd = new Button("Add");
-    Button yourModify = new Button("Modify");
+    Button yourUnregister = new Button("Unregister");
+    Button yourHostedPopulate = new Button("<-- Select and Populate");
+    Button yourDailyPopulate = new Button("<-- Select and Populate");
     Button dailyAdd = new Button("Add");
     Button dailyModify = new Button("Modify");
     Button dailyPopulate = new Button("<-- Select and Populate");
@@ -84,6 +95,10 @@ public class EventsRetry extends Login1 {
     Button hostedComplete = new Button("Event Completed");
     Button dailySignup = new Button("Sign Up");
     Button hostedSignup = new Button("Sign up");
+    Label hostedMessage = new Label("");
+    Label dailyMessage = new Label("");
+    Label yourDailyLbl = new Label("Your Daily Tasks");
+    Label yourHostedLbl = new Label("Your Registered Events");
 
     // GridPane associated for each tab
     GridPane dailyOverall = new GridPane();
@@ -111,6 +126,7 @@ public class EventsRetry extends Login1 {
     GridPane eventsPane = new GridPane();
     TabPane tabPane = new TabPane();
     int id = 0;
+    int check = 0;
 
     EventsRetry(VolunteerHome1 vol) throws SQLException {
         this.volHome = vol;
@@ -123,14 +139,17 @@ public class EventsRetry extends Login1 {
 
         dailyTable.setMinWidth(primaryScene.getWidth() - dailyButtons.getWidth());
         pastTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
-        yourTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
+        yourDailyTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
+        yourHostedTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
         hostedTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
 
         HBox.setHgrow(tabPane, Priority.ALWAYS);
         HBox.setHgrow(dailyTable, Priority.ALWAYS);
         VBox.setVgrow(dailyTable, Priority.ALWAYS);
         HBox.setHgrow(pastTable, Priority.ALWAYS);
-        HBox.setHgrow(yourTable, Priority.ALWAYS);
+        HBox.setHgrow(yourDailyTable, Priority.ALWAYS);
+        HBox.setHgrow(yourHostedTable, Priority.ALWAYS);
+        VBox.setVgrow(yourHostedTable, Priority.ALWAYS);
         HBox.setHgrow(hostedTable, Priority.ALWAYS);
 
         primaryStage.setScene(primaryScene);
@@ -153,14 +172,15 @@ public class EventsRetry extends Login1 {
 
         dailyTable.setMinWidth(primaryScene.getWidth() - dailyButtons.getWidth());
         pastTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
-        yourTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
+        yourDailyTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
+        yourHostedTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
         hostedTable.setMinWidth(primaryScene.getWidth() - pastButtons.getWidth());
 
         HBox.setHgrow(tabPane, Priority.ALWAYS);
         HBox.setHgrow(dailyTable, Priority.ALWAYS);
         VBox.setVgrow(dailyTable, Priority.ALWAYS);
         HBox.setHgrow(pastTable, Priority.ALWAYS);
-        HBox.setHgrow(yourTable, Priority.ALWAYS);
+        HBox.setHgrow(yourDailyTable, Priority.ALWAYS);
         HBox.setHgrow(hostedTable, Priority.ALWAYS);
 
         primaryStage.setScene(primaryScene);
@@ -172,7 +192,8 @@ public class EventsRetry extends Login1 {
     }
 
     public void setTables() {
-        yourTable.setItems(yourData);
+        yourDailyTable.setItems(yourDailyData);
+        yourHostedTable.setItems(yourHostedData);
         dailyTable.setItems(dailyData);
         pastTable.setItems(pastData);
         hostedTable.setItems(hostedData);
@@ -194,7 +215,8 @@ public class EventsRetry extends Login1 {
         // Add the tables to the tabs
         dailyTablePane.add(dailyTable, 0, 0);
         hostedTablePane.add(hostedTable, 0, 0);
-        yourTablePane.add(yourTable, 0, 0);
+        yourTablePane.add(yourDailyTable, 0, 1);
+        yourTablePane.add(yourHostedTable, 0, 5);
         pastTablePane.add(pastTable, 0, 0);
 
         //Set the cell values for eventTable (Daily Events)
@@ -204,18 +226,28 @@ public class EventsRetry extends Login1 {
         dailyDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
         dailyTime.setCellValueFactory(new PropertyValueFactory<Event, String>("eventTime"));
         dailyLocation.setCellValueFactory(new PropertyValueFactory<Event, String>("eventLocation"));
+
         pastID.setCellValueFactory(new PropertyValueFactory<Event, Integer>("eventID"));
         pastName.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
         pastDescription.setCellValueFactory(new PropertyValueFactory<Event, String>("eventDescription"));
         pastDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
         pastTime.setCellValueFactory(new PropertyValueFactory<Event, String>("eventTime"));
         pastLocation.setCellValueFactory(new PropertyValueFactory<Event, String>("eventLocation"));
-        yourID.setCellValueFactory(new PropertyValueFactory<Event, Integer>("eventID"));
-        yourName.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
-        yourDescription.setCellValueFactory(new PropertyValueFactory<Event, String>("eventDescription"));
-        yourDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
-        yourTime.setCellValueFactory(new PropertyValueFactory<Event, String>("eventTime"));
-        yourLocation.setCellValueFactory(new PropertyValueFactory<Event, String>("eventLocation"));
+
+        yourDailyID.setCellValueFactory(new PropertyValueFactory<Event, Integer>("eventID"));
+        yourDailyName.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
+        yourDailyDescription.setCellValueFactory(new PropertyValueFactory<Event, String>("eventDescription"));
+        yourDailyDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
+        yourDailyTime.setCellValueFactory(new PropertyValueFactory<Event, String>("eventTime"));
+        yourDailyLocation.setCellValueFactory(new PropertyValueFactory<Event, String>("eventLocation"));
+
+        yourHostedID.setCellValueFactory(new PropertyValueFactory<Event, Integer>("eventID"));
+        yourHostedName.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
+        yourHostedDescription.setCellValueFactory(new PropertyValueFactory<Event, String>("eventDescription"));
+        yourHostedDate.setCellValueFactory(new PropertyValueFactory<Event, Date>("eventDate"));
+        yourHostedTime.setCellValueFactory(new PropertyValueFactory<Event, String>("eventTime"));
+        yourHostedLocation.setCellValueFactory(new PropertyValueFactory<Event, String>("eventLocation"));
+
         hostedID.setCellValueFactory(new PropertyValueFactory<Event, Integer>("eventID"));
         hostedName.setCellValueFactory(new PropertyValueFactory<Event, String>("eventName"));
         hostedDescription.setCellValueFactory(new PropertyValueFactory<Event, String>("eventDescription"));
@@ -224,7 +256,8 @@ public class EventsRetry extends Login1 {
         hostedLocation.setCellValueFactory(new PropertyValueFactory<Event, String>("eventLocation"));
         dailyTable.getColumns().addAll(dailyID, dailyName, dailyDescription, dailyDate, dailyTime, dailyLocation);
         pastTable.getColumns().addAll(pastID, pastName, pastDescription, pastDate, pastTime, pastLocation);
-        yourTable.getColumns().addAll(yourID, yourName, yourDescription, yourDate, yourTime, yourLocation);
+        yourDailyTable.getColumns().addAll(yourDailyID, yourDailyName, yourDailyDescription, yourDailyDate, yourDailyTime, yourDailyLocation);
+        yourHostedTable.getColumns().addAll(yourHostedID, yourHostedName, yourHostedDescription, yourHostedDate, yourHostedTime, yourHostedLocation);
         hostedTable.getColumns().addAll(hostedID, hostedName, hostedDescription, hostedDate, hostedTime, hostedLocation);
 
         try {
@@ -263,19 +296,36 @@ public class EventsRetry extends Login1 {
             for (Event x : hostedList) {
                 hostedData.add(x);
             }
-            String query1 = "SELECT e.eventID, eventName, eventType, eventDescription, eventDate, eventTime, eventLocation, eh.volID, eventStatus FROM eventHistory eh INNER JOIN event e ON  e.eventID = eh.eventID WHERE volID = " + id;
+            String query1 = "SELECT e.eventID, eventName, eventType, eventDescription, eventDate, eventTime, eventLocation, eh.volID, eventStatus FROM eventHistory eh "
+                    + "INNER JOIN event e ON e.eventID = eh.eventID WHERE volID = " + id + " AND eventCategory = 'Daily event'";
             sendDBCommand(query1);
             //Add events to the user's event list where their id is matched to an event in the database
-            yourList.clear();
+            yourDailyList.clear();
             try {
                 while (rs.next()) {
-                    yourList.add(new Event(rs.getInt("eventID"), rs.getString("eventName"), rs.getString("eventType"), rs.getString("eventDescription"), rs.getString("eventDate"), rs.getString("eventTime"), rs.getString("eventLocation"), rs.getString("eventStatus")));
+                    yourDailyList.add(new Event(rs.getInt("eventID"), rs.getString("eventName"), rs.getString("eventType"), rs.getString("eventDescription"), rs.getString("eventDate"), rs.getString("eventTime"), rs.getString("eventLocation"), rs.getString("eventStatus")));
                 }
             } catch (Exception ex) {
                 System.out.println("Exception! " + ex);
             }
-            for(Event ex : yourList){
-                yourData.add(ex); 
+            for (Event ex : yourDailyList) {
+                yourDailyData.add(ex);
+            }
+
+            String query2 = "SELECT e.eventID, eventName, eventType, eventDescription, eventDate, eventTime, eventLocation, eh.volID, eventStatus FROM eventHistory eh "
+                    + "INNER JOIN event e ON  e.eventID = eh.eventID WHERE volID = " + id + " AND eventCategory = 'BARK hosted'";
+            sendDBCommand(query2);
+            //Add events to the user's event list where their id is matched to an event in the database
+            yourHostedList.clear();
+            try {
+                while (rs.next()) {
+                    yourHostedList.add(new Event(rs.getInt("eventID"), rs.getString("eventName"), rs.getString("eventType"), rs.getString("eventDescription"), rs.getString("eventDate"), rs.getString("eventTime"), rs.getString("eventLocation"), rs.getString("eventStatus")));
+                }
+            } catch (Exception ex) {
+                System.out.println("Exception! " + ex);
+            }
+            for (Event ex : yourHostedList) {
+                yourHostedData.add(ex);
             }
 
         } catch (Exception e) {
@@ -359,8 +409,11 @@ public class EventsRetry extends Login1 {
         yourButtons.add(yourTimeField, 1, 6);
         yourButtons.add(yourLocation, 0, 7);
         yourButtons.add(yourLocationField, 1, 7);
-        yourButtons.add(yourAdd, 0, 8);
-        yourButtons.add(yourModify, 1, 8);
+        yourButtons.add(yourUnregister, 1, 8);
+        yourTablePane.add(yourDailyPopulate, 0, 2);
+        yourTablePane.add(yourHostedPopulate, 0, 6);
+        yourTablePane.add(yourDailyLbl, 0, 0);
+        yourTablePane.add(yourHostedLbl, 0, 3);
 
         yourOverall.add(yourButtons, 0, 0);
         yourOverall.add(yourTablePane, 1, 0);
@@ -380,7 +433,7 @@ public class EventsRetry extends Login1 {
         pastButtons.add(pastLocation, 0, 7);
         pastButtons.add(pastLocationField, 1, 7);
         pastButtons.add(pastModify, 1, 8);
-        pastButtons.add(pastPopulate, 0, 9);
+        pastTablePane.add(pastPopulate, 0, 1);
 
         pastOverall.add(pastButtons, 0, 0);
         pastOverall.add(pastTablePane, 1, 0);
@@ -401,9 +454,9 @@ public class EventsRetry extends Login1 {
         dailyButtons.add(dailyLocationField, 1, 7);
         dailyButtons.add(dailyAdd, 0, 8);
         dailyButtons.add(dailyModify, 1, 8);
-        dailyButtons.add(dailyPopulate, 0, 9);
-        dailyButtons.add(dailyComplete, 0, 10);
-        dailyButtons.add(dailySignup, 1, 10);
+        dailyTablePane.add(dailyPopulate, 0, 1);
+        dailyButtons.add(dailyComplete, 1, 10);
+        dailyButtons.add(dailySignup, 0, 10);
 
         dailyOverall.add(dailyButtons, 0, 0);
         dailyOverall.add(dailyTablePane, 1, 0);
@@ -424,9 +477,11 @@ public class EventsRetry extends Login1 {
         hostedButtons.add(hostedLocationField, 1, 7);
         hostedButtons.add(hostedAdd, 0, 8);
         hostedButtons.add(hostedModify, 1, 8);
-        hostedButtons.add(hostedPopulate, 0, 9);
-        hostedButtons.add(hostedComplete, 0, 10);
-        hostedButtons.add(hostedSignup, 1, 10);
+        hostedButtons.add(hostedComplete, 1, 10);
+        hostedButtons.add(hostedSignup, 0, 10);
+        hostedTablePane.add(hostedPopulate, 0, 1);
+        hostedTablePane.add(hostedMessage, 0, 2);
+
         hostedOverall.add(hostedButtons, 0, 0);
         hostedOverall.add(hostedTablePane, 1, 0);
 
@@ -564,6 +619,65 @@ public class EventsRetry extends Login1 {
             hostedTimeField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventTime());
             hostedLocationField.setText(hostedTable.getSelectionModel().getSelectedItem().getEventLocation());
         });
+        yourDailyPopulate.setOnAction(e -> {
+            yourIdField.setText(yourDailyTable.getSelectionModel().getSelectedItem().getEventID() + "");
+            yourNameField.setText(yourDailyTable.getSelectionModel().getSelectedItem().getEventName());
+            yourCatField.setText(yourDailyTable.getSelectionModel().getSelectedItem().getEventType());
+            yourDescField.setText(yourDailyTable.getSelectionModel().getSelectedItem().getEventDescription());
+            yourDateField.setText(yourDailyTable.getSelectionModel().getSelectedItem().getEventDate());
+            yourTimeField.setText(yourDailyTable.getSelectionModel().getSelectedItem().getEventTime());
+            yourLocationField.setText(yourDailyTable.getSelectionModel().getSelectedItem().getEventLocation());
+            check = 1; // If the data is from daily table, mark it as 1
+        });
+        yourHostedPopulate.setOnAction(e -> {
+            yourIdField.setText(yourHostedTable.getSelectionModel().getSelectedItem().getEventID() + "");
+            yourNameField.setText(yourHostedTable.getSelectionModel().getSelectedItem().getEventName());
+            yourCatField.setText(yourHostedTable.getSelectionModel().getSelectedItem().getEventType());
+            yourDescField.setText(yourHostedTable.getSelectionModel().getSelectedItem().getEventDescription());
+            yourDateField.setText(yourHostedTable.getSelectionModel().getSelectedItem().getEventDate());
+            yourTimeField.setText(yourHostedTable.getSelectionModel().getSelectedItem().getEventTime());
+            yourLocationField.setText(yourHostedTable.getSelectionModel().getSelectedItem().getEventLocation());
+            check = 2; // If the data is from hosted table, mark it as 2
+        });
+        yourUnregister.setOnAction(e -> {
+            if (check == 1) {
+                int eventid = yourDailyTable.getSelectionModel().getSelectedItem().getEventID();
+                String eventName = yourDailyTable.getSelectionModel().getSelectedItem().getEventName();
+                String eventType = yourDailyTable.getSelectionModel().getSelectedItem().getEventType();
+                String eventDescription = yourDailyTable.getSelectionModel().getSelectedItem().getEventDescription();
+                String eventDate = yourDailyTable.getSelectionModel().getSelectedItem().getEventDate();
+                String eventTime = yourDailyTable.getSelectionModel().getSelectedItem().getEventTime();
+                String eventLocation = yourDailyTable.getSelectionModel().getSelectedItem().getEventLocation();
+                String eventStatus = yourDailyTable.getSelectionModel().getSelectedItem().getEventStatus();
+                yourDailyList.remove(new Event(eventid, eventName, eventType, eventDescription, eventDate, eventTime, eventLocation, eventStatus));
+                String query = "DELETE from EVENTHISTORY where volID = " + id + " AND eventID = " + eventid + "";
+                sendDBCommand(query);
+                int index = yourDailyTable.getSelectionModel().getSelectedIndex();
+//                yourDailyTable.getItems().remove(index);
+                yourDailyData.remove(index);
+//                for (Event x : yourDailyList) {
+//                    yourDailyData.remove(x);
+//                }
+            }
+            if (check == 2) {
+                int eventid = yourHostedTable.getSelectionModel().getSelectedItem().getEventID();
+                String eventName = yourHostedTable.getSelectionModel().getSelectedItem().getEventName();
+                String eventType = yourHostedTable.getSelectionModel().getSelectedItem().getEventType();
+                String eventDescription = yourHostedTable.getSelectionModel().getSelectedItem().getEventDescription();
+                String eventDate = yourHostedTable.getSelectionModel().getSelectedItem().getEventDate();
+                String eventTime = yourHostedTable.getSelectionModel().getSelectedItem().getEventTime();
+                String eventLocation = yourHostedTable.getSelectionModel().getSelectedItem().getEventLocation();
+                String eventStatus = yourHostedTable.getSelectionModel().getSelectedItem().getEventStatus();
+                yourHostedList.remove(new Event(eventid, eventName, eventType, eventDescription, eventDate, eventTime, eventLocation, eventStatus));
+                String query = "DELETE from EVENTHISTORY where volID = " + id + " AND eventID = " + eventid + "";
+                sendDBCommand(query);
+                yourHostedTable.getItems().remove(yourHostedTable.getSelectionModel().getSelectedIndex());
+                for (Event x : yourHostedList) {
+                    yourHostedData.remove(x);
+                }
+            }
+        });
+
         //Action handler to add a bark hosted event
         hostedAdd.setOnAction(e -> {
             int largest = 0;
@@ -681,12 +795,12 @@ public class EventsRetry extends Login1 {
             String eventTime = dailyTable.getSelectionModel().getSelectedItem().getEventTime();
             String eventLocation = dailyTable.getSelectionModel().getSelectedItem().getEventLocation();
             String eventStatus = dailyTable.getSelectionModel().getSelectedItem().getEventStatus();
-            yourList.add(new Event(eventid, eventName, eventType, eventDescription, eventDate, eventTime, eventLocation, eventStatus)); 
+            yourDailyList.add(new Event(eventid, eventName, eventType, eventDescription, eventDate, eventTime, eventLocation, eventStatus));
             String query = "INSERT INTO EVENTHISTORY(volID, eventID) VALUES (" + id + ", " + eventid + ")";
             sendDBCommand(query);
-            yourData.clear(); 
-            for (Event x : yourList) {
-                yourData.add(x);
+            yourDailyData.clear();
+            for (Event x : yourDailyList) {
+                yourDailyData.add(x);
             }
         });
         //Action handler for sign up of bark hosted events
@@ -699,12 +813,18 @@ public class EventsRetry extends Login1 {
             String eventTime = hostedTable.getSelectionModel().getSelectedItem().getEventTime();
             String eventLocation = hostedTable.getSelectionModel().getSelectedItem().getEventLocation();
             String eventStatus = hostedTable.getSelectionModel().getSelectedItem().getEventStatus();
-            yourList.add(new Event(eventid, eventName, eventType, eventDescription, eventDate, eventTime, eventLocation, eventStatus)); 
-            String query = "INSERT INTO EVENTHISTORY(volID, eventID) VALUES (" + id + ", " + eventid + ")";
-            sendDBCommand(query);
-            yourData.clear(); 
-            for (Event x : yourList) {
-                yourData.add(x);
+
+            try {
+                String query = "INSERT INTO EVENTHISTORY(volID, eventID) VALUES (" + id + ", " + eventid + ")";
+                sendDBCommand(query);
+                yourHostedList.add(new Event(eventid, eventName, eventType, eventDescription, eventDate, eventTime, eventLocation, eventStatus));
+            } catch (Exception ex) {
+                hostedMessage.setText("Error in signing up");
+            }
+
+            yourHostedData.clear();
+            for (Event x : yourHostedList) {
+                yourHostedData.add(x);
             }
         });
     }

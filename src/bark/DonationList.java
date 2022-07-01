@@ -256,6 +256,7 @@ public class DonationList extends Login1 {
                 String query = "INSERT INTO DONATION(donation_ID, donationAmt, donationName, donationDate) VALUES (" + newID + ", '" + newAmount + "', '" + newName + "', '" + newDate + "')";
 
                 sendDBCommand(query);
+                message.setText("Entry added successfully.");
                 tableData.clear();
                 for (Donation1 x : donList) {
                     tableData.add(x);

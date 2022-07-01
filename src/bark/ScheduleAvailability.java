@@ -35,19 +35,6 @@ public class ScheduleAvailability extends Login1 {
     ListView available = new ListView();
     ListView currentlyScheduled = new ListView();
 
-//    Label MondayLbl = new Label("Monday");
-//    Label TuesdayLbl = new Label("Tuesday");
-//    ComboBox<String> scheduleIDCb2 = new ComboBox();
-//    Label WednesdayLbl = new Label("Wednesday");
-//    ComboBox<String> scheduleIDCb3 = new ComboBox();
-//    Label ThursdayLbl = new Label("Thursday");
-//    ComboBox<String> scheduleIDCb4 = new ComboBox();
-//    Label FridayLbl = new Label("Friday");
-//    ComboBox<String> scheduleIDCb5 = new ComboBox();
-//    Label SaturdayLbl = new Label("Saturday");
-//    ComboBox<String> scheduleIDCb6 = new ComboBox();
-//    Label SundayLbl = new Label("Sunday");
-//    ComboBox<String> scheduleIDCb7 = new ComboBox();
     GridPane schedulePane = new GridPane();
 
     String selectedDay = "";

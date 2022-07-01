@@ -18,8 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
- * This is for admins to review all submitted applications and either accept or
- * deny them
+ * This is for admins to review all submitted applications and either accept or deny them
  */
 public class ReviewApplication extends Login1 {
 
@@ -79,6 +78,8 @@ public class ReviewApplication extends Login1 {
         pane1.add(expLbl, 0, 7);
         pane1.add(expTxt, 1, 7);
         pane1.add(infoLbl, 0, 8);
+        infoTxt.setPrefSize(500, 200);
+        infoTxt.setWrapText(true);
         pane1.add(infoTxt, 1, 8);
 
         pane1.add(approveBtn, 1, 9);
@@ -96,6 +97,7 @@ public class ReviewApplication extends Login1 {
         emailTxt.setEditable(false);
         phoneTxt.setEditable(false);
         infoTxt.setEditable(false);
+        expTxt.setEditable(false);
 
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(pane1, pane1.getMaxWidth(), pane1.getMaxHeight());
@@ -107,7 +109,6 @@ public class ReviewApplication extends Login1 {
         String query = "select * from volunteer where status = 'applicant'";
         sendDBCommand(query);
         System.out.println(rs);
-        //System.out.println(rs);
         try {
             while (rs.next()) {
                 idList.add(rs.getString("volid"));
@@ -131,9 +132,12 @@ public class ReviewApplication extends Login1 {
             emailTxt.clear();
             phoneTxt.clear();
             infoTxt.clear();
+            expTxt.clear();
         });
         denyBtn.setOnAction(e -> {
-            String delete = "delete from volunteer where volid = " + selectIDCb.getSelectionModel().getSelectedItem();
+            String delete = "delete from schedule where volid = " + selectIDCb.getSelectionModel().getSelectedItem();
+            sendDBCommand(delete);
+            delete = "delete from volunteer where volid = " + selectIDCb.getSelectionModel().getSelectedItem();
             sendDBCommand(delete);
             idList.remove(selectIDCb.getSelectionModel().getSelectedIndex());
             fNameTxt.clear();
@@ -142,6 +146,7 @@ public class ReviewApplication extends Login1 {
             emailTxt.clear();
             phoneTxt.clear();
             infoTxt.clear();
+            expTxt.clear();
         });
     }
 
@@ -159,6 +164,7 @@ public class ReviewApplication extends Login1 {
                 emailTxt.setText(rs.getString("vol_email"));
                 phoneTxt.setText(rs.getString("vol_phone"));
                 infoTxt.setText(rs.getString("vol_info"));
+                expTxt.setText(rs.getString("experience"));
             }
         } catch (SQLException sql) {
             System.out.println(sql);
