@@ -36,7 +36,6 @@ public class VolunteerStatus extends Login1 {
 //    Label phoneLbl = new Label("Phone");
     Label cumHrsLbl = new Label("Cumulative Hours");
     Label statusLbl = new Label("Status");
-    Label availLbl = new Label("Availability");
 
     TextField fNameTxt = new TextField();
     TextField lNameTxt = new TextField();
@@ -82,8 +81,6 @@ public class VolunteerStatus extends Login1 {
         pane.add(cumHrsTxt, 1, 5);
         pane.add(statusLbl, 0, 6);
         pane.add(statusBox, 1, 6);
-        pane.add(availLbl, 0, 7);
-        pane.add(availTxt, 1, 7);
         
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);

@@ -39,8 +39,6 @@ public class Home extends Login1 {
     Button checkIn = new Button("Check In");
 
     Label scrnTitleLbl = new Label("Social Home");
-    Label dateLbl = new Label("Date");
-    Label descLbl = new Label("Description");
 
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
@@ -86,12 +84,6 @@ public class Home extends Login1 {
         homePane.add(logoutBtn, 0, 11);
         paneSettings(socialPane);
         socialPane.add(scrnTitleLbl, 0, 1);
-        socialPane.add(dateLbl, 0, 2);
-        //socialPane.add(takeOut, 0, 3);
-        socialPane.add(descLbl, 2, 2);
-        //socialPane.add(takeOut2, 2, 3);
-        //socialPane.add(takeOut3, 0, 5);
-        //socialPane.add(takeOut4, 2, 5);
 
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
@@ -103,7 +95,7 @@ public class Home extends Login1 {
         socialPane.setAlignment(Pos.TOP_CENTER);
         mainPane.add(socialPane, 1, 0);
 
-        if (login.isAdmin == true) {
+        if (login.isAdmin == true) { // Only if the user is an admin does this get called
             populateSocial();
         }
 
@@ -115,18 +107,16 @@ public class Home extends Login1 {
 
         checkIn.setOnAction(e -> {
             LocalDateTime now = LocalDateTime.now();
-//            System.out.println(df.format(now));
-            hour = now.getHour();
-            minute = now.getMinute();
-            System.out.println(hour + ":" + minute);
-            timeStored = minute + (hour * 60);
+            hour = now.getHour(); // Gets the current hour
+            minute = now.getMinute(); // Gets the current minute
+            timeStored = minute + (hour * 60); 
             try {
                 String update = "UPDATE Volunteer SET timeCheckedIn = " + timeStored + " WHERE username = '" + login.user + "'";
                 sendDBCommand(update);
-                Label replace = new Label("You are checked in!");
+                Label replace = new Label("You are checked in!"); // Replaces the check in button
                 checkIn.setVisible(false);
                 homePane.add(replace, 0, 1);
-                homePane.add(checkoutBtn, 0, 10);
+                homePane.add(checkoutBtn, 0, 10); // Adds the check out button
             } catch (Exception E) {
                 System.out.println(E);
             }
@@ -219,20 +209,19 @@ public class Home extends Login1 {
 //            CheckIn ci = new CheckIn(this);
 //        });
     }
-
+    
+    // Populates the social home screen with completed events
     public void populateSocial() {
         String join = "SELECT volunteer.volID, volunteer.vol_firstName, volunteer.vol_lastName, event.eventName, event.eventDate, event.eventType FROM Volunteer "
-                + "INNER JOIN EVENTHISTORY ON volunteer.volID = eventhistory.volID INNER JOIN event ON eventhistory.eventID = event.eventID";
+                + "INNER JOIN EVENTHISTORY ON volunteer.volID = eventhistory.volID INNER JOIN event ON eventhistory.eventID = event.eventID where eventStatus = 'completed'";
         sendDBCommand(join);
-        int iter = 4;
-        Label lbl = new Label("hello");
-        //socialPane.add(lbl, 2, 3);
+        int iter = 4; // Sets where the first row will be placed
         try {
             while (rs.next()) {
                 rs.getString("vol_firstName");
-                Label temp1 = new Label(rs.getString("vol_firstname") + " " + rs.getString("vol_lastname") + " completed " + rs.getString("eventname") + " on " + rs.getString("eventdate"));
-                socialPane.add(temp1, 2, iter);
-                iter++;
+                Label temp1 = new Label(rs.getString("eventdate") + ": " + rs.getString("vol_firstname") + " " + rs.getString("vol_lastname") + " completed " + rs.getString("eventname"));
+                socialPane.add(temp1, 0, iter);
+                iter++; // Updates the iterator to move it down one
             }
         } catch (SQLException ex) {
             Logger.getLogger(ScheduleAvailability.class.getName()).log(Level.SEVERE, null, ex);
@@ -249,9 +238,6 @@ public class Home extends Login1 {
         String userID = "javauser";
         String userPASS = "javapass";
         OracleDataSource ds;
-
-        // You can comment this line out when your program is finished
-        System.out.println(sqlQuery);
 
         try {
             ds = new OracleDataSource();

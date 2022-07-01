@@ -118,18 +118,37 @@ public class ScheduleAvailability extends Login1 {
             });
 
             available1.setOnAction(e -> {
+                sendDBCommand("SELECT * FROM SHIFT_TIME where dayOfWeek = '" + daysCombo.getValue() + "' scheduleID = " + schedID + " volID = 1");
                 if (available1.getValue().equals("Available")) {
-                    sendDBCommand("INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID,startTime,endTime,scheduled) VALUES('" + daysCombo.getValue() + "', " + schedID + ", 1, '8:00am', '4:00pm', 'no')");
+                    try {
+                        while(rs.next()) {
+                            
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ScheduleAvailability.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
+                
+                sendDBCommand("IF NOT EXISTS(SELECT * FROM SHIFT_TIME where dayOfWeek = '" + daysCombo.getValue() + "' scheduleID = " + schedID + " volID = 1)INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID,startTime,endTime,scheduled) VALUES('" + daysCombo.getValue() + "', " + schedID + ", 1, '8:00am', '4:00pm', 'no')");
                 if(available1.getValue().equals("")) {
                     System.out.println("hello");
                 }
             });
             available2.setOnAction(e -> {
-                //4 PM to 12 AM
+                if (available1.getValue().equals("Available")) {
+                    sendDBCommand("INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID,startTime,endTime,scheduled) VALUES('" + daysCombo.getValue() + "', " + schedID + ", 2, '4:00pm', '12:00am', 'no')");
+                }
+                if(available1.getValue().equals("")) {
+                    System.out.println("hello");
+                }
             });
             available3.setOnAction(e -> {
-                //12 AM to 8 AM
+                if (available1.getValue().equals("Available")) {
+                    sendDBCommand("INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID,startTime,endTime,scheduled) VALUES('" + daysCombo.getValue() + "', " + schedID + ", 3, '12:00am', '8:00am', 'no')");
+                }
+                if(available1.getValue().equals("")) {
+                    System.out.println("hello");
+                }
             });
 
             schedulePane.add(backBtn, 0, 0);

@@ -37,11 +37,6 @@ public class VolunteerHome1 extends Home {
     Button viewAvailability = new Button("View Your Schedule");
 
     Label scrnTitleLbl = new Label("Social Home");
-
-    Label dateLbl = new Label("Date");
-
-    Label descLbl = new Label("Description");
-    Label Lbl = new Label("Description");
     
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
@@ -84,23 +79,18 @@ public class VolunteerHome1 extends Home {
 
         paneSettings(volSocialPane);
         volSocialPane.add(scrnTitleLbl, 0, 1);
-        volSocialPane.add(dateLbl, 0, 2);
-        volSocialPane.add(descLbl, 2, 2);
-        //socialPane.add(Lbl, 5, 6);
 
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
         viewPaw.setX(100);
         viewPaw.setY(150);
-        //socialPane.add(viewPaw, 0, 0);
+        volSocialPane.add(viewPaw, 0, 0);
 
         volMainPane.add(volHomePane, 0, 0);
         volSocialPane.setAlignment(Pos.TOP_CENTER);
-        
-        
         volMainPane.add(volSocialPane, 1, 0);
         
-        
+        // Call the populateSocial method to add events to social home screen
         populateSocial1();
         
         Stage primaryStage1 = login.primaryStage;
@@ -109,17 +99,25 @@ public class VolunteerHome1 extends Home {
         primaryStage.setTitle("BARK Volunteer Home");
         primaryStage.show();
 
-        checkIn.setOnAction(e -> {
+ checkIn.setOnAction(e -> {
             LocalDateTime now = LocalDateTime.now();
-//            System.out.println(df.format(now));
-            hour = now.getHour();
-            minute = now.getMinute();
-            System.out.println(hour + ":" + minute);
-            timeStored = minute + (hour * 60);
-            String update = "UPDATE Volunteer SET timeCheckedIn = " + timeStored + " WHERE username = '" + login.user + "'";
-            sendDBCommand(update);
+            hour = now.getHour(); // Gets the current hour
+            minute = now.getMinute(); // Gets the current minute
+            timeStored = minute + (hour * 60); 
+            try {
+                String update = "UPDATE Volunteer SET timeCheckedIn = " + timeStored + " WHERE username = '" + login.user + "'";
+                sendDBCommand(update);
+                Label replace = new Label("You are checked in!"); // Replaces the check in button
+                checkIn.setVisible(false);
+                homePane.add(replace, 0, 1);
+                homePane.add(checkoutBtn, 0, 10); // Adds the check out button
+                checkoutBtn.setVisible(true);
+            } catch (Exception E) {
+                System.out.println(E);
+            }
 
         });
+ 
         // Check out button
         checkoutBtn.setOnAction(e -> {
             //primaryStage.setScene(Checkout.primaryScene);
@@ -193,7 +191,7 @@ public class VolunteerHome1 extends Home {
     
     public void populateSocial1() {
         String join = "SELECT volunteer.volID, volunteer.vol_firstName, volunteer.vol_lastName, event.eventName, event.eventDate, event.eventType FROM Volunteer " +
-                "INNER JOIN EVENTHISTORY ON volunteer.volID = eventhistory.volID INNER JOIN event ON eventhistory.eventID = event.eventID";
+                "INNER JOIN EVENTHISTORY ON volunteer.volID = eventhistory.volID INNER JOIN event ON eventhistory.eventID = event.eventID where eventStatus = 'completed'";
         sendDBCommand(join);
         int iter = 4;
         Label lbl = new Label("hello");
@@ -202,7 +200,7 @@ public class VolunteerHome1 extends Home {
             while (rs.next()) {
                 rs.getString("vol_firstName");
                 Label temp1 = new Label(rs.getString("vol_firstname") + " " + rs.getString("vol_lastname") + " completed " + rs.getString("eventname") + " on " + rs.getString("eventdate"));
-                volSocialPane.add(temp1, 2, iter);
+                volSocialPane.add(temp1, 0, iter);
                 iter++;
             }
         } catch (SQLException ex) {

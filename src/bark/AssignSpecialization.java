@@ -49,18 +49,22 @@ public class AssignSpecialization extends Login1 {
     ObservableList<String> specialization = FXCollections.observableArrayList();
     //String[] defaultSpecials1 = {"Feeding", "Animal Health Care", "Enclosure Care", "Adopter Relations", "Training", "Event Volunteer"};
     //ArrayList<String> defaultSpecials = new ArrayList<>();
-    List<String> defaultSpecials = Arrays.asList("Feeding", "Animal Health Care", "Enclosure Care", "Adopter Relations", "Training", "Event Volunteer"); ArrayList<String> instance = new ArrayList<>(defaultSpecials);
-    
+    List<String> defaultSpecials = Arrays.asList("Feeding", "Animal Health Care", "Enclosure Care", "Adopter Relations", "Training", "Event Volunteer");
+    ArrayList<String> instance = new ArrayList<>(defaultSpecials);
+
     int largest = 0;
+
     AssignSpecialization(VolunteerHome1 volHome) {
         this.volHome = volHome;
-        
+
         ArrayList<String> defaultList = new ArrayList<>();
         defaultList.addAll(defaultSpecials);
         specialization.addAll(defaultList);
         specialMenuCb = new ComboBox(FXCollections.observableArrayList(specialization));
 
         // add nodes to pane
+        specialPane.add(volNameLbl, 0, 0);
+        specialPane.add(volNameTxt, 0, 1);
         specialPane.add(specialMenuLbl, 0, 2);
         specialPane.add(specialMenuCb, 0, 3);
         specialPane.add(currentSpecialLbl, 0, 4);
@@ -79,19 +83,20 @@ public class AssignSpecialization extends Login1 {
         viewPaw.setX(100);
         viewPaw.setY(200);
         specialPane.add(viewPaw, 2, 8);
+        volNameTxt.setText(volHome.login.name);
 
-        paneSettings(specialPane);
-        
-        sendDBCommand("select * from specialization where volid = " + home.loginid);
+        sendDBCommand("select * from specialization where volid = " + volHome.loginid);
         try {
             while (rs.next()) {
-                currentList.getItems().add(rs.getString("specializationid"));
+                currentList.getItems().add(rs.getString("specialization_name"));
             }
-            
+
         } catch (SQLException ec) {
-            
+
         }
-        
+
+        paneSettings(specialPane);
+
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(specialPane, 700, 600);
         primaryStage.setScene(primaryScene);
@@ -105,34 +110,34 @@ public class AssignSpecialization extends Login1 {
             try {
                 while (rs.next()) {
                     largest = rs.getInt("specializationID");
-                            while (rs.next()) {
-                                int store = rs.getInt("specializationID");
-                                if (store > largest) {
-                                    largest = store;
-                                }
-                            }
+                    while (rs.next()) {
+                        int store = rs.getInt("specializationID");
+                        if (store > largest) {
+                            largest = store;
+                        }
+                    }
                 }
             } catch (SQLException elo) {
-                
+
             }
-            
+
             int newID = largest + 1;
-            sendDBCommand("Insert into specialization values(" + newID + ", "+ home.loginid + ", '" + specialMenuCb.getSelectionModel().getSelectedItem() + "')");
-            
+            sendDBCommand("Insert into specialization values(" + newID + ", " + volHome.loginid + ", '" + specialMenuCb.getSelectionModel().getSelectedItem() + "')");
+
         });
 
         // Lambda delete
         delete.setOnAction(e -> {
+            sendDBCommand("delete from specialization where specialization_name = '" + currentList.getSelectionModel().getSelectedItem().toString() + "'");
             int indxSelected = currentList.getSelectionModel().getSelectedIndex();
             currentList.getItems().remove(indxSelected);
+
         });
         // Lambda create
         create.setOnAction(e -> {
             currentList.getItems().add(newSpecialTxt.getText());
-            
-            newSpecialTxt.clear();
         });
-        
+
     }
 
     AssignSpecialization(Home home) {
@@ -171,14 +176,12 @@ public class AssignSpecialization extends Login1 {
             while (rs.next()) {
                 currentList.getItems().add(rs.getString("specialization_name"));
             }
-            
+
         } catch (SQLException ec) {
-            
+
         }
-        
+
         paneSettings(specialPane);
-        
-        
 
         Stage primaryStage = new Stage();
         Scene primaryScene = new Scene(specialPane, 700, 600);
@@ -195,26 +198,26 @@ public class AssignSpecialization extends Login1 {
                     largest = rs.getInt("specializationID");
                     while (rs.next()) {
                         int store = rs.getInt("specializationID");
-                            if (store > largest) {
-                                largest = store;
-                            }
+                        if (store > largest) {
+                            largest = store;
+                        }
                     }
                 }
             } catch (SQLException elo) {
-                
+
             }
-            
+
             int newID = largest + 1;
-            sendDBCommand("Insert into specialization values(" + newID + ", "+ home.loginid + ", '" + specialMenuCb.getSelectionModel().getSelectedItem() + "')");
-            
+            sendDBCommand("Insert into specialization values(" + newID + ", " + home.loginid + ", '" + specialMenuCb.getSelectionModel().getSelectedItem() + "')");
+
         });
 
         // Lambda delete
         delete.setOnAction(e -> {
-            sendDBCommand("delete from specialization where specialization_name = '" + currentList.getSelectionModel().getSelectedItem().toString()+"'" );
+            sendDBCommand("delete from specialization where specialization_name = '" + currentList.getSelectionModel().getSelectedItem().toString() + "'");
             int indxSelected = currentList.getSelectionModel().getSelectedIndex();
             currentList.getItems().remove(indxSelected);
-            
+
         });
         // Lambda create
         create.setOnAction(e -> {

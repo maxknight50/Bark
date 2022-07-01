@@ -22,6 +22,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import java.lang.Object.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
@@ -34,7 +36,7 @@ import oracle.jdbc.pool.OracleDataSource;
 import tables.*;
 
 /**
- *
+ * Displays the list of animals, both past and current
  */
 public class AnimalList extends Login1 {
 
@@ -146,9 +148,11 @@ public class AnimalList extends Login1 {
         viewPaw.setY(150);
         modAnimal.add(viewPaw, 0, 13);
 
+        // Set observable lists to tableviews
         currentAnimal.setItems(currentTableData);
-        pastAnimal.setItems(pastTableData); //
+        pastAnimal.setItems(pastTableData); 
 
+        // Populate the grids with labels and tables
         curAnimalTable.add(currentMessage, 0, 0);
         curAnimalTable.add(currentAnimal, 0, 1);
         curAnimalTable.add(currentPopulate, 0, 2);
@@ -218,13 +222,23 @@ public class AnimalList extends Login1 {
         primaryStage.show();
 
         currentPopulate.setOnAction(e -> {
+            vetHistoryList.getItems().clear();
             idTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getAnimalID() + "");
             nameTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getName() + "");
             speciesTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getSpecies() + "");
             ageTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getAge() + "");
             medicalHistoryTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getMedicalHistory() + "");
             feedingTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getFeedingNeeds() + "");
-
+            
+            sendDBCommand("select animal.animal_ID, eventID, description, workDate from VETHISTORY "
+                    + "INNER JOIN ANIMAL ON vethistory.animal_id = animal.animal_ID where animal.animal_id = " + currentAnimal.getSelectionModel().getSelectedItem().getAnimalID() + "");
+            try {
+                while(rs.next()) {
+                    vetHistoryList.getItems().add(rs.getString("workDate") + " " + rs.getString("description"));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AnimalList.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         pastPopulate.setOnAction(e -> {
