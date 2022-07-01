@@ -22,7 +22,7 @@ import javafx.scene.layout.*;
 import javafx.stage.*;
 
 /**
- *
+ * Login page, main
  *
  */
 public class Login1 extends Application {
@@ -88,21 +88,7 @@ public class Login1 extends Application {
         });
 
         sendDBCommand("select * from Volunteer");
-//        sendDBCommand("select * from Volunteer where username = 'JMarkinson'");
-//        if (rs.next()) {
-//            System.out.println(rs.getString("password"));
-//        }
 
-//        try {
-//            // Read in first values
-//            while (rs.next()) {
-//                System.out.println(rs.getInt("volID"));
-//                System.out.println(rs.getString("vol_Name"));
-//            }
-//
-//        } catch (Exception e) {
-//            System.out.println("Error: " + e.toString());
-//        }
         // Log in Button
         boolean correct = false;
 
@@ -132,7 +118,6 @@ public class Login1 extends Application {
                                 name = rs.getString("vol_firstname") + " " + rs.getString("vol_lastname");
                                 id = rs.getInt("volID");
                                 System.out.println(id);
-                                ////////////////////////////////////////////////////////////////////
                                 if (rs.getString("hasAccess").equalsIgnoreCase("inactive")) {
                                     login = new Label("Your account is deactivated.");
                                     loginPane.add(login, 0, 0);

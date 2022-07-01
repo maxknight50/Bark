@@ -395,6 +395,7 @@ public class EventsRetry extends Login1 {
         TextField hostedTimeField = new TextField();
         TextField hostedLocationField = new TextField();
 
+        // Add all buttons for your table
         yourButtons.add(yourID, 0, 1);
         yourButtons.add(yourIdField, 1, 1);
         yourButtons.add(yourName, 0, 2);
@@ -418,6 +419,7 @@ public class EventsRetry extends Login1 {
         yourOverall.add(yourButtons, 0, 0);
         yourOverall.add(yourTablePane, 1, 0);
 
+        // Add all buttons for past table
         pastButtons.add(pastID, 0, 1);
         pastButtons.add(pastIdField, 1, 1);
         pastButtons.add(pastName, 0, 2);
@@ -438,6 +440,7 @@ public class EventsRetry extends Login1 {
         pastOverall.add(pastButtons, 0, 0);
         pastOverall.add(pastTablePane, 1, 0);
 
+        // Add all buttons for daily table
         dailyButtons.add(dailyID, 0, 1);
         dailyButtons.add(dailyIdField, 1, 1);
         dailyButtons.add(dailyName, 0, 2);
@@ -461,6 +464,7 @@ public class EventsRetry extends Login1 {
         dailyOverall.add(dailyButtons, 0, 0);
         dailyOverall.add(dailyTablePane, 1, 0);
 
+        // Add all buttons for hosted table
         hostedButtons.add(hostedID, 0, 1);
         hostedButtons.add(hostedIdField, 1, 1);
         hostedButtons.add(hostedName, 0, 2);

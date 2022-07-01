@@ -29,7 +29,7 @@ public class Checkout extends Login1 {
 
     GridPane checkoutPane = new GridPane();
 
-    Checkout(Home home) {
+    Checkout(Home home) { // For admin login
         this.home = home;
         paneSettings(checkoutPane);
         System.out.println("Test admin: " + df.format(home.cumHours));
@@ -59,7 +59,7 @@ public class Checkout extends Login1 {
 
     }
     
-        Checkout(VolunteerHome1 volHome) {
+        Checkout(VolunteerHome1 volHome) { // For regular login
         this.volHome = volHome;
         paneSettings(checkoutPane);
         System.out.println("Test admin: " + df.format(home.cumHours));

@@ -51,6 +51,7 @@ public class AnimalList extends Login1 {
     ObservableList<Animal> currentTableData = FXCollections.observableArrayList();
     ObservableList<Animal> pastTableData = FXCollections.observableArrayList();
 
+    // Current animal 
     TableColumn id_col = new TableColumn("animalID");
     TableColumn name_col = new TableColumn("name");
     TableColumn species_col = new TableColumn("species");
@@ -59,7 +60,8 @@ public class AnimalList extends Login1 {
     TableColumn feeding_col = new TableColumn("feedingNeeds");
     TableColumn vethist_col = new TableColumn("vetHistory");
     TableColumn adoptID_col = new TableColumn("adopt_ID");
-
+    
+    // Past animal
     TableColumn id_col2 = new TableColumn("animalID");
     TableColumn name_col2 = new TableColumn("name");
     TableColumn species_col2 = new TableColumn("species");
@@ -88,6 +90,8 @@ public class AnimalList extends Login1 {
 
     Label currentMessage = new Label();
     Label pastMessage = new Label();
+    Label adopterName = new Label();
+    TextField adopterTxt = new TextField();
 
     Button backBtn = new Button("Back");
     Button add = new Button("Add");
@@ -95,7 +99,7 @@ public class AnimalList extends Login1 {
     Button modify = new Button("Modify");
     Button currentPopulate = new Button("<-- Select and Populate");
     Button pastPopulate = new Button("<-- Select and Populate");
-    Button addMedical = new Button("Add");
+   // Button addMedical = new Button("Add");
 
     Image paw = new Image("file:paw.jpg");
     ImageView viewPaw = new ImageView(paw);
@@ -107,8 +111,9 @@ public class AnimalList extends Login1 {
     GridPane curAnimalTable = new GridPane();
     GridPane pastAnimalTable = new GridPane();
 
+    // Tabs for the menu
     Tab current = new Tab("Within BARK");
-    Tab past = new Tab("Past Animals");
+    Tab past = new Tab("Adopted Animals");
     TabPane tabPane = new TabPane();
 
     public AnimalList(Home home) {
@@ -130,17 +135,18 @@ public class AnimalList extends Login1 {
         modAnimal.add(ageTxt, 1, 5);
         modAnimal.add(medicalLbl, 0, 6);
         modAnimal.add(medicalHistoryTxt, 1, 6, 1, 2);
-        modAnimal.add(medicalTxt, 1, 9);
-        modAnimal.add(vetHistoryLbl, 0, 8);
-        modAnimal.add(vetHistoryList, 1, 8);
+        //modAnimal.add(medicalTxt, 1, 9);
+//        modAnimal.add(vetHistoryLbl, 0, 8);
+//        modAnimal.add(vetHistoryList, 1, 8);
         modAnimal.add(feedingLbl, 0, 10);
         modAnimal.add(feedingTxt, 1, 10);
-        medicalTxt.setPromptText("Add additional history");
-        modAnimal.add(addMedical, 0, 9);
-        addMedical.setAlignment(Pos.BASELINE_RIGHT);
+       // medicalTxt.setPromptText("Add additional history");
+       // modAnimal.add(addMedical, 0, 9);
+       // addMedical.setAlignment(Pos.BASELINE_RIGHT);
         modAnimal.add(add, 0, 11);
         modAnimal.add(modify, 1, 11);
         modAnimal.add(delete, 0, 12);
+        
 
         viewPaw.setFitHeight(50);
         viewPaw.setFitWidth(50);
@@ -160,26 +166,29 @@ public class AnimalList extends Login1 {
         pastAnimalTable.add(pastAnimal, 0, 1);
         pastAnimalTable.add(pastPopulate, 0, 2);
 
+        // Set the content to the observable list
         past.setContent(pastAnimalTable);
         current.setContent(curAnimalTable);
         tabPane.getTabs().addAll(current, past);
 
+        // Set cell values for current
         id_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Integer>("animalID"));
         name_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("name"));
         species_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("species"));
         age_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("age"));
         history_col.setCellValueFactory(new PropertyValueFactory<Volunteer, Date>("medicalHistory"));
         feeding_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("feedingNeeds"));
-        vethist_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("vetHistory"));
+     //   vethist_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("vetHistory"));
         adoptID_col.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("adopt_ID"));
 
+        // Set cell values for past
         id_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, Integer>("animalID"));
         name_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("name"));
         species_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("species"));
         age_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("age"));
         history_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, Date>("medicalHistory"));
         feeding_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("feedingNeeds"));
-        vethist_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("vetHistory"));
+      //  vethist_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("vetHistory"));
         adoptID_col2.setCellValueFactory(new PropertyValueFactory<Volunteer, String>("adopt_ID"));
 
         currentAnimal.getColumns().addAll(id_col, name_col, species_col, age_col, history_col, feeding_col, vethist_col, adoptID_col);
@@ -221,6 +230,7 @@ public class AnimalList extends Login1 {
         primaryStage.setTitle("List");
         primaryStage.show();
 
+        // Populate left pane
         currentPopulate.setOnAction(e -> {
             vetHistoryList.getItems().clear();
             idTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getAnimalID() + "");
@@ -241,16 +251,18 @@ public class AnimalList extends Login1 {
             }
         });
 
+        // Populate left pane for past animals
         pastPopulate.setOnAction(e -> {
-            idTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getAnimalID() + "");
-            nameTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getName() + "");
-            speciesTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getSpecies() + "");
-            ageTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getAge() + "");
-            medicalHistoryTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getMedicalHistory() + "");
-            feedingTxt.setText(currentAnimal.getSelectionModel().getSelectedItem().getFeedingNeeds() + "");
+            idTxt.setText(pastAnimal.getSelectionModel().getSelectedItem().getAnimalID() + "");
+            nameTxt.setText(pastAnimal.getSelectionModel().getSelectedItem().getName() + "");
+            speciesTxt.setText(pastAnimal.getSelectionModel().getSelectedItem().getSpecies() + "");
+            ageTxt.setText(pastAnimal.getSelectionModel().getSelectedItem().getAge() + "");
+            medicalHistoryTxt.setText(pastAnimal.getSelectionModel().getSelectedItem().getMedicalHistory() + "");
+            feedingTxt.setText(pastAnimal.getSelectionModel().getSelectedItem().getFeedingNeeds() + "");
 
         });
 
+        // Delete entry
         delete.setOnAction(e -> {
             System.out.println(currentAnimal.getSelectionModel().getSelectedItem().getAnimalID());
             String query = "DELETE FROM ANIMAL WHERE animal_ID = " + currentAnimal.getSelectionModel().getSelectedItem().getAnimalID();
@@ -265,6 +277,7 @@ public class AnimalList extends Login1 {
             }
         });
 
+        // Add entry
         add.setOnAction(e -> {
             int largest = 0;
             String q = "SELECT * FROM ANIMAL";
@@ -291,7 +304,7 @@ public class AnimalList extends Login1 {
                 String newName = nameTxt.getText();
                 String newSpecies = speciesTxt.getText();
                 int newAge = Integer.valueOf(ageTxt.getText());
-                String newHistory = medicalTxt.getText();
+                String newHistory = medicalHistoryTxt.getText();
                 String newFeeding = feedingTxt.getText();
 
                 //String newVetHistory = MISSINGFIELDFORTHIS.getText(); 
@@ -309,12 +322,7 @@ public class AnimalList extends Login1 {
                 sendDBCommand(query);
                 currentMessage.setText("Entry added successfully.");
                 currentTableData.clear();
-//                for (int i = 0; i < animalList.size() + 1; i++) {
-//                    if (animalList.get(i) == null) {
-//                        animalList.add(newAnimal);
-//                        break;
-//                    }
-//                } 
+
                 curAnimalList.add(newAnimal);
                 System.out.println("ANIMAL LIST: " + curAnimalList);
                 for (Animal x : curAnimalList) {
@@ -326,17 +334,17 @@ public class AnimalList extends Login1 {
             }
         });
 
+        // Modify entry
         modify.setOnAction(e -> {
             int newID = Integer.valueOf(idTxt.getText());
             String newName = nameTxt.getText();
             String newSpecies = speciesTxt.getText();
             int newAge = Integer.valueOf(ageTxt.getText());
-            String newHistory = medicalTxt.getText();
+            String newHistory = medicalHistoryTxt.getText();
             String newFeeding = feedingTxt.getText();
             String newVetHistory = "";
 
-            String query = "UPDATE ANIMAL SET name = '" + newName + "', species = '" + newSpecies + "', age = " + newAge + ", medicalHistory = '" + newHistory
-                    + "', feedingNeeds = '" + newFeeding + " WHERE animal_ID = " + newID + "";
+            String query = "UPDATE ANIMAL SET name = '" + newName + "', species = '" + newSpecies + "', age = " + newAge + ", medicalHistory = '" + newHistory + "', feedingNeeds = '" + newFeeding + " WHERE animal_ID = " + newID + "";
             sendDBCommand(query);
             for (int i = 0; i < curAnimalList.size(); i++) {
                 if (curAnimalList.get(i).getAnimalID() == Integer.valueOf(idTxt.getText())) {

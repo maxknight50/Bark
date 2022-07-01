@@ -27,8 +27,6 @@ public class Application2 extends Login1 {
 
     Login1 login;
 
-    // FX Controls - Labels
-    //Label title = new Label("Application"); ***Find JAVAFX Node/control that isnt Label for title
     Label description1 = new Label("Welcome! Thank you for your interest in BARK");
     Label description2 = new Label("Please contact us at 504-394-3001 with any questions.");
     Label fNameLbl = new Label("First Name");
@@ -77,7 +75,7 @@ public class Application2 extends Login1 {
     Application2(Login1 login) {
         ObservableList<String> specialization = FXCollections.observableArrayList();
         ArrayList<String> defaultList = new ArrayList<>();
-        sendDBCommand("SELECT DISTINCT specialization_Name FROM specialization");
+        sendDBCommand("SELECT DISTINCT specialization_Name FROM specialization"); // Pull specializations
         try {
             while (rs.next()) {
                 String special = (rs.getString("specialization_Name"));
@@ -206,19 +204,22 @@ public class Application2 extends Login1 {
         });
 
         add.setOnAction(e -> {
-//            sendDBCommand("INSERT INTO SPECIALIZATION(specializationID, volID, specialization_Name) VALUES(" + largestVolId + ", " + largestScheduleId
-//                    + ", '" + special.getSelectionModel().getSelectedItem() + "')");
-            currentList.getItems().add(special.getSelectionModel().getSelectedItem());
+            currentList.getItems().add(special.getSelectionModel().getSelectedItem()); // Add specialization to list
         });
         create.setOnAction(e -> {
             currentList.getItems().add(newSpecialTxt.getText());
             newSpecialTxt.clear();
         });
-//        
-//        deny.setOnAction(e -> {
-//            String query = "DELETE FROM ANIMAL WHERE animal_ID = ";
-//            sendDBCommand(query);
-//        });
+        
+        deny.setOnAction(e -> {
+            try {
+                String query = "DELETE FROM VOLUNTEER WHERE empID = " + largestVolId + "";
+                 sendDBCommand(query);
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
+           
+        });
     }
 
     public void sendDBCommand(String sqlQuery) {
@@ -226,9 +227,6 @@ public class Application2 extends Login1 {
         String userID = "javauser";
         String userPASS = "javapass";
         OracleDataSource ds;
-
-        // You can comment this line out when your program is finished
-        System.out.println(sqlQuery);
 
         try {
             ds = new OracleDataSource();

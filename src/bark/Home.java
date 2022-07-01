@@ -18,6 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import oracle.jdbc.pool.OracleDataSource;
 
+
+// Admin login comes through Home
 public class Home extends Login1 {
 
     Statement stmt;

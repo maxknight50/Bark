@@ -21,6 +21,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import oracle.jdbc.pool.OracleDataSource;
 
+// Displays individual animal info from the database
 public class AnimalInfo extends Login1{
     
     Home home;
