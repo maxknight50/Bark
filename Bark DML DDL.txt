@@ -1,0 +1,255 @@
+DROP TABLE EVENTHISTORY;
+DROP TABLE EXPERIENCE;
+DROP TABLE SPECIALIZATION;
+DROP TABLE DONATION;
+DROP TABLE ANIMAL;
+DROP TABLE VETHISTORY;
+DROP TABLE EVENT;
+DROP TABLE SHIFT_TIME;
+DROP TABLE SCHEDULE;
+DROP TABLE VOLUNTEER;
+DROP TABLE ADOPTER;
+
+
+CREATE TABLE VOLUNTEER (
+volID             Numeric(4) PRIMARY KEY NOT NULL, 
+vol_FirstName     VARCHAR(30),
+vol_LastName     VARCHAR(30),
+vol_Address       VARCHAR(30),
+vol_DateOfBirth   VARCHAR(15), 
+vol_Info          VARCHAR(150),
+vol_Email         VARCHAR(30),
+vol_Phone         VARCHAR(15),
+cumulativeHours   DECIMAL(6,2),
+status            VARCHAR(25),
+experience	  VARCHAR(110),
+timeCheckedIn     NUMERIC(5),
+username          VARCHAR(15), 
+password          VARCHAR(15),
+hasAccess         VARCHAR(8)
+);
+
+CREATE TABLE SCHEDULE(
+schedule_ID Numeric(3) PRIMARY KEY,
+volID Numeric(4) REFERENCES VOLUNTEER(volID));
+
+CREATE TABLE EVENT(
+eventID           Numeric(5) PRIMARY KEY, 
+eventType         VARCHAR(15), 
+eventName         VARCHAR(20),
+eventDescription  VARCHAR(50),
+maxVolunteers     Numeric(2), 
+eventDate         VARCHAR(30), 
+eventTime         VARCHAR(15), 
+eventLocation     VARCHAR(20),
+eventCategory     VARCHAR(20),
+eventStatus       VARCHAR(10)
+);
+
+CREATE TABLE SHIFT_TIME(
+dayOfWeek VARCHAR(15),
+schedule_ID Numeric(3) REFERENCES SCHEDULE(schedule_ID),
+shift_ID Numeric(4),
+startTime VARCHAR(15),
+endTime VARCHAR(15),
+scheduled VARCHAR(5),
+PRIMARY KEY(dayOfWeek,schedule_ID));
+
+CREATE TABLE EVENTHISTORY (
+volID           Numeric(4)
+	REFERENCES VOLUNTEER(volID),
+eventID         Numeric(5)
+      REFERENCES EVENT(EventID),
+expenses        Numeric(4),
+event_Duration  CHAR(10),
+miles_Driven    Numeric(3),
+PRIMARY KEY(volID, eventID)		
+);
+
+CREATE TABLE SPECIALIZATION (
+specializationID       Numeric(2) PRIMARY KEY,
+volID Numeric(4) REFERENCES VOLUNTEER(volID),
+specialization_Name    VARCHAR(30)
+);
+
+CREATE TABLE EXPERIENCE (
+      specializationID   Numeric(2)
+           REFERENCES SPECIALIZATION(specializationID), 
+       volID             Numeric(4)
+           REFERENCES VOLUNTEER(volID), 
+       experienceLevel   VARCHAR(10), 
+       years             Numeric(3), 
+       description       VARCHAR(40), 
+       degree            VARCHAR(30), 
+       degreeType        VARCHAR(20),
+       PRIMARY KEY(specializationID, volID)
+); 
+
+CREATE TABLE DONATION (
+donation_ID Integer PRIMARY KEY,
+donationAmt VARCHAR(15),
+donationName VARCHAR(25),
+donationDate VARCHAR(25),
+volID Numeric(4) REFERENCES VOLUNTEER(volID));
+
+CREATE TABLE ADOPTER(
+adopt_ID Numeric(4) PRIMARY KEY NOT NULL,
+adopt_Name VARCHAR(35),
+adopt_Email VARCHAR(30),
+adopt_Phone VARCHAR(15),
+adopt_More VARCHAR(3));
+
+CREATE TABLE ANIMAL( 
+animal_ID Numeric(5) PRIMARY KEY NOT NULL, 
+name VARCHAR(15),
+species VARCHAR(25),
+age Integer,
+medicalHistory VARCHAR(150),
+feedingNeeds VARCHAR (75),
+vetHistory VARCHAR (100),
+adopt_ID Numeric(4) REFERENCES ADOPTER(adopt_ID));
+
+CREATE TABLE VETHISTORY (
+workDate date,
+workTime VARCHAR (15),
+animal_ID Numeric(5) NOT NULL REFERENCES VOLUNTEER(volID), 
+eventID Numeric(5) NOT NULL REFERENCES EVENT(eventID),
+Description VARCHAR(40),
+PRIMARY KEY(animal_ID, eventID));
+
+
+INSERT INTO VOLUNTEER(volID, vol_FirstName,vol_LastName, vol_Address, vol_DateOfBirth,vol_Info,vol_Email,vol_Phone,cumulativeHours,status,experience,timeCheckedIn,username,password,hasAccess) VALUES (100, 'Julie', 'Markinson', '230 Greenwood Dr Luray, VA',TO_DATE('1988-01-14', 'yyyy/mm/dd'), 'Owner and Executive Director of BARK' , 'Jmarkinson@gmail.com', '540-390-7080',0.1, 'Admin','High, Harvard University Director',null, 'JMarkinson', 'Dukes1$', 'active'); 
+INSERT INTO VOLUNTEER(volID, vol_FirstName,vol_LastName, vol_Address, vol_DateOfBirth,vol_Info,vol_Email,vol_Phone,cumulativeHours,status,experience,timeCheckedIn,username,password,hasAccess) VALUES (102, 'John', 'Smith', '230 Oak Ln Strasburg, VA ',TO_DATE('1990-10-03', 'yyyy/mm/dd'), 'I have had dogs all my life and would love to help anyway I can', 'JSmith@gmail.com', '540-454-6928',2000, 'Admin','Low, 1, Harrisonburg High School, High School, N/A',null, 'j', 'abc', 'active');
+INSERT INTO VOLUNTEER(volID, vol_FirstName,vol_LastName, vol_Address, vol_DateOfBirth,vol_Info,vol_Email,vol_Phone,cumulativeHours,status,experience,timeCheckedIn,username,password,hasAccess) VALUES (103, 'Frank', 'Butterman', '432 Lakewood Dr Berryville, VA', TO_DATE('1992-10-06', 'yyyy/mm/dd'), 'I love animals and wish to make their lives better', 'FButterman@gmail.com', '540-654-4952',500, 'Volunteer','Low, 2, University of Phoenix, Trade School, Adopter Relations',null, 'FButterman', 'Nats123$', 'active');
+INSERT INTO VOLUNTEER(volID, vol_FirstName,vol_LastName, vol_Address, vol_DateOfBirth,vol_Info,vol_Email,vol_Phone,cumulativeHours,status,experience,timeCheckedIn,username,password,hasAccess) VALUES (104, 'Mary', 'Lewis', '677 Murray St Luray, VA', TO_DATE('1980-10-23', 'yyyy/mm/dd'), 'I have always wanted to give back  and doing it for animals makes it worth it', 'MLewis@gmail.com', '540-444-7576',450, 'Admin','Strayer University, Associates Degree, Social Work',null, 'MLewis', 'Luray47*', 'active');
+INSERT INTO VOLUNTEER(volID, vol_FirstName,vol_LastName, vol_Address, vol_DateOfBirth,vol_Info,vol_Email,vol_Phone,cumulativeHours,status,experience,timeCheckedIn,username,password,hasAccess) VALUES (201, 'Kerry', 'Peak', '2354 Shady Ln Staunton, VA', TO_DATE('1986-12-16', 'yyyy/mm/dd'), 'My first dog was a rescue, so I would love to help other rescues', 'KPeak@gmail.com', '540-389-7093',400, 'Admin','Blue Ridge Community College, College, Marketing',null, 'KPeak', 'Showker68*', 'active');
+INSERT INTO VOLUNTEER(volID, vol_FirstName,vol_LastName, vol_Address, vol_DateOfBirth,vol_Info,vol_Email,vol_Phone,cumulativeHours,status,experience,timeCheckedIn,username,password,hasAccess) VALUES (202, 'Connor', 'Sheary', '1143 Grant Dr Winchester, VA', TO_DATE('1992-10-14', 'yyyy/mm/dd'), 'I had a cat growing up who was a stray, I would love to help other find a home', 'CSheary@gmail.com', '703-221-2639',300, 'Volunteer','George Mason University, College, Conditioning',null, 'CSheary', 'C@pitals73', 'active');
+INSERT INTO VOLUNTEER(volID, vol_FirstName,vol_LastName, vol_Address, vol_DateOfBirth,vol_Info,vol_Email,vol_Phone,cumulativeHours,status,experience,timeCheckedIn,username,password,hasAccess) VALUES (210, 'Connor', 'McDavid', '97 Goat St Waynseboro, VA', TO_DATE('1994-02-14', 'yyyy/mm/dd'), 'Household animals make any home a happier place, helping other find that happiness would mean a lot', 'CMcDavid@gmail.com', '540-132-8992',250, 'Volunteer','Shenandoah High, High School, Volunteering',null, 'CMcDavid', 'Western@97', 'active');
+INSERT INTO VOLUNTEER(volID, vol_FirstName,vol_LastName, vol_Address, vol_DateOfBirth,vol_Info,vol_Email,vol_Phone,cumulativeHours,status,experience,timeCheckedIn,username,password,hasAccess) VALUES (300, 'Matthew', 'Williams', '896 North Dr Harrisonburg, VA', TO_DATE('1998-04-20', 'yyyy/mm/dd'), 'All of my animals have been rescues, I would like to keep helping them', 'MWilliams@gmail.com', '540-690-5234',15, 'Volunteer in Training','Low, Boston University',null, 'MWilliams', 'Machine56$', 'active');
+INSERT INTO VOLUNTEER(volID, vol_FirstName,vol_LastName, vol_Address, vol_DateOfBirth,vol_Info,vol_Email,vol_Phone,cumulativeHours,status,experience,timeCheckedIn,username,password,hasAccess) VALUES (301, 'Claire', 'Ehlers', '8930 Peace St Strasburg, VA', TO_DATE('1999-05-01', 'yyyy/mm/dd'), 'I love my fur babies and wish to have others experience that love', 'CEhlers@gmail.com', '540-132-8992',18, 'Volunteer in Training','James Madison University, College, Veterinary Studies', null,'CEhlers', 'Touchdown7$', 'active');
+INSERT INTO VOLUNTEER(volID, vol_FirstName,vol_LastName, vol_Address, vol_DateOfBirth,vol_Info,vol_Email,vol_Phone,cumulativeHours,status,experience,timeCheckedIn,username,password,hasAccess) VALUES (302, 'Owen', 'Brookes', '629 Skyview Dr Staunton, VA', TO_DATE('2001-06-08', 'yyyy/mm/dd'), 'I have always loved dogs and would like to help them find a forever home', 'OBrookes@gmail.com', '540-152-8691',18, 'Volunteer in Training','James Madison University, College, Veterinary Studies',null, 'OBrookes', 'Youngin91*', 'active');
+INSERT INTO VOLUNTEER(volID, vol_FirstName,vol_LastName, vol_Address, vol_DateOfBirth,vol_Info,vol_Email,vol_Phone,cumulativeHours,status,experience,timeCheckedIn,username,password,hasAccess) VALUES (303, 'Erik', 'Johnson', '423 Milyway Ln Staunton, VA', TO_DATE('1990-06-27', 'yyyy/mm/dd'), 'I want to give back to my community as well as help people find a friend', 'EJohnson@gmail.com', '540-157-3453',18, 'Volunteer','Low, Penn State Univerity',null,'EJohnson', 'Champ22*', 'active');
+
+INSERT INTO SCHEDULE(schedule_ID, volID) VALUES(100,100);
+INSERT INTO SCHEDULE(schedule_ID, volID) VALUES(101,102);
+INSERT INTO SCHEDULE(schedule_ID, volID) VALUES(102,103);
+INSERT INTO SCHEDULE(schedule_ID, volID) VALUES(103,104);
+INSERT INTO SCHEDULE(schedule_ID, volID) VALUES(104,201);
+INSERT INTO SCHEDULE(schedule_ID, volID) VALUES(105,202);
+INSERT INTO SCHEDULE(schedule_ID, volID) VALUES(106,210);
+INSERT INTO SCHEDULE(schedule_ID, volID) VALUES(107,300);
+INSERT INTO SCHEDULE(schedule_ID, volID) VALUES(108,301);
+INSERT INTO SCHEDULE(schedule_ID, volID) VALUES(109,302);
+INSERT INTO SCHEDULE(schedule_ID, volID) VALUES(110,303);
+
+INSERT INTO EVENT(eventID,eventType, eventName, eventDescription, maxVolunteers, eventDate,eventTime,eventLocation,eventCategory,eventStatus) VALUES (1,'Pickup','Animal Pickup','Pickup animals from location',2,TO_DATE('2022-06-08', 'yyyy/mm/dd'), '2:00pm','Strasburg','BARK hosted','completed');
+INSERT INTO EVENT(eventID,eventType, eventName, eventDescription, maxVolunteers, eventDate,eventTime,eventLocation,eventCategory,eventStatus) VALUES (2,'Pickup','Animal Pickup','Pickup animals from location',2,TO_DATE('2022-04-13', 'yyyy/mm/dd'), '3:00pm','Luray','BARK hosted','completed');
+INSERT INTO EVENT(eventID,eventType, eventName, eventDescription, maxVolunteers, eventDate,eventTime,eventLocation,eventCategory,eventStatus) VALUES (3,'Dropoff','Animal Dropoff','Deliver animals to desired location',2,TO_DATE('2022-05-05', 'yyyy/mm/dd'), '12:00pm','Harrisonburg','Daily event','completed');
+INSERT INTO EVENT(eventID,eventType, eventName, eventDescription, maxVolunteers, eventDate,eventTime,eventLocation,eventCategory,eventStatus) VALUES (4,'Dropoff','Animal Dropoff','Deliver animals to desired location',2,TO_DATE('2022-07-25', 'yyyy/mm/dd'), '9:00am','Waynseboro','Daily event','upcoming');
+INSERT INTO EVENT(eventID,eventType, eventName, eventDescription, maxVolunteers, eventDate,eventTime,eventLocation,eventCategory,eventStatus) VALUES (5,'Vet','Vet appt','Take the animals to the vet',2,TO_DATE('2022-08-10', 'yyyy/mm/dd'), '9:00am','Harrisonburg','Daily event','upcoming');
+INSERT INTO EVENT(eventID,eventType, eventName, eventDescription, maxVolunteers, eventDate,eventTime,eventLocation,eventCategory,eventStatus) VALUES (6,'Vet','Vet appt','Take the animals to the vet',2,TO_DATE('2022-02-20', 'yyyy/mm/dd'), '11:00am','Winchester','Daily event','completed');
+INSERT INTO EVENT(eventID,eventType, eventName, eventDescription, maxVolunteers, eventDate,eventTime,eventLocation,eventCategory,eventStatus) VALUES (7,'Vet','Vet appt','Take the animals to the vet',2,TO_DATE('2022-03-05', 'yyyy/mm/dd'), '3:30pm','Berryville','Daily event','completed');
+INSERT INTO EVENT(eventID,eventType, eventName, eventDescription, maxVolunteers, eventDate,eventTime,eventLocation,eventCategory,eventStatus) VALUES (8,'Inspection','Inspection appt','Inspect location for future',2,TO_DATE('2022-04-21', 'yyyy/mm/dd'), '2:30pm','Winchester','BARK hosted','completed');
+INSERT INTO EVENT(eventID,eventType, eventName, eventDescription, maxVolunteers, eventDate,eventTime,eventLocation,eventCategory,eventStatus) VALUES (9,'Inspection','Inspection appt','Inspect location for future',2,TO_DATE('2022-06-27', 'yyyy/mm/dd'), '4:15pm','Strasburg','BARK hosted','completed');
+INSERT INTO EVENT(eventID,eventType, eventName, eventDescription, maxVolunteers, eventDate,eventTime,eventLocation,eventCategory,eventStatus) VALUES (10,'Inspection','Inspection appt','Inspect location for future',2,TO_DATE('2022-07-10', 'yyyy/mm/dd'), '1:00pm','Staunton','BARK hosted','upcoming');
+INSERT INTO EVENT(eventID,eventType, eventName, eventDescription, maxVolunteers, eventDate,eventTime,eventLocation,eventCategory,eventStatus) VALUES (11,'Inspection','Inspection appt','Inspect location for future',2,TO_DATE('2022-06-10', 'yyyy/mm/dd'), '10:00am','Berryville','BARK hosted','completed');
+
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Sunday',100,1,'8:00am','4:00pm','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Sunday',101,1,'8:00am','4:00pm','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Sunday',102,2,'4:00pm','12:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Sunday',103,2,'4:00pm','12:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Monday',104,3,'12:00am','8:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Monday',105,3,'12:00am','8:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Monday',100,1,'8:00am','4:00pm','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Monday',101,1,'8:00am','4:00pm','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Monday',106,2,'4:00pm','12:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Monday',110,2,'4:00pm','12:00am','no'); 
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Tuesday',107,3,'12:00am','8:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Tuesday',109,3,'12:00am','8:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Tuesday',100,1,'8:00am','4:00pm','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Tuesday',101,1,'8:00am','4:00pm','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Tuesday',102,2,'4:00pm','12:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Tuesday',103,2,'4:00pm','12:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Wednesday',104,3,'12:00am','8:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Wednesday',105,3,'12:00am','8:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Wednesday',100,1,'8:00am','4:00pm','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Wednesday',101,1,'8:00am','4:00pm','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Wednesday',106,2,'4:00pm','12:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Wednesday',110,2,'4:00pm','12:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Thursday',107,3,'12:00am','8:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Thursday',109,3,'12:00am','8:00am','no'); 
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Thursday',100,1,'8:00am','4:00pm','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Thursday',101,1,'8:00am','4:00pm','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Thursday',102,2,'4:00pm','12:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Thursday',103,2,'4:00pm','12:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Friday',104,3,'12:00am','8:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Friday',105,3,'12:00am','8:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Friday',100,1,'8:00am','4:00pm','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Friday',101,1,'8:00am','4:00pm','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Friday',106,2,'4:00pm','12:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Friday',110,2,'4:00pm','12:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Saturday',107,3,'12:00am','8:00am','no');
+INSERT INTO SHIFT_TIME(dayOfWeek,schedule_ID,shift_ID, startTime,endTime,scheduled) VALUES('Saturday',109,3,'12:00am','8:00am','no');
+
+INSERT INTO EVENTHISTORY (volID,eventID,expenses,event_Duration,miles_Driven) VALUES (302,1,60,'120min',85);
+INSERT INTO EVENTHISTORY(volID,eventID,expenses,event_Duration,miles_Driven) VALUES (100,2,25,'45min',30);
+INSERT INTO EVENTHISTORY(volID,eventID,expenses,event_Duration,miles_Driven) VALUES (301,3,75,'150min',100);
+INSERT INTO EVENTHISTORY(volID,eventID,expenses,event_Duration,miles_Driven) VALUES (202,3,75,'150min',100);
+INSERT INTO EVENTHISTORY(volID,eventID,expenses,event_Duration,miles_Driven) VALUES (300,8,45,'2hrs',25);
+INSERT INTO EVENTHISTORY(volID,eventID,expenses,event_Duration,miles_Driven) VALUES (210,8,45,'2hrs',25);
+INSERT INTO EVENTHISTORY(volID,eventID,expenses,event_Duration,miles_Driven) VALUES (201,6,200,'60min',15);
+INSERT INTO EVENTHISTORY(volID,eventID,expenses,event_Duration,miles_Driven) VALUES (104,6,200,'60min',15);
+
+INSERT INTO SPECIALIZATION(specializationID, volID, specialization_Name) VALUES(10, 102, 'Animal Health Care');
+INSERT INTO SPECIALIZATION(specializationID, volID, specialization_Name) VALUES(11, 103, 'Animal Health Care');
+INSERT INTO SPECIALIZATION(specializationID, volID, specialization_Name) VALUES(12, 102, 'Feeding');
+INSERT INTO SPECIALIZATION(specializationID, volID, specialization_Name) VALUES(13, 201, 'Enclosure Care');
+INSERT INTO SPECIALIZATION(specializationID, volID, specialization_Name) VALUES(14, 104, 'Adopter Relations');
+INSERT INTO SPECIALIZATION(specializationID, volID, specialization_Name) VALUES(15, 201, 'Event Volunteer');
+INSERT INTO SPECIALIZATION(specializationID, volID, specialization_Name) VALUES(16, 202, 'Training');
+INSERT INTO SPECIALIZATION(specializationID, volID, specialization_Name) VALUES(17, 100, 'Training');
+INSERT INTO SPECIALIZATION(specializationID, volID, specialization_Name) VALUES(18, 102, 'Fundraising');
+
+
+INSERT INTO DONATION(donation_ID,donationAmt,donationName,donationDate,volID) VALUES(1,'$25.00', 'Will Turner', TO_DATE('2022-05-15', 'yyyy/mm/dd'),301);
+INSERT INTO DONATION(donation_ID,donationAmt,donationName,donationDate,volID) VALUES(2,'$150.00', 'Michael Palladorous', TO_DATE('2022-06-10', 'yyyy/mm/dd'),201);
+INSERT INTO DONATION(donation_ID,donationAmt,donationName,donationDate,volID) VALUES(3,'$1,250.00', 'Enzo Gorlami', TO_DATE('2022-03-14', 'yyyy/mm/dd'),100);
+INSERT INTO DONATION(donation_ID,donationAmt,donationName,donationDate,volID) VALUES(4,'$5,000.00', 'Anonymous', TO_DATE('2022-01-01', 'yyyy/mm/dd'),100);
+INSERT INTO DONATION(donation_ID,donationAmt,donationName,donationDate,volID) VALUES(5,'$45.00', 'Ryan Whitney', TO_DATE('2022-02-08', 'yyyy/mm/dd'),210);
+INSERT INTO DONATION(donation_ID,donationAmt,donationName,donationDate,volID) VALUES(6,'$25.00', 'Paul Bissonette', TO_DATE('2022-06-11', 'yyyy/mm/dd'),300);
+INSERT INTO DONATION(donation_ID,donationAmt,donationName,donationDate,volID) VALUES(7,'$2,500.00', 'Charles Leclerc', TO_DATE('2022-05-28', 'yyyy/mm/dd'),100);
+INSERT INTO DONATION(donation_ID,donationAmt,donationName,donationDate,volID) VALUES(8,'$500.00', 'Sebastian Vettel', TO_DATE('2021-12-24', 'yyyy/mm/dd'),202);
+INSERT INTO DONATION(donation_ID,donationAmt,donationName,donationDate,volID) VALUES(9,'$50.00', 'Sergio Perez', TO_DATE('2021-11-20', 'yyyy/mm/dd'),102);
+INSERT INTO DONATION(donation_ID,donationAmt,donationName,donationDate,volID) VALUES(10,'$450.00', 'Mark Weber', TO_DATE('2020-12-30', 'yyyy/mm/dd'),103);
+
+INSERT INTO ADOPTER(adopt_ID,adopt_Name,adopt_Email,adopt_Phone,adopt_More)VALUES(100, 'Makayla Harris', 'MHarris@gmail.com', '703-263-2678','yes');
+INSERT INTO ADOPTER(adopt_ID,adopt_Name,adopt_Email,adopt_Phone,adopt_More)VALUES(110, 'Michael Kelso', 'MKelso@gmail.com', '703-495-6681','yes');
+INSERT INTO ADOPTER(adopt_ID,adopt_Name,adopt_Email,adopt_Phone,adopt_More)VALUES(120, 'Eric Cartman', 'ECartman@gmail.com', '703-598-7503','yes');
+INSERT INTO ADOPTER(adopt_ID,adopt_Name,adopt_Email,adopt_Phone,adopt_More)VALUES(130, 'Jackie Burkhart', 'JBurkhart@gmail.com', '540-432-7689','no');
+INSERT INTO ADOPTER(adopt_ID,adopt_Name,adopt_Email,adopt_Phone,adopt_More)VALUES(140, 'Jim Halpert', 'JHalpert@gmail.com', '540-921-4760','yes');
+INSERT INTO ADOPTER(adopt_ID,adopt_Name,adopt_Email,adopt_Phone,adopt_More)VALUES(150, 'Dwight Schrute', 'DSchrute@gmail.com', '540-964-4242','no');
+INSERT INTO ADOPTER(adopt_ID,adopt_Name,adopt_Email,adopt_Phone,adopt_More)VALUES(160, 'Kevin Malone', 'KMalone@gmail.com', '703-623-9949','no');
+INSERT INTO ADOPTER(adopt_ID,adopt_Name,adopt_Email,adopt_Phone,adopt_More)VALUES(170, 'Oliver Peck', 'OPeck@gmail.com', '703-023-7221','no');
+INSERT INTO ADOPTER(adopt_ID,adopt_Name,adopt_Email,adopt_Phone,adopt_More)VALUES(180, 'Chris Nunez', 'CNunez@gmail.com', '703-640-2309','yes');
+
+INSERT INTO ANIMAL (animal_ID, name, species, age, medicalHistory, feedingNeeds, adopt_ID) VALUES(100,'Alex','Maltese',13,'Shots up to date, Lump removed from abdomen,neutered','twice a day, half a can wet food', 110);
+INSERT INTO ANIMAL (animal_ID, name, species, age, medicalHistory, feedingNeeds, adopt_ID)  VALUES(101,'Cooper','Golden Retriever',1,'Shots up to date, has had a seizure','twice a day,1 cup dry food', null);
+INSERT INTO ANIMAL (animal_ID, name, species, age, medicalHistory, feedingNeeds, adopt_ID)  VALUES(102,'Duke','Bulldog',4,'Shots up to date, neutered','twice a day, half cup dry food', null);
+INSERT INTO ANIMAL(animal_ID, name, species, age, medicalHistory, feedingNeeds, adopt_ID)  VALUES(103,'Milly','Australian Shepherd',3,'Shots up to date, neutered','twice a day, half cup dry food',null);
+INSERT INTO ANIMAL (animal_ID, name, species, age, medicalHistory, feedingNeeds, adopt_ID)  VALUES(104,'Maggie','Pitbull',5,'Shots up to date, neutered','twice a day, three quarters cup dry food', 150);
+INSERT INTO ANIMAL (animal_ID, name, species, age, medicalHistory, feedingNeeds, adopt_ID)  VALUES(105,'Butch','Mastiff',7,'Shots up to date stitches on back left leg when 4, neutered','twice a day, whole can wet food', 120);
+INSERT INTO ANIMAL (animal_ID, name, species, age, medicalHistory, feedingNeeds, adopt_ID)  VALUES(106,'Scout','Black Lab',2,'Shots up to date, neutered','twice a day, 3/4 cup dry food',130);
+INSERT INTO ANIMAL (animal_ID, name, species, age, medicalHistory, feedingNeeds, adopt_ID)  VALUES(107,'Bailey','German Shepherd',6,'Shots up to date, early hip issues','twice a day, 1 cup dry food',140);
+INSERT INTO ANIMAL (animal_ID, name, species, age, medicalHistory, feedingNeeds, adopt_ID)  VALUES(108,'Daisy','Beagle',10,'Shots up to date, Multiple ear infections','twice a day, 1/3 cup dry food', 160);
+INSERT INTO ANIMAL (animal_ID, name, species, age, medicalHistory, feedingNeeds, adopt_ID)  VALUES(109,'Ace','Boxer',2,'Shots up to date, neutered','twice a day, 3/4 cup dry food',170);
+INSERT INTO ANIMAL (animal_ID, name, species, age, medicalHistory, feedingNeeds, adopt_ID)  VALUES(110,'Tank','Husky',3,'Shots up to date, neutered','twice a day, 1 cup dry food',180);
+INSERT INTO ANIMAL (animal_ID, name, species, age, medicalHistory, feedingNeeds, adopt_ID)  VALUES(111,'Molly','Golden Retreiver',8,'Shots up to date, neutered','twice a day, 1 cup dry food',null);
+INSERT INTO ANIMAL (animal_ID, name, species, age, medicalHistory, feedingNeeds, adopt_ID)  VALUES(112,'Toby','Terrier',4,'Shots up to date, neutered','twice a day, 1 cup dry food',null);
+INSERT INTO ANIMAL (animal_ID, name, species, age, medicalHistory, feedingNeeds, adopt_ID)  VALUES(113,'August','Poodle',5,'Shots up to date, neutered','twice a day, 1 cup dry food',null);
+
+INSERT INTO VETHISTORY(animal_ID, eventID, description, workDate, workTime) VALUES(100, 7, 'Got lump removed from abdomen', TO_DATE('1988-01-14', 'yyyy/mm/dd'), '10:45am');
+INSERT INTO VETHISTORY(animal_ID, eventID, description, workDate, workTime) VALUES(103, 5, 'Got her shots up to date, and neutered', TO_DATE('1988-01-14', 'yyyy/mm/dd'), '10:45am');
+INSERT INTO VETHISTORY(animal_ID, eventID, description, workDate, workTime) VALUES(100, 6, 'Got lump removed from abdomen', TO_DATE('1988-01-14', 'yyyy/mm/dd'), '10:45am');
+INSERT INTO VETHISTORY(animal_ID, eventID, description, workDate, workTime) VALUES(100, 8, 'Got lump removed from abdomen', TO_DATE('1988-01-14', 'yyyy/mm/dd'), '10:45am');
+
+
